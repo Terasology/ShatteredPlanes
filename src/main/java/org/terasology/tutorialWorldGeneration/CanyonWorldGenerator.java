@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.tutorialWorldGeneration;
+package org.terasology.CanyonWorld;
 
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.engine.SimpleUri;
@@ -23,10 +23,10 @@ import org.terasology.world.generation.WorldBuilder;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
-@RegisterWorldGenerator(id = "tutorialWorld", displayName = "Tutorial World")
-public class TutorialWorldGenerator extends BaseFacetedWorldGenerator {
+@RegisterWorldGenerator(id = "CanyonWorld", displayName = "Canyon World")
+public class CanyonWorldGenerator extends BaseFacetedWorldGenerator {
 
-    public TutorialWorldGenerator(SimpleUri uri) {
+    public CanyonWorldGenerator(SimpleUri uri) {
         super(uri);
     }
 
@@ -36,12 +36,11 @@ public class TutorialWorldGenerator extends BaseFacetedWorldGenerator {
     @Override
     protected WorldBuilder createWorld() {
         return new WorldBuilder(worldGeneratorPluginLibrary)
-                .setSeaLevel(0)
                 .addProvider(new SurfaceProvider())
-                .addProvider(new SeaLevelProvider(0))
-                .addProvider(new MountainsProvider())
-                .addProvider(new HouseProvider())
+                .addProvider(new SeaLevelProvider(-3))
+                .addProvider(new BoulderProvider())
                 .addRasterizer(new TutorialWorldRasterizer())
-                .addRasterizer(new HouseRasterizer());
+                .addRasterizer(new BoulderRasterizer());
+
     }
 }

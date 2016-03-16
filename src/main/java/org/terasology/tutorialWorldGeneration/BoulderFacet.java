@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 MovingBlocks
+ * Copyright 2016 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.tutorialWorldGeneration;
+package org.terasology.CanyonWorld;
 
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.SparseObjectFacet3D;
+import org.terasology.world.generation.facets.DensityFacet;
 
-/**
- * Stores where the center of a house will be placed
- */
-public class HouseFacet extends SparseObjectFacet3D<House> {
+public class BoulderFacet extends DensityFacet {
 
-    public HouseFacet(Region3i targetRegion, Border3D border) {
+    public BoulderFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.tutorialWorldGeneration;
+package org.terasology.CanyonWorld;
 
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
@@ -24,28 +24,36 @@ import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.SeaLevelFacet;
 
-public class TutorialWorldRasterizer implements WorldRasterizer {
+public class CanyonWorldRasterizer implements WorldRasterizer {
 
     private Block dirt;
-    private Block grass;
+    private Block grass,water,sand;
 
     @Override
     public void initialize() {
         dirt = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
         grass = CoreRegistry.get(BlockManager.class).getBlock("Core:Grass");
+        water = CoreRegistry.get(BlockManager.class).getBlock("core:water");
+        sand = CoreRegistry.get(BlockManager.class).getBlock("Core:Sand");
     }
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
+
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
             if (position.y < surfaceHeight - 1) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
             } else if (position.y < surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
+                chunk.setBlock(ChunkMath.calcBlockPos(position), sand);
+            } else if(position.y<seaLevelFacet.getSeaLevel() && position.y>=surfaceHeightFacet.getWorld(position.x, position.z)){
+                chunk.setBlock(ChunkMath.calcBlockPos(position),water);
             }
+
         }
     }
 }

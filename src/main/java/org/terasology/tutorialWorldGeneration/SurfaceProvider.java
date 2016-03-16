@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.tutorialWorldGeneration;
+package org.terasology.CanyonWorld;
 
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
@@ -30,11 +30,13 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 @Produces(SurfaceHeightFacet.class)
 public class SurfaceProvider implements FacetProvider {
 
-    private Noise surfaceNoise;
+    private Noise surfaceNoise1;
+    private Noise surfaceNoise2;
 
     @Override
     public void setSeed(long seed) {
-        surfaceNoise = new SubSampledNoise(new SimplexNoise(seed), new Vector2f(0.01f, 0.01f), 1);
+        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed), new Vector2f(0.0001f, 0.0001f), 1);
+        surfaceNoise2 = new SubSampledNoise(new SimplexNoise(seed), new Vector2f(0.01f, 0.01f), 1);
     }
 
     @Override
@@ -46,7 +48,8 @@ public class SurfaceProvider implements FacetProvider {
         // loop through every position on our 2d array
         Rect2i processRegion = facet.getWorldRegion();
         for (BaseVector2i position : processRegion.contents()) {
-            facet.setWorld(position, surfaceNoise.noise(position.x(), position.y()) * 20);
+            facet.setWorld(position, surfaceNoise1.noise(position.x(), position.y()) * 40 + surfaceNoise2.noise(position.x(), position.y()) * 30+3);
+            //facet.setWorld(position, 20);
         }
 
         // give our newly created and populated facet to the region
