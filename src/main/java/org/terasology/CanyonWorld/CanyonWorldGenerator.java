@@ -39,7 +39,7 @@ public class CanyonWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new SurfaceProvider())
                 .addProvider(new SeaLevelProvider(-3))
                 .addProvider(new BoulderProvider())
-                .addRasterizer(new TutorialWorldRasterizer())
+                .addRasterizer(new CanyonWorldRasterizer())
                 .addRasterizer(new BoulderRasterizer());
 
     }
