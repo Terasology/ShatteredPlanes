@@ -20,6 +20,7 @@ import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.WorldBuilder;
+import org.terasology.world.generation.World;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
@@ -35,12 +36,22 @@ public class CanyonWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     protected WorldBuilder createWorld() {
-        return new WorldBuilder(worldGeneratorPluginLibrary)
+        WorldBuilder worldBuilder=new WorldBuilder(worldGeneratorPluginLibrary)
                 .addProvider(new SurfaceProvider())
-                .addProvider(new SeaLevelProvider(-3))
-                .addProvider(new BoulderProvider())
-                .addRasterizer(new CanyonWorldRasterizer())
-                .addRasterizer(new BoulderRasterizer());
+                .addProvider(new BaseProvider())
+                .addProvider(new SeaLevelProvider(0))
+                .addProvider(new BoulderProvider());
+        //The seed value isn't supposed to be set here, however for the prebuild one has to be defined.
+        worldBuilder.setSeed(491385982348l);
+        World world=worldBuilder.build();
+
+        worldBuilder.addProvider(new GaussFilter(2f,0.3f,2,1, world));
+        worldBuilder.addProvider(new SmoothingFilter(1f,1f,4,1,world));
+        //WARNING!: The filters are not yet optimized and will slow terrain generation significantly down!!!
+        //worldBuilder.addProvider(new GaussFilter(1f,0.4f,5,1,world));
+        //worldBuilder.addProvider(new SmoothingFilter(1f,0.4f,2,1,world));
+        worldBuilder.addRasterizer(new CanyonWorldRasterizer());
+        return worldBuilder;
 
     }
 }

@@ -35,7 +35,7 @@ public class CanyonWorldRasterizer implements WorldRasterizer {
     public void initialize() {
         dirt = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
         grass = CoreRegistry.get(BlockManager.class).getBlock("Core:Grass");
-        water = CoreRegistry.get(BlockManager.class).getBlock("core:water");
+        water = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
         sand = CoreRegistry.get(BlockManager.class).getBlock("Core:Sand");
     }
 
@@ -46,12 +46,14 @@ public class CanyonWorldRasterizer implements WorldRasterizer {
         for (Vector3i position : chunkRegion.getRegion()) {
 
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
-            if (position.y < surfaceHeight - 1) {
+            if(position.y == surfaceHeight && surfaceHeight<0) {
+                chunk.setBlock(ChunkMath.calcBlockPos(position), sand);
+            } else if (position.y < surfaceHeight - 1) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
             } else if (position.y < surfaceHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), sand);
+                chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
             } else if(position.y<seaLevelFacet.getSeaLevel() && position.y>=surfaceHeightFacet.getWorld(position.x, position.z)){
-                chunk.setBlock(ChunkMath.calcBlockPos(position),water);
+                //chunk.setBlock(ChunkMath.calcBlockPos(position),water);
             }
 
         }

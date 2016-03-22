@@ -44,17 +44,16 @@ public class BoulderRasterizer implements WorldRasterizer {
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         BoulderFacet boulderFacet = chunkRegion.getFacet(BoulderFacet.class);
-        SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        BaseFacet base = chunkRegion.getFacet(BaseFacet.class);
 
             for (Vector3i position : chunkRegion.getRegion()) {
                 float boulderVal = boulderFacet.getWorld(position.x,position.y,position.z);
                 if (boulderVal>0.99) {
-                    int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(position.x,position.z));
-                    for(int y=surfaceHeight;y<=position.y-1;y++) {
+                    int baseHeight = TeraMath.floorToInt(base.getWorld(position.x,position.z));
+                    for(int y=baseHeight;y<=position.y-1;y++) {
                         chunk.setBlock(ChunkMath.calcBlockPos(position.x,y,position.z), stone);
                     }
                     chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
-                    surfaceHeightFacet.setWorld(position.x,position.z,position.y);
                 }
 
             }
