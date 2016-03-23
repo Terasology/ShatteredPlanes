@@ -36,21 +36,19 @@ public class CanyonWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     protected WorldBuilder createWorld() {
+        //Maximal radius for filter is 8
         WorldBuilder worldBuilder=new WorldBuilder(worldGeneratorPluginLibrary)
                 .addProvider(new SurfaceProvider())
                 .addProvider(new BaseProvider())
                 .addProvider(new SeaLevelProvider(0))
-                .addProvider(new BoulderProvider());
-        //The seed value isn't supposed to be set here, however for the prebuild one has to be defined.
-        worldBuilder.setSeed(491385982348l);
-        World world=worldBuilder.build();
+                .addProvider(new BoulderProvider())
+                .addProvider(new GaussFilter(2f,0.5f,3,1))
+            //  .addProvider(new GaussFilter(1f,1f,3,1, world));
+                .addProvider(new SmoothingFilter(1f,3,1))
 
-        worldBuilder.addProvider(new GaussFilter(2f,0.3f,2,1, world));
-        worldBuilder.addProvider(new SmoothingFilter(1f,1f,4,1,world));
-        //WARNING!: The filters are not yet optimized and will slow terrain generation significantly down!!!
         //worldBuilder.addProvider(new GaussFilter(1f,0.4f,5,1,world));
         //worldBuilder.addProvider(new SmoothingFilter(1f,0.4f,2,1,world));
-        worldBuilder.addRasterizer(new CanyonWorldRasterizer());
+                .addRasterizer(new CanyonWorldRasterizer());
         return worldBuilder;
 
     }

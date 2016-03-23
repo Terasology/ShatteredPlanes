@@ -25,6 +25,7 @@ import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.Facet;
+import org.terasology.world.generation.FacetBorder;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.World;
 import org.terasology.world.generation.Border3D;
@@ -36,30 +37,30 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 //TODO: Differentiate between a messy gaussian filter (copy into temp facet and back) and smooth filter (apply directly to surface)
 
-@Updates({  @Facet(SurfaceHeightFacet.class)})
+@Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 8)))
 public class GaussFilter implements FacetProvider {
 
     private float sigma;
     private float amplitude;
     private int radius;
     private int mode;
-    private World world;
     //smooth mode=1, messy mode=2
 
-    public GaussFilter(World world){
+    public GaussFilter(){
         sigma=1f;
         amplitude=1f;
         radius=1;
         mode=1;
-        this.world=world;
     }
 
-    public GaussFilter(float sigma, float amplitude, int radius, int mode, World world){
+    public GaussFilter(float sigma, float amplitude, int radius, int mode){
         this.sigma=sigma;
         this.amplitude=amplitude;
-        this.radius=radius;
+        if(radius<=8) {
+            this.radius = radius;
+        }
+        else this.radius=8;
         this.mode=mode;
-        this.world=world;
     }
 
     @Override
@@ -69,26 +70,22 @@ public class GaussFilter implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
-        Rect2i worldRegion=facet.getWorldRegion();
-        Region3i region3iExtended=region.getRegion().expand(radius);
-        Region regionExtended = world.getWorldData(region3iExtended);
-        SurfaceHeightFacet facetExtended = regionExtended.getFacet(SurfaceHeightFacet.class);
-        Rect2i worldRegionExtended=facetExtended.getWorldRegion();
+        Rect2i worldRegionExtended=facet.getWorldRegion();
+        Rect2i worldRegion=worldRegionExtended.expand(-8,-8);
 
         // loop through every position on our 2d array
         for (BaseVector2i position : worldRegion.contents()){
 
-            float yOrigin = facetExtended.getWorld(position);
+            float yOrigin = facet.getWorld(position);
             Vector2i[] selection = selector(position, worldRegionExtended);
             for (int i = 0; i < selection.length; i++) {
                 float dis = (float) position.distance(selection[i]);
-
-                float ySelection = facetExtended.getWorld(selection[i]);
+                float ySelection = facet.getWorld(selection[i]);
                 float change=0;
-                if(Math.round(yOrigin - ySelection)>0) {
+                if(Math.round(yOrigin - ySelection)>0 && yOrigin>0) {
                     change = (1-gauss(dis)) / (float)Math.pow(Math.round(yOrigin - ySelection),1) * amplitude * (float) Math.log(yOrigin+1);
                 }
-                facetExtended.setWorld(position, yOrigin + change);
+                facet.setWorld(position, yOrigin + change);
             }
 
 
@@ -98,7 +95,7 @@ public class GaussFilter implements FacetProvider {
     }
 
     //select all relevant neighbor positions
-    private Vector2i[] selector(BaseVector2i o, Rect2i worldRegionExtended){
+    private Vector2i[] selector(BaseVector2i o, Rect2i worldRegion){
 
         ArrayList<Vector2i> positions = new ArrayList<Vector2i>();
 
@@ -106,7 +103,7 @@ public class GaussFilter implements FacetProvider {
         for(int r=1;r<=radius;r++) {
             for (int i = 0; i < 360; i=i+5) {
                 Vector2i temp=new Vector2i(o.x() + Math.round((float) Math.cos(i)*r), o.y() + Math.round((float) Math.sin(i)*r));
-                if(!positions.contains(temp) && worldRegionExtended.contains(temp.x,temp.y) && !(temp.x==o.x() && temp.y==o.y())){
+                if(!positions.contains(temp) && worldRegion.contains(temp.x,temp.y) && !(temp.x==o.x() && temp.y==o.y())){
                         positions.add(temp);
 
                 }

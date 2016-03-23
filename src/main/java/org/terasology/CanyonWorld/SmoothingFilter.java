@@ -26,6 +26,7 @@ import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.Facet;
+import org.terasology.world.generation.FacetBorder;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.World;
 import org.terasology.world.generation.Border3D;
@@ -37,15 +38,12 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 //TODO: Differentiate between a messy gaussian filter (copy into temp facet and back) and smooth filter (apply directly to surface)
 
-@Updates({  @Facet(SurfaceHeightFacet.class)})
+@Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 8)))
 public class SmoothingFilter implements FacetProvider {
 
-    private float sigma;
     private float amplitude;
     private int radius;
     private int mode;
-    private Region3i region;
-    private World world;
     /*
     //smooth mode=1, messy mode=2
     public SmoothingFilter(){
@@ -57,12 +55,14 @@ public class SmoothingFilter implements FacetProvider {
     }
     */
 
-    public SmoothingFilter(float sigma, float amplitude, int radius, int mode, World world){
-        this.sigma=sigma;
+    public SmoothingFilter(float amplitude, int radius, int mode){
+
         this.amplitude=amplitude;
-        this.radius=radius;
+        if(radius<=8) {
+            this.radius = radius;
+        }
+        else {this.radius=8;}
         this.mode=mode;
-        this.world=world;
     }
 
     @Override
@@ -72,11 +72,8 @@ public class SmoothingFilter implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
-        Rect2i worldRegion=facet.getWorldRegion();
-        Region3i region3iExtended=region.getRegion().expand(radius);
-        Region regionExtended = world.getWorldData(region3iExtended);
-        SurfaceHeightFacet facetExtended = regionExtended.getFacet(SurfaceHeightFacet.class);
-        Rect2i worldRegionExtended=facetExtended.getWorldRegion();
+        Rect2i worldRegionExtended=facet.getWorldRegion();
+        Rect2i worldRegion=worldRegionExtended.expand(-8,-8);
 
 
         for (BaseVector2i position : worldRegion.contents()){
@@ -90,22 +87,19 @@ public class SmoothingFilter implements FacetProvider {
                 for (int i = 0; i < selection.length; i++) {
 
                     float dis = (float) position.distance(selection[i]);
-                    float ySelection = facetExtended.getWorld(selection[i]);
+                    float ySelection = facet.getWorld(selection[i]);
 
                     change += ySelection;
 
                     }
 
-                    change=amplitude*(change/selection.length-yOrigin)*TeraMath.clamp((float) Math.log(yOrigin+1),0,1);
+                    change=amplitude*(change/selection.length-yOrigin)/**TeraMath.clamp((float) Math.log(yOrigin+1),0,1)*/;
                     facet.setWorld(position, facet.getWorld(position) + change);
 
                 }
         }
     }
 
-    private float gauss(float x){
-        return (float) /*1/Math.sqrt(2*Math.PI*sigma*sigma)**/Math.exp(-x*x/(2*sigma*sigma));
-    }
 
     //select all relevant neighbor positions
     private Vector2i[] selector(BaseVector2i o, Rect2i worldRegionExtended){
@@ -130,10 +124,6 @@ public class SmoothingFilter implements FacetProvider {
             selection[i]=positions.get(i);
         }
         return selection;
-    }
-
-    public void setSigma(float sig){
-        sigma=sig;
     }
 
     public void setAmplitude(float ampl){
