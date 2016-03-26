@@ -26,34 +26,39 @@ import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.world.generation.facets.SeaLevelFacet;
 
-public class CanyonWorldRasterizer implements WorldRasterizer {
+public class SkyIslandRasterizer implements WorldRasterizer {
 
     private Block dirt;
-    private Block grass,water,sand;
+    private Block grass,water,stone;
 
     @Override
     public void initialize() {
         dirt = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
         grass = CoreRegistry.get(BlockManager.class).getBlock("Core:Grass");
         water = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
-        sand = CoreRegistry.get(BlockManager.class).getBlock("Core:Sand");
+        stone = CoreRegistry.get(BlockManager.class).getBlock("Core:Stone");
     }
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+        SkyIslandBaseFacet skyIslandBaseFacet = chunkRegion.getFacet(SkyIslandBaseFacet.class);
+        SkyIslandTopHeightFacet skyIslandTopHeightFacet = chunkRegion.getFacet(SkyIslandTopHeightFacet.class);
+        SkyIslandBottomHeightFacet skyIslandBottomHeightFacet = chunkRegion.getFacet(SkyIslandBottomHeightFacet.class);
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
-        SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
+
         for (Vector3i position : chunkRegion.getRegion()) {
 
+            float baseHeight = skyIslandBaseFacet.getWorld(position.x, position.z);
+            float topHeight = skyIslandTopHeightFacet.getWorld(position.x, position.z);
+            float bottomHeight = skyIslandBottomHeightFacet.getWorld(position.x, position.z);
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
-            if(position.y == surfaceHeight && surfaceHeight<0) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), sand);
-            } else if (position.y < surfaceHeight - 1) {
+
+            if(baseHeight > surfaceHeight && position.y<baseHeight+topHeight-1 && position.y>=baseHeight) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
-            } else if (position.y < surfaceHeight) {
+            } else if(baseHeight > surfaceHeight && position.y<=baseHeight+topHeight && position.y>=baseHeight) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
-            } else if(position.y<seaLevelFacet.getSeaLevel() && position.y>=surfaceHeightFacet.getWorld(position.x, position.z)){
-                //chunk.setBlock(ChunkMath.calcBlockPos(position),water);
+            } else if(baseHeight > surfaceHeight && position.y>=baseHeight-bottomHeight && position.y<baseHeight) {
+                chunk.setBlock(ChunkMath.calcBlockPos(position), stone);
             }
 
         }

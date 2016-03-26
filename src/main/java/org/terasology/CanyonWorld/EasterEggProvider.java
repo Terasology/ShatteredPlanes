@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.CanyonWorld;
+package org.terasology.ShatteredPlanes;
 
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
@@ -47,10 +47,11 @@ public class EasterEggProvider implements FacetProvider {
         EasterEggFacet eggs = new EasterEggFacet(region.getRegion(), border);
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
         Rect2i worldRegion = eggs.getWorldRegion();
-
+        boolean spawned=false;
         for(BaseVector2i pos : worldRegion.contents()){
-            if(noise.noise(pos.x(),pos.y())>0.5){
+            if(noise.noise(pos.x(),pos.y())>0.5 && !spawned){
                 eggs.setWorld(pos.x(),pos.y(),true);
+                spawned = true;
             }
         }
 

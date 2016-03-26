@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.CanyonWorld;
+package org.terasology.ShatteredPlanes;
 
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.engine.SimpleUri;
@@ -42,6 +42,9 @@ public class CanyonWorldGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new EasterEggProvider())
                 .addProvider(new SeaLevelProvider(0))
                 .addProvider(new BoulderProvider())
+                .addProvider(new SkyIslandBaseProvider())
+                .addProvider(new SkyIslandTopHeightProvider())
+                .addProvider(new SkyIslandBottomHeightProvider())
             //  .addProvider(new GaussFilter(2f,0.5f,3,1))
             //  .addProvider(new GaussFilter(1f,1f,3,1, world));
                 .addProvider(new SmoothingFilter(1f,2,1))
@@ -49,6 +52,7 @@ public class CanyonWorldGenerator extends BaseFacetedWorldGenerator {
         //worldBuilder.addProvider(new GaussFilter(1f,0.4f,5,1,world));
         //worldBuilder.addProvider(new SmoothingFilter(1f,0.4f,2,1,world));
                 .addRasterizer(new CanyonWorldRasterizer())
+                .addRasterizer(new SkyIslandRasterizer())
                 .addRasterizer(new EasterEggRasterizer());
         return worldBuilder;
 

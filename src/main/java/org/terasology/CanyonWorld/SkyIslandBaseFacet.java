@@ -17,11 +17,11 @@ package org.terasology.ShatteredPlanes;
 
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.BaseBooleanFieldFacet2D;
+import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
-public class EasterEggFacet extends BaseBooleanFieldFacet2D {
+public class SkyIslandBaseFacet extends SurfaceHeightFacet {
 
-    public EasterEggFacet(Region3i targetRegion, Border3D border) {
+    public SkyIslandBaseFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.CanyonWorld;
+package org.terasology.ShatteredPlanes;
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 //TODO: Differentiate between a messy gaussian filter (copy into temp facet and back) and smooth filter (apply directly to surface)
 
-@Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 2)))
+@Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 8)))
 public class SmoothingFilter implements FacetProvider {
 
     private float amplitude;
@@ -73,7 +73,7 @@ public class SmoothingFilter implements FacetProvider {
     public void process(GeneratingRegion region) {
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
         Rect2i worldRegionExtended=facet.getWorldRegion();
-        Rect2i worldRegion=worldRegionExtended.expand(-2,-2);
+        Rect2i worldRegion=worldRegionExtended.expand(-radius,-radius);
 
 
         for (BaseVector2i position : worldRegion.contents()){

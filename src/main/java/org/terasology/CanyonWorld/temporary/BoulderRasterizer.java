@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.CanyonWorld;
+package org.terasology.ShatteredPlanes;
 
 import java.util.Map.Entry;
 import java.lang.Math;
