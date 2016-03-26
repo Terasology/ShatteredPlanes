@@ -44,7 +44,7 @@ public class SkyIslandTopHeightProvider implements FacetProvider {
 
     @Override
     public void setSeed(long seed) {
-        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed+132), new Vector2f(0.022f, 0.022f), 1);
+        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed+132), new Vector2f(0.01f, 0.01f), 1);
         surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed+67), 8), new Vector2f(0.001f, 0.001f), 1);
         surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed-99), new Vector2f(0.01f, 0.01f), 1);
     }
@@ -58,8 +58,8 @@ public class SkyIslandTopHeightProvider implements FacetProvider {
         Rect2i processRegion = facet.getWorldRegion();
 
         for (BaseVector2i position : processRegion.contents()) {
-            float height = Math.abs(1+surfaceNoise1.noise(position.x(),position.y())*10
-                    +surfaceNoise2.noise(position.x(),position.y())*10+surfaceNoise3.noise(position.x(),position.y())*15);
+            float height = Math.abs(2+surfaceNoise1.noise(position.x(),position.y())*7
+                    +surfaceNoise2.noise(position.x(),position.y())*7+surfaceNoise3.noise(position.x(),position.y())*5);
             facet.setWorld(position, height);
 
         }

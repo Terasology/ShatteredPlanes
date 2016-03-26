@@ -62,8 +62,8 @@ public class SkyIslandBaseProvider implements FacetProvider {
 
         for (BaseVector2i position : processRegion.contents()) {
             float height = TeraMath.clamp(surfaceNoise1.noise(position.x(),position.y())*30+110 + surfaceNoise2.noise(position.x(), position.y())*30,120,300);
-            float val = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y()) + surfaceNoise2.noise(position.x(), position.y())+surfaceNoise3.noise(position.x(), position.y()),0,1);
-            if(val>0.9999) {
+            float val = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y())/3 + surfaceNoise2.noise(position.x(), position.y())/3+surfaceNoise3.noise(position.x(), position.y()/3),0,1);
+            if(val>0.6) {
                 facet.setWorld(position, height);
             }
             else{
