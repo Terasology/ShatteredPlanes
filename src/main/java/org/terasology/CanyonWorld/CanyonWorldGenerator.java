@@ -39,16 +39,17 @@ public class CanyonWorldGenerator extends BaseFacetedWorldGenerator {
         //Maximal radius for filter is 8
         WorldBuilder worldBuilder=new WorldBuilder(worldGeneratorPluginLibrary)
                 .addProvider(new SurfaceProvider())
-                .addProvider(new BaseProvider())
+                .addProvider(new EasterEggProvider())
                 .addProvider(new SeaLevelProvider(0))
                 .addProvider(new BoulderProvider())
-                .addProvider(new GaussFilter(2f,0.5f,3,1))
+            //  .addProvider(new GaussFilter(2f,0.5f,3,1))
             //  .addProvider(new GaussFilter(1f,1f,3,1, world));
-                .addProvider(new SmoothingFilter(1f,3,1))
+                .addProvider(new SmoothingFilter(1f,2,1))
 
         //worldBuilder.addProvider(new GaussFilter(1f,0.4f,5,1,world));
         //worldBuilder.addProvider(new SmoothingFilter(1f,0.4f,2,1,world));
-                .addRasterizer(new CanyonWorldRasterizer());
+                .addRasterizer(new CanyonWorldRasterizer())
+                .addRasterizer(new EasterEggRasterizer());
         return worldBuilder;
 
     }

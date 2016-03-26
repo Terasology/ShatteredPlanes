@@ -38,7 +38,7 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 //TODO: Differentiate between a messy gaussian filter (copy into temp facet and back) and smooth filter (apply directly to surface)
 
-@Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 8)))
+@Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 2)))
 public class SmoothingFilter implements FacetProvider {
 
     private float amplitude;
@@ -73,7 +73,7 @@ public class SmoothingFilter implements FacetProvider {
     public void process(GeneratingRegion region) {
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
         Rect2i worldRegionExtended=facet.getWorldRegion();
-        Rect2i worldRegion=worldRegionExtended.expand(-8,-8);
+        Rect2i worldRegion=worldRegionExtended.expand(-2,-2);
 
 
         for (BaseVector2i position : worldRegion.contents()){
