@@ -41,8 +41,6 @@ public class BoulderProvider implements FacetProvider {
     private Noise mountainNoise2;
     private Noise noise;
     private float k = 0.05f;
-    private float CanyonHeight = 70;
-    private float sigma = CanyonHeight/4;
 
     @Override
     public void setSeed(long seed) {
@@ -63,17 +61,19 @@ public class BoulderProvider implements FacetProvider {
             for (int wx = region.getRegion().minX(); wx <= region.getRegion().maxX(); wx++) {
                 int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz));
                 float biomeHeight = biomeHeightFacet.getWorld(wx,wz);
+                float CanyonHeight = 35*biomeHeight*biomeHeight;
+                float sigma = CanyonHeight/4;
                 // check if height is within this region
                 if (surfaceHeight >= region.getRegion().minY() &&
                         surfaceHeight <= region.getRegion().maxY()) {
 
                     for (int wy = surfaceHeight; (wy <= region.getRegion().maxY() && wy <= surfaceHeight + CanyonHeight &&
-                            biomeHeight > 1 && biomeHeight < 3); wy++) {
+                            biomeHeight > 0 && biomeHeight < 3); wy++) {
 
 
                         // TODO: check for overlap
                         float noiseVal = Math.abs(noise.noise(wx, wz, wy)/3 + mountainNoise1.noise(wx, wz, wy)/3 + mountainNoise2.noise(wx, wz, wy)/3);
-                        float probability = gauss(CanyonHeight/2-wy)/1.5f;
+                        float probability = gauss(CanyonHeight/2-wy,sigma)/1.5f;
                         if (noiseVal > (1 - probability)) {
                             surfaceHeightFacet.setWorld(wx, wz, (float) wy);
                         }
@@ -84,7 +84,7 @@ public class BoulderProvider implements FacetProvider {
 
     }
 
-    private float gauss(float x) {
+    private float gauss(float x, float sigma) {
         return (float) /*1/(float)Math.sqrt(2*Math.PI*sigma * sigma)**/(float) Math.exp(-x * x / (2*sigma * sigma));
     }
 

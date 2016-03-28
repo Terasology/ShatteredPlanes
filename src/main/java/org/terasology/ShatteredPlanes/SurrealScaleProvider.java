@@ -28,7 +28,7 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 @Produces(SurrealScaleFacet.class)
 public class SurrealScaleProvider implements FacetProvider {
 
-    float k = 0.001f;
+    float k = 0.005f;
 
     @Override
     public void setSeed(long seed) {

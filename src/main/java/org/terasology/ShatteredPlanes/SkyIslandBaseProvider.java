@@ -64,12 +64,12 @@ public class SkyIslandBaseProvider implements FacetProvider {
 
         for (BaseVector2i position : processRegion.contents()) {
             float surreal = surrealScaleFacet.getWorld(position);
-            float bheight = biomeHeightFacet.getWorld(position);
+            float bheight = Math.abs(biomeHeightFacet.getWorld(position));
             float height = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y()) * 30 + 110 + surfaceNoise2.noise(position.x(), position.y()) * 30, 120, 300);
             float val = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y()) / 3 + surfaceNoise2.noise(position.x(), position.y()) / 3 + surfaceNoise3.noise(position.x(), position.y() / 3), 0, 1);
             if (((val > 0.5-surreal/10-bheight/20 && val < 0.6+surreal/10 + bheight/20) ||
-                    (val > 0.9-surreal/10-bheight/20)) && surreal>0.5) {
-                facet.setWorld(position, height);
+                    (val > 0.9-surreal/10-bheight/20)) && surreal<0.3) {
+                facet.setWorld(position, height*(bheight*bheight));
             } else {
                 facet.setWorld(position, -999);
             }
