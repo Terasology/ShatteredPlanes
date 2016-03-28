@@ -15,19 +15,19 @@
  */
 package org.terasology.ShatteredPlanes;
 
+import org.terasology.core.world.generator.facetProviders.BiomeProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.WorldBuilder;
-import org.terasology.world.generation.World;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
 
-@RegisterWorldGenerator(id = "CanyonWorld", displayName = "Canyon World")
-public class CanyonWorldGenerator extends BaseFacetedWorldGenerator {
+@RegisterWorldGenerator(id = "ShatteredPlanes", displayName = "Shattered Planes")
+public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
 
-    public CanyonWorldGenerator(SimpleUri uri) {
+    public ShatteredPlanesGenerator(SimpleUri uri) {
         super(uri);
     }
 
@@ -36,24 +36,23 @@ public class CanyonWorldGenerator extends BaseFacetedWorldGenerator {
 
     @Override
     protected WorldBuilder createWorld() {
-        //Maximal radius for filter is 8
-        WorldBuilder worldBuilder=new WorldBuilder(worldGeneratorPluginLibrary)
+
+        WorldBuilder worldBuilder = new WorldBuilder(worldGeneratorPluginLibrary)
+                .addProvider(new SurrealScaleProvider())
+                .addProvider(new BiomeHeightProvider())
                 .addProvider(new SurfaceProvider())
-                .addProvider(new EasterEggProvider())
-                .addProvider(new SeaLevelProvider(0))
+                //.addProvider(new EasterEggProvider())
+                .addProvider(new SeaLevelProvider(-2))
+                .addProvider(new OceanProvider())
                 .addProvider(new BoulderProvider())
                 .addProvider(new SkyIslandBaseProvider())
                 .addProvider(new SkyIslandTopHeightProvider())
                 .addProvider(new SkyIslandBottomHeightProvider())
-            //  .addProvider(new GaussFilter(2f,0.5f,3,1))
-            //  .addProvider(new GaussFilter(1f,1f,3,1, world));
-                .addProvider(new SmoothingFilter(1f,2,1))
-
-        //worldBuilder.addProvider(new GaussFilter(1f,0.4f,5,1,world));
-        //worldBuilder.addProvider(new SmoothingFilter(1f,0.4f,2,1,world));
-                .addRasterizer(new CanyonWorldRasterizer())
-                .addRasterizer(new SkyIslandRasterizer())
-                .addRasterizer(new EasterEggRasterizer());
+                .addProvider(new GaussFilter(2f,0.5f,3,1))
+                .addProvider(new SmoothingFilter(1f, 2, 1))
+                .addRasterizer(new ShatteredPlanesRasterizer())
+                .addRasterizer(new SkyIslandRasterizer());
+        //.addRasterizer(new EasterEggRasterizer());
         return worldBuilder;
 
     }

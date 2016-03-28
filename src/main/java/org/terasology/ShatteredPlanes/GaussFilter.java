@@ -17,6 +17,7 @@ package org.terasology.ShatteredPlanes;
 
 import java.lang.Math;
 import java.util.ArrayList;
+
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.Region3i;
@@ -46,21 +47,20 @@ public class GaussFilter implements FacetProvider {
     private int mode;
     //smooth mode=1, messy mode=2
 
-    public GaussFilter(){
-        sigma=1f;
-        amplitude=1f;
-        radius=1;
-        mode=1;
+    public GaussFilter() {
+        sigma = 1f;
+        amplitude = 1f;
+        radius = 1;
+        mode = 1;
     }
 
-    public GaussFilter(float sigma, float amplitude, int radius, int mode){
-        this.sigma=sigma;
-        this.amplitude=amplitude;
-        if(radius<=8) {
+    public GaussFilter(float sigma, float amplitude, int radius, int mode) {
+        this.sigma = sigma;
+        this.amplitude = amplitude;
+        if (radius <= 8) {
             this.radius = radius;
-        }
-        else this.radius=8;
-        this.mode=mode;
+        } else this.radius = 8;
+        this.mode = mode;
     }
 
     @Override
@@ -70,20 +70,20 @@ public class GaussFilter implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
-        Rect2i worldRegionExtended=facet.getWorldRegion();
-        Rect2i worldRegion=worldRegionExtended.expand(-8,-8);
+        Rect2i worldRegionExtended = facet.getWorldRegion();
+        Rect2i worldRegion = worldRegionExtended.expand(-8, -8);
 
         // loop through every position on our 2d array
-        for (BaseVector2i position : worldRegion.contents()){
+        for (BaseVector2i position : worldRegion.contents()) {
 
             float yOrigin = facet.getWorld(position);
             Vector2i[] selection = selector(position, worldRegionExtended);
             for (int i = 0; i < selection.length; i++) {
                 float dis = (float) position.distance(selection[i]);
                 float ySelection = facet.getWorld(selection[i]);
-                float change=0;
-                if(Math.round(yOrigin - ySelection)>0 && yOrigin>0) {
-                    change = (1-gauss(dis)) / (float)Math.pow(Math.round(yOrigin - ySelection),1) * amplitude * (float) Math.log(yOrigin+1);
+                float change = 0;
+                if (Math.round(yOrigin - ySelection) > 0 && yOrigin > 0) {
+                    change = (1 - gauss(dis)) / (float) Math.pow(Math.round(yOrigin - ySelection), 1) * amplitude * (float) Math.log(yOrigin + 1);
                 }
                 facet.setWorld(position, yOrigin + change);
             }
@@ -95,16 +95,16 @@ public class GaussFilter implements FacetProvider {
     }
 
     //select all relevant neighbor positions
-    private Vector2i[] selector(BaseVector2i o, Rect2i worldRegion){
+    private Vector2i[] selector(BaseVector2i o, Rect2i worldRegion) {
 
         ArrayList<Vector2i> positions = new ArrayList<Vector2i>();
 
         //circular selector
-        for(int r=1;r<=radius;r++) {
-            for (int i = 0; i < 360; i=i+5) {
-                Vector2i temp=new Vector2i(o.x() + Math.round((float) Math.cos(i)*r), o.y() + Math.round((float) Math.sin(i)*r));
-                if(!positions.contains(temp) && worldRegion.contains(temp.x,temp.y) && !(temp.x==o.x() && temp.y==o.y())){
-                        positions.add(temp);
+        for (int r = 1; r <= radius; r++) {
+            for (int i = 0; i < 360; i = i + 5) {
+                Vector2i temp = new Vector2i(o.x() + Math.round((float) Math.cos(i) * r), o.y() + Math.round((float) Math.sin(i) * r));
+                if (!positions.contains(temp) && worldRegion.contains(temp.x, temp.y) && !(temp.x == o.x() && temp.y == o.y())) {
+                    positions.add(temp);
 
                 }
 
@@ -113,22 +113,22 @@ public class GaussFilter implements FacetProvider {
         }
 
         Vector2i[] selection = new Vector2i[positions.size()];
-        for(int i=0;i<selection.length;i++){
-            selection[i]=positions.get(i);
+        for (int i = 0; i < selection.length; i++) {
+            selection[i] = positions.get(i);
         }
         return selection;
     }
-    private float gauss(float x){
-        return (float) /*1/Math.sqrt(2*Math.PI*sigma*sigma)**/Math.exp(-x*x/(2*sigma*sigma));
+
+    private float gauss(float x) {
+        return (float) /*1/Math.sqrt(2*Math.PI*sigma*sigma)**/Math.exp(-x * x / (2 * sigma * sigma));
     }
 
 
-
-    public void setSigma(float sig){
-        sigma=sig;
+    public void setSigma(float sig) {
+        sigma = sig;
     }
 
-    public void setAmplitude(float ampl){
-        amplitude=ampl;
+    public void setAmplitude(float ampl) {
+        amplitude = ampl;
     }
 }

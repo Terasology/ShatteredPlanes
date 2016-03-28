@@ -47,11 +47,11 @@ public class EasterEggProvider implements FacetProvider {
         EasterEggFacet eggs = new EasterEggFacet(region.getRegion(), border);
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
         Rect2i worldRegion = eggs.getWorldRegion();
-        boolean spawned=false;
-        for(BaseVector2i pos : worldRegion.contents()){
-            if(noise.noise(pos.x(),pos.y())>0.5 && !spawned){
-                eggs.setWorld(pos.x(),pos.y(),true);
-                spawned = true;
+
+        for (BaseVector2i pos : worldRegion.contents()) {
+            if (noise.noise(pos.x(), pos.y()) > 0.9) {
+                eggs.setWorld(pos.x(), pos.y(), true);
+
             }
         }
 

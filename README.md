@@ -1,6 +1,9 @@
 CanyonWorld
 =======================
-![sc1](/images/Terasology-160316151823-1855x1056.jpg)
-![sc2](/images/Terasology-160316151842-1855x1056.jpg)
-![sc3](/images/Terasology-160316152016-1855x1056.jpg)
-![sc4](/images/Terasology-160316152051-1855x1056.jpg)
+![sc1](/images/updatescreen1.jpg)
+![sc2](/images/updatescreen2.jpg)
+
+old screenshots:  
+
+![sc3](/images/eastereggcanyon.jpg)
+![sc4](/images/Terasology-160326193805-1152x720.jpg)

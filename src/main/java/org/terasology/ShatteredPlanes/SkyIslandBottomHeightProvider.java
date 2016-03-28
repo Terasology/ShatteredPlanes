@@ -16,6 +16,7 @@
 package org.terasology.ShatteredPlanes;
 
 import java.lang.Math;
+
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
@@ -44,9 +45,9 @@ public class SkyIslandBottomHeightProvider implements FacetProvider {
 
     @Override
     public void setSeed(long seed) {
-        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed+12), new Vector2f(0.01f, 0.01f), 1);
-        surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed+57), 9), new Vector2f(0.01f, 0.01f), 1);
-        surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed-39), new Vector2f(0.1f, 0.1f), 1);
+        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed + 12), new Vector2f(0.01f, 0.01f), 1);
+        surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 57), 9), new Vector2f(0.01f, 0.01f), 1);
+        surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed - 39), new Vector2f(0.1f, 0.1f), 1);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class SkyIslandBottomHeightProvider implements FacetProvider {
         Rect2i processRegion = facet.getWorldRegion();
 
         for (BaseVector2i position : processRegion.contents()) {
-            float height = Math.abs(surfaceNoise1.noise(position.x(),position.y())*8+surfaceNoise2.noise(position.x(),position.y())*7+surfaceNoise3.noise(position.x(),position.y())*20+1);
+            float height = Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 8 + surfaceNoise2.noise(position.x(), position.y()) * 7 + surfaceNoise3.noise(position.x(), position.y()) * 20 + 1);
             facet.setWorld(position, height);
 
         }

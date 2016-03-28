@@ -17,11 +17,11 @@ package org.terasology.ShatteredPlanes;
 
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.DensityFacet;
+import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
-public class BoulderFacet extends DensityFacet {
+public class SurrealScaleFacet extends SurfaceHeightFacet {
 
-    public BoulderFacet(Region3i targetRegion, Border3D border) {
+    public SurrealScaleFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }

@@ -29,7 +29,7 @@ import org.terasology.world.generation.facets.SeaLevelFacet;
 public class SkyIslandRasterizer implements WorldRasterizer {
 
     private Block dirt;
-    private Block grass,water,stone;
+    private Block grass, water, stone;
 
     @Override
     public void initialize() {
@@ -53,11 +53,11 @@ public class SkyIslandRasterizer implements WorldRasterizer {
             float bottomHeight = skyIslandBottomHeightFacet.getWorld(position.x, position.z);
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
 
-            if(baseHeight > surfaceHeight && position.y<baseHeight+topHeight-1 && position.y>=baseHeight) {
+            if (baseHeight > surfaceHeight && position.y < baseHeight + topHeight - 1 && position.y >= baseHeight) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
-            } else if(baseHeight > surfaceHeight && position.y<=baseHeight+topHeight && position.y>=baseHeight) {
+            } else if (baseHeight > surfaceHeight && position.y <= baseHeight + topHeight && position.y >= baseHeight) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
-            } else if(baseHeight > surfaceHeight && position.y>=baseHeight-bottomHeight && position.y<baseHeight) {
+            } else if (baseHeight > surfaceHeight && position.y >= baseHeight - bottomHeight && position.y < baseHeight) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), stone);
             }
 

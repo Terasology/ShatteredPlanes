@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 MovingBlocks
+ * Copyright 2016 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,45 +15,39 @@
  */
 package org.terasology.ShatteredPlanes;
 
+import java.lang.Math;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.Requires;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
-@Produces(BaseFacet.class)
-@Requires(@Facet(value = SurfaceHeightFacet.class))
-public class BaseProvider implements FacetProvider {
+@Produces(SurrealScaleFacet.class)
+public class SurrealScaleProvider implements FacetProvider {
 
-
+    float k = 0.001f;
 
     @Override
     public void setSeed(long seed) {
+
     }
 
     @Override
     public void process(GeneratingRegion region) {
 
-        Border3D border = region.getBorderForFacet(BaseFacet.class);
-        BaseFacet base = new BaseFacet(region.getRegion(), border);
-        SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
-        // copy surface
-        float[] Data = facet.getInternal();
-        float[] newData = new float[Data.length];
-        for(int i=0;i<Data.length;i++){
-            newData[i]=Data[i];
+        Border3D border = region.getBorderForFacet(SurrealScaleFacet.class);
+        SurrealScaleFacet facet = new SurrealScaleFacet(region.getRegion(), border);
+        Rect2i processRegion = facet.getWorldRegion();
+
+        for (BaseVector2i position : processRegion.contents()) {
+            float val =  1/(1+(float) Math.exp(-k*position.length())*(10-1));
+            facet.setWorld(position, val);
+
         }
 
-        base.set(newData);
-
-        region.setRegionFacet(BaseFacet.class, base);
+        region.setRegionFacet(SurrealScaleFacet.class, facet);
     }
 }

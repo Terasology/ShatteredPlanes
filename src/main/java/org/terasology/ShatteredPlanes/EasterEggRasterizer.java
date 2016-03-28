@@ -17,6 +17,7 @@ package org.terasology.ShatteredPlanes;
 
 import java.lang.Math;
 import java.util.ArrayList;
+
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.math.geom.Vector2i;
@@ -33,9 +34,9 @@ import org.terasology.world.generation.facets.SeaLevelFacet;
 public class EasterEggRasterizer implements WorldRasterizer {
 
     private Block dirt;
-    private Block grass,water,snow;
-    private int eggHeight=6;
-    private int eggRadius= 4;
+    private Block grass, water, snow;
+    private int eggHeight = 6;
+    private int eggRadius = 4;
 
     @Override
     public void initialize() {
@@ -49,16 +50,16 @@ public class EasterEggRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
         EasterEggFacet eggFacet = chunkRegion.getFacet(EasterEggFacet.class);
-        for (Vector3i position : chunkRegion.getRegion().expand(-eggRadius-1)) {
+        for (Vector3i position : chunkRegion.getRegion().expand(-eggRadius - 1)) {
 
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
-            if(position.y == surfaceHeight && eggFacet.getWorld(position.x,position.z)==true) {
-                for(int h=-eggHeight;h<=eggHeight;h++){
-                    int radius = (int) Math.round(Math.sqrt((eggHeight*eggHeight-h*h))*eggRadius/(eggHeight*Math.sqrt(Math.exp(0.2*h))));
+            if (position.y == surfaceHeight && eggFacet.getWorld(position.x, position.z) == true) {
+                for (int h = -eggHeight; h <= eggHeight; h++) {
+                    int radius = (int) Math.round(Math.sqrt((eggHeight * eggHeight - h * h)) * eggRadius / (eggHeight * Math.sqrt(Math.exp(0.2 * h))));
 
-                    Vector2i[] selection = selector(new Vector2i(position.x,position.z), radius);
-                    for(int i=0;i<selection.length;i++){
-                        chunk.setBlock(ChunkMath.calcBlockPos(selection[i].x,(int) surfaceHeight+eggHeight+h,selection[i].y), snow);
+                    Vector2i[] selection = selector(new Vector2i(position.x, position.z), radius);
+                    for (int i = 0; i < selection.length; i++) {
+                        chunk.setBlock(ChunkMath.calcBlockPos(selection[i].x, (int) surfaceHeight + eggHeight + h, selection[i].y), snow);
                     }
                 }
 
@@ -67,15 +68,15 @@ public class EasterEggRasterizer implements WorldRasterizer {
         }
     }
 
-    private Vector2i[] selector(BaseVector2i o, int radius){
+    private Vector2i[] selector(BaseVector2i o, int radius) {
 
         ArrayList<Vector2i> positions = new ArrayList<Vector2i>();
 
         //circular selector
-        for(int r=0;r<=radius;r++) {
-            for (int i = 0; i < 360; i=i+2) {
-                Vector2i temp=new Vector2i(o.x() + Math.round((float) Math.cos(i)*r), o.y() + Math.round((float) Math.sin(i)*r));
-                if(!positions.contains(temp)){
+        for (int r = 0; r <= radius; r++) {
+            for (int i = 0; i < 360; i = i + 2) {
+                Vector2i temp = new Vector2i(o.x() + Math.round((float) Math.cos(i) * r), o.y() + Math.round((float) Math.sin(i) * r));
+                if (!positions.contains(temp)) {
                     positions.add(temp);
 
                 }
@@ -85,8 +86,8 @@ public class EasterEggRasterizer implements WorldRasterizer {
         }
 
         Vector2i[] selection = new Vector2i[positions.size()];
-        for(int i=0;i<selection.length;i++){
-            selection[i]=positions.get(i);
+        for (int i = 0; i < selection.length; i++) {
+            selection[i] = positions.get(i);
         }
         return selection;
     }

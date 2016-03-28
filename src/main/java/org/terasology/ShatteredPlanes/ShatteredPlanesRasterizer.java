@@ -18,6 +18,7 @@ package org.terasology.ShatteredPlanes;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.world.biomes.Biome;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
@@ -26,10 +27,10 @@ import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.world.generation.facets.SeaLevelFacet;
 
-public class CanyonWorldRasterizer implements WorldRasterizer {
+public class ShatteredPlanesRasterizer implements WorldRasterizer {
 
     private Block dirt;
-    private Block grass,water,sand;
+    private Block grass, water, sand;
 
     @Override
     public void initialize() {
@@ -43,17 +44,19 @@ public class CanyonWorldRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
+        BiomeHeightFacet biomeHeightFacet = chunkRegion.getFacet(BiomeHeightFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
 
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
-            if(position.y == surfaceHeight && surfaceHeight<0) {
+            float biomeHeight = biomeHeightFacet.getWorld(position.x,position.z);
+            if (position.y >= surfaceHeight-3 && position.y<=surfaceHeight  && biomeHeight < 0 && surfaceHeight < 3) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), sand);
             } else if (position.y < surfaceHeight - 1) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
-            } else if (position.y < surfaceHeight) {
+            } else if (position.y < surfaceHeight && surfaceHeight>seaLevelFacet.getSeaLevel()) {
                 chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
-            } else if(position.y<seaLevelFacet.getSeaLevel() && position.y>=surfaceHeightFacet.getWorld(position.x, position.z)){
-                //chunk.setBlock(ChunkMath.calcBlockPos(position),water);
+            } else if (position.y < seaLevelFacet.getSeaLevel() && position.y >= surfaceHeightFacet.getWorld(position.x, position.z)) {
+                chunk.setBlock(ChunkMath.calcBlockPos(position),water);
             }
 
         }
