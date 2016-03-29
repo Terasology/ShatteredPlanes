@@ -1,9 +1,9 @@
 {
-    "id" : "CanyonPrototype",
+    "id" : "ShatteredPlanes",
     "version" : "0.0.1-SNAPSHOT",
     "author" : "Cpt.Crispy Crunchy",
-    "displayName" : "A rough canyon sketch",
-    "description" : "...",
+    "displayName" : "Shattered Planes",
+    "description" : "Rough canyons, floating islands and more to come",
     "dependencies" :
     [
         {"id": "Core", "minVersion": "1.0.0"}

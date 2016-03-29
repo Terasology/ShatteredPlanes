@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.CanyonWorld;
+package org.terasology.ShatteredPlanes;
 
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
@@ -36,11 +36,12 @@ public class SurfaceProvider implements FacetProvider {
     private Noise surfaceNoise2;
     private Noise surfaceNoise3;
     private BrownianNoise PreNoise;
+
     @Override
     public void setSeed(long seed) {
-        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed), new Vector2f(0.01f, 0.01f), 1);
-        surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed+30), 8), new Vector2f(0.001f, 0.001f), 1);
-        surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed-30), new Vector2f(0.001f, 0.001f), 1);
+        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed), new Vector2f(0.002f, 0.002f), 1);
+        surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 30), 8), new Vector2f(0.005f, 0.005f), 1);
+        surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed - 30), new Vector2f(0.001f, 0.001f), 1);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class SurfaceProvider implements FacetProvider {
         // loop through every position on our 2d array
         Rect2i processRegion = facet.getWorldRegion();
         for (BaseVector2i position : processRegion.contents()) {
-            facet.setWorld(position, surfaceNoise1.noise(position.x(), position.y()) * 16 + surfaceNoise2.noise(position.x(), position.y()) * 16+surfaceNoise3.noise(position.x(), position.y())*16);
+            facet.setWorld(position, Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 3 + surfaceNoise2.noise(position.x(), position.y()) * 8 + surfaceNoise3.noise(position.x(), position.y()) * 20));
             //facet.setWorld(position, 20);
         }
         // give our newly created and populated facet to the region

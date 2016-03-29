@@ -1,11 +1,11 @@
 Shattered Planes
 =======================
+A place of awe and wonder..and bugs
 
-This is a world generator with the purpose of creating unique and surreal terrain.
-Currently features:  
-  -Canyons  
-  -Skyislands  
-  -Eastereggs!  
+![sc1](/images/stairway-to-heaven.jpg)
+![sc2](/images/updatescreen1.jpg)
+![sc3](/images/updatescreen2.jpg)
+old screenshots:  
 
-![sc1](/images/skyisland.jpg)
-![sc2](/images/canyon.jpg)
+![sc4](/images/eastereggcanyon.jpg)
+![sc5](/images/Terasology-160326193805-1152x720.jpg)

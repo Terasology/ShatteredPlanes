@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.CanyonWorld;
+package org.terasology.ShatteredPlanes;
 
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
+import org.terasology.utilities.procedural.WhiteNoise;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
@@ -29,31 +29,33 @@ import org.terasology.world.generation.Produces;
 import org.terasology.world.generation.Requires;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
-@Produces(BaseFacet.class)
+@Produces(EasterEggFacet.class)
 @Requires(@Facet(value = SurfaceHeightFacet.class))
-public class BaseProvider implements FacetProvider {
+public class EasterEggProvider implements FacetProvider {
 
-
+    private Noise noise;
 
     @Override
     public void setSeed(long seed) {
+        noise = new WhiteNoise(seed);
     }
 
     @Override
     public void process(GeneratingRegion region) {
 
-        Border3D border = region.getBorderForFacet(BaseFacet.class);
-        BaseFacet base = new BaseFacet(region.getRegion(), border);
+        Border3D border = region.getBorderForFacet(EasterEggFacet.class);
+        EasterEggFacet eggs = new EasterEggFacet(region.getRegion(), border);
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
-        // copy surface
-        float[] Data = facet.getInternal();
-        float[] newData = new float[Data.length];
-        for(int i=0;i<Data.length;i++){
-            newData[i]=Data[i];
+        Rect2i worldRegion = eggs.getWorldRegion();
+
+        for (BaseVector2i pos : worldRegion.contents()) {
+            if (noise.noise(pos.x(), pos.y()) > 0.9) {
+                eggs.setWorld(pos.x(), pos.y(), true);
+
+            }
         }
 
-        base.set(newData);
 
-        region.setRegionFacet(BaseFacet.class, base);
+        region.setRegionFacet(EasterEggFacet.class, eggs);
     }
 }

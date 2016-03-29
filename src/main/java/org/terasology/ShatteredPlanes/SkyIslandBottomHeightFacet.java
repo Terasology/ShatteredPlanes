@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.CanyonWorld;
+package org.terasology.ShatteredPlanes;
 
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
-public class BaseFacet extends SurfaceHeightFacet {
+public class SkyIslandBottomHeightFacet extends SurfaceHeightFacet {
 
-    public BaseFacet(Region3i targetRegion, Border3D border) {
+    public SkyIslandBottomHeightFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }
