@@ -15,7 +15,6 @@
  */
 package org.terasology.ShatteredPlanes;
 
-import org.terasology.core.world.generator.facetProviders.BiomeProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
@@ -44,11 +43,12 @@ public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
                 //.addProvider(new EasterEggProvider())
                 .addProvider(new SeaLevelProvider(-2))
                 .addProvider(new OceanProvider())
+                .addProvider(new RiftProvider())
                 .addProvider(new BoulderProvider())
                 .addProvider(new SkyIslandBaseProvider())
                 .addProvider(new SkyIslandTopHeightProvider())
                 .addProvider(new SkyIslandBottomHeightProvider())
-                .addProvider(new GaussFilter(2f,0.5f,3,1))
+                //.addProvider(new GaussFilter(2f,0.5f,3,1))
                 .addProvider(new SmoothingFilter(1f, 2, 1))
                 .addRasterizer(new ShatteredPlanesRasterizer())
                 .addRasterizer(new SkyIslandRasterizer());

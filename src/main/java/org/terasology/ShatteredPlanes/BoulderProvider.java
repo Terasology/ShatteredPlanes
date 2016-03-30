@@ -15,21 +15,11 @@
  */
 package org.terasology.ShatteredPlanes;
 
-import org.terasology.math.geom.Rect2i;
 import org.terasology.math.TeraMath;
+import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.utilities.procedural.*;
-import org.terasology.world.chunks.CoreChunk;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.FacetBorder;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.Requires;
+import org.terasology.world.generation.*;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 @Updates(@Facet(SurfaceHeightFacet.class))
@@ -41,7 +31,7 @@ public class BoulderProvider implements FacetProvider {
     private Noise mountainNoise2;
     private Noise noise;
     private float k = 0.05f;
-
+    private float CanyonBaseHeight=0;
     @Override
     public void setSeed(long seed) {
         PreNoise = new BrownianNoise(new PerlinNoise(seed + 25), 12);
@@ -61,21 +51,21 @@ public class BoulderProvider implements FacetProvider {
             for (int wx = region.getRegion().minX(); wx <= region.getRegion().maxX(); wx++) {
                 int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(wx, wz));
                 float biomeHeight = biomeHeightFacet.getWorld(wx,wz);
-                float CanyonHeight = 35*biomeHeight*biomeHeight;
+                float CanyonHeight = 35*biomeHeight;
                 float sigma = CanyonHeight/4;
                 // check if height is within this region
-                if (surfaceHeight >= region.getRegion().minY() &&
-                        surfaceHeight <= region.getRegion().maxY()) {
+                float maxCanyonHeight = CanyonBaseHeight + CanyonHeight;
+                if ((surfaceHeight >= region.getRegion().minY() && surfaceHeight+maxCanyonHeight <= region.getRegion().maxY())) {
 
-                    for (int wy = surfaceHeight; (wy <= region.getRegion().maxY() && wy <= surfaceHeight + CanyonHeight &&
-                            biomeHeight > 0 && biomeHeight < 3); wy++) {
+                    for (int wy = surfaceHeight; (wy <= region.getRegion().maxY() && wy <= surfaceHeight + maxCanyonHeight &&
+                            biomeHeight > 0.4 && biomeHeight < 4); wy++) {
 
 
                         // TODO: check for overlap
                         float noiseVal = Math.abs(noise.noise(wx, wz, wy)/3 + mountainNoise1.noise(wx, wz, wy)/3 + mountainNoise2.noise(wx, wz, wy)/3);
                         float probability = gauss(CanyonHeight/2-wy,sigma)/1.5f;
                         if (noiseVal > (1 - probability)) {
-                            surfaceHeightFacet.setWorld(wx, wz, (float) wy);
+                            surfaceHeightFacet.setWorld(wx, wz, (float) wy+CanyonBaseHeight);
                         }
                     }
                 }

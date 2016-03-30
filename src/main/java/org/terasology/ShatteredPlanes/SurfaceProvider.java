@@ -18,11 +18,10 @@ package org.terasology.ShatteredPlanes;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
+import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.procedural.WhiteNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -52,7 +51,7 @@ public class SurfaceProvider implements FacetProvider {
         // loop through every position on our 2d array
         Rect2i processRegion = facet.getWorldRegion();
         for (BaseVector2i position : processRegion.contents()) {
-            facet.setWorld(position, Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 3 + surfaceNoise2.noise(position.x(), position.y()) * 8 + surfaceNoise3.noise(position.x(), position.y()) * 20));
+            facet.setWorld(position, Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 1 + surfaceNoise2.noise(position.x(), position.y()) * 8 + surfaceNoise3.noise(position.x(), position.y()) * 20));
             //facet.setWorld(position, 20);
         }
         // give our newly created and populated facet to the region

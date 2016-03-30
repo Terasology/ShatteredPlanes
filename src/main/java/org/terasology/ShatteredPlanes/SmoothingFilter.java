@@ -15,29 +15,13 @@
  */
 package org.terasology.ShatteredPlanes;
 
-import java.lang.Math;
-import java.util.ArrayList;
-
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.math.Region3i;
-import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector2i;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.FacetBorder;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.World;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.Requires;
+import org.terasology.world.generation.*;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
-import org.terasology.world.generation.BaseFacetedWorldGenerator;
+
+import java.util.ArrayList;
 //TODO: Differentiate between a messy gaussian filter (copy into temp facet and back) and smooth filter (apply directly to surface)
 //TODO: Fix that annoying border bug
 
@@ -61,10 +45,10 @@ public class SmoothingFilter implements FacetProvider {
     public SmoothingFilter(float amplitude, int radius, int mode) {
 
         this.amplitude = amplitude;
-        if (radius <= 8) {
+        if (radius <= 2) {
             this.radius = radius;
         } else {
-            this.radius = 8;
+            this.radius = 2;
         }
         this.mode = mode;
     }
@@ -76,14 +60,12 @@ public class SmoothingFilter implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
 
-        Border3D border = region.getBorderForFacet(SurfaceHeightFacet.class);
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
         Rect2i worldRegionExtended = facet.getWorldRegion();
-        Rect2i worldRegion = worldRegionExtended.expand(-1, -1);
+        Rect2i worldRegion = worldRegionExtended.expand(-9, -9);
 
 
         for (BaseVector2i position : worldRegion.contents()) {
-
             float yOrigin = facet.getWorld(position);
 
 
@@ -101,9 +83,8 @@ public class SmoothingFilter implements FacetProvider {
 
                 change = amplitude * (change / selection.length - yOrigin)/**TeraMath.clamp((float) Math.log(yOrigin+1),0,1)*/;
 
-                if (change < 0) {
-                    facet.setWorld(position, facet.getWorld(position) + change);
-                }
+                facet.setWorld(position, facet.getWorld(position) + change);
+
             }
         }
     }
