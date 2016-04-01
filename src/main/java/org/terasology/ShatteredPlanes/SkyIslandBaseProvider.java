@@ -33,7 +33,7 @@ public class SkyIslandBaseProvider implements FacetProvider {
     private Noise surfaceNoise1;
     private Noise surfaceNoise2;
     private Noise surfaceNoise3;
-    private float skyIslandHeight=30;
+    private float skyIslandHeight=40;
     @Override
     public void setSeed(long seed) {
         surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed - 23214), new Vector2f(0.01f, 0.01f), 1);
@@ -58,8 +58,8 @@ public class SkyIslandBaseProvider implements FacetProvider {
             float height = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y())*10 + surfaceNoise2.noise(position.x(), position.y()*10), -skyIslandHeight, skyIslandHeight);
             float val = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y()) / 3 + surfaceNoise2.noise(position.x(), position.y()) / 3 + surfaceNoise3.noise(position.x(), position.y() / 3), 0, 1);
             if (((val > 0.45-surreal/10 && val < 0.65+surreal/10) ||
-                    (val > 0.9-surreal/10)) && bheight>0.97 && bheight<1.5) {
-                facet.setWorld(position, height * bheight * bheight);
+                    (val > 0.9-surreal/10)) && bheight>0.8 && bheight<1.6) {
+                facet.setWorld(position, height*bheight*bheight );
             } else {
                 facet.setWorld(position, -999);
             }

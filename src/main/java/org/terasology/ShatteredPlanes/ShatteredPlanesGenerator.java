@@ -45,6 +45,7 @@ public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new OceanProvider())
                 .addProvider(new RiftProvider())
                 .addProvider(new BoulderProvider())
+                .addProvider(new HillsProvider())
                 .addProvider(new SkyIslandBaseProvider())
                 .addProvider(new SkyIslandTopHeightProvider())
                 .addProvider(new SkyIslandBottomHeightProvider())

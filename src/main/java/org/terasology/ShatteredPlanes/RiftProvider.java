@@ -17,16 +17,12 @@ package org.terasology.ShatteredPlanes;
 
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2f;
-import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.SimplexNoise;
-import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.*;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
-@Requires(@Facet(BiomeHeightFacet.class))
 @Updates(@Facet(SurfaceHeightFacet.class))
+@Requires(@Facet(BiomeHeightFacet.class))
 public class RiftProvider implements FacetProvider {
 
     private Noise surfaceNoise1;
@@ -34,23 +30,22 @@ public class RiftProvider implements FacetProvider {
     private Noise surfaceNoise3;
 
     @Override
-    public void setSeed(long seed) {
+    public void setSeed(long seed) {/*
         surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed+1000), new Vector2f(0.0012f, 0.0012f), 1);
         surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 53), 8), new Vector2f(0.005f, 0.005f), 1);
-        surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed - 45), new Vector2f(0.001f, 0.001f), 1);
+        surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed - 45), new Vector2f(0.001f, 0.001f), 1);*/
     }
 
     @Override
     public void process(GeneratingRegion region) {
-
         SurfaceHeightFacet surfaceHeightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
 
         Rect2i processRegion = surfaceHeightFacet.getWorldRegion();
         for (BaseVector2i position : processRegion.contents()) {
             float bheight=biomeHeightFacet.getWorld(position);
-            if(bheight > 1 && bheight <1.5) {
-                surfaceHeightFacet.setWorld(position, -251);
+            if(bheight > 1 && bheight <1.35) {
+                surfaceHeightFacet.setWorld(position, -70);
             }
         }
     }

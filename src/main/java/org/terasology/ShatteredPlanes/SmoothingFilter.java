@@ -15,6 +15,7 @@
  */
 package org.terasology.ShatteredPlanes;
 
+import org.terasology.math.TeraMath;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2i;
@@ -23,9 +24,11 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 import java.util.ArrayList;
 //TODO: Differentiate between a messy gaussian filter (copy into temp facet and back) and smooth filter (apply directly to surface)
-//TODO: Fix that annoying border bug
+//TODO: Fix that annoying 2 surfacelayer bug
 
-@Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 8)))
+@Requires(@Facet(BiomeHeightFacet.class))
+@Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 4)))
+//@Requires(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 4)))
 public class SmoothingFilter implements FacetProvider {
 
     private float amplitude;
@@ -61,15 +64,16 @@ public class SmoothingFilter implements FacetProvider {
     public void process(GeneratingRegion region) {
 
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
+        BiomeHeightFacet bfacet = region.getRegionFacet(BiomeHeightFacet.class);
         Rect2i worldRegionExtended = facet.getWorldRegion();
-        Rect2i worldRegion = worldRegionExtended.expand(-9, -9);
+        Rect2i worldRegion = worldRegionExtended.expand(-4,-4);
 
 
         for (BaseVector2i position : worldRegion.contents()) {
-            float yOrigin = facet.getWorld(position);
+            int yOrigin = TeraMath.floorToInt(facet.getWorld(position));
+            float biomeHeight = bfacet.getWorld(position);
 
-
-            if (facet.getWorld(position) > 0) {
+            if (biomeHeight>0.4) {
                 Vector2i[] selection = selector(position, worldRegionExtended);
                 float change = 0;
                 for (int i = 0; i < selection.length; i++) {
@@ -81,9 +85,9 @@ public class SmoothingFilter implements FacetProvider {
 
                 }
 
-                change = amplitude * (change / selection.length - yOrigin)/**TeraMath.clamp((float) Math.log(yOrigin+1),0,1)*/;
-
-                facet.setWorld(position, facet.getWorld(position) + change);
+                change = yOrigin+amplitude * (change / selection.length - yOrigin)/**TeraMath.clamp((float) Math.log(yOrigin+1),0,1)*/;
+                TeraMath.clamp(change, region.getRegion().minY(), region.getRegion().maxY());
+                facet.setWorld(position, change);
 
             }
         }
@@ -99,7 +103,7 @@ public class SmoothingFilter implements FacetProvider {
         for (int r = 1; r <= radius; r++) {
             for (int i = 0; i < 360; i = i + 5) {
                 Vector2i temp = new Vector2i(o.x() + Math.round((float) Math.cos(i)) * r, o.y() + Math.round((float) Math.sin(i)) * r);
-                if (!positions.contains(temp) && worldRegionExtended.contains(temp.x, temp.y)) {
+                if (!positions.contains(temp) /*&& worldRegionExtended.contains(temp.x, temp.y)*/) {
                     positions.add(temp);
 
                 }
