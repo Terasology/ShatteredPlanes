@@ -7,4 +7,4 @@ A place of awe and wonder..and bugs
 old screenshots:  
 
 ![sc4](/images/eastereggcanyon.jpg)
-![sc5](/images/Terasology-160326193805-1152x720.jpg)
+![sc5](/images/stairway-to-heaven.jpg)
