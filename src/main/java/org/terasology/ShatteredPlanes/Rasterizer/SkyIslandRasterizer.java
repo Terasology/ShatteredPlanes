@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 MovingBlocks
+ * Copyright 2016 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.ShatteredPlanes;
+package org.terasology.ShatteredPlanes.Rasterizer;
 
+import org.terasology.ShatteredPlanes.Facets.SkyIslandBaseFacet;
+import org.terasology.ShatteredPlanes.Facets.SkyIslandBottomHeightFacet;
+import org.terasology.ShatteredPlanes.Facets.SkyIslandTopHeightFacet;
 import org.terasology.math.ChunkMath;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
@@ -24,7 +27,6 @@ import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
-import org.terasology.world.generation.facets.SeaLevelFacet;
 
 public class SkyIslandRasterizer implements WorldRasterizer {
 

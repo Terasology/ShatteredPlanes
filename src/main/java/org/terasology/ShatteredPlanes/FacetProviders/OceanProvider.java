@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.ShatteredPlanes;
+package org.terasology.ShatteredPlanes.FacetProviders;
 
-import java.lang.Math;
+import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
@@ -23,11 +23,7 @@ import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Requires;
-import org.terasology.world.generation.Updates;
+import org.terasology.world.generation.*;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 @Requires(@Facet(BiomeHeightFacet.class))
@@ -55,7 +51,7 @@ public class OceanProvider implements FacetProvider {
         for (BaseVector2i position : processRegion.contents()) {
             float bheight=biomeHeightFacet.getWorld(position);
             if(bheight < 0) {
-                float change = (float) -Math.exp(-bheight/2)*Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 2 +
+                float change = (float) -Math.exp(-(bheight+0.3))*Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 2 +
                         surfaceNoise2.noise(position.x(), position.y()) * 16 + surfaceNoise3.noise(position.x(), position.y()) * 30);
                 float sheight = surfaceHeightFacet.getWorld(position);
                 surfaceHeightFacet.setWorld(position, sheight+change);

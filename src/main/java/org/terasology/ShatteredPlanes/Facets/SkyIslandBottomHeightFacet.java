@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.ShatteredPlanes;
+package org.terasology.ShatteredPlanes.Facets;
 
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;

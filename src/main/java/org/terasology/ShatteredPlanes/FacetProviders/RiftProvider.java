@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.ShatteredPlanes;
+package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.world.generation.*;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.world.generation.facets.SurfaceTemperatureFacet;
 
-@Updates(@Facet(SurfaceHeightFacet.class))
+@Updates({@Facet(SurfaceHeightFacet.class),@Facet(SurfaceTemperatureFacet.class),@Facet(SurfaceHumidityFacet.class)})
 @Requires(@Facet(BiomeHeightFacet.class))
 public class RiftProvider implements FacetProvider {
 
@@ -39,13 +42,22 @@ public class RiftProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         SurfaceHeightFacet surfaceHeightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
+        SurfaceTemperatureFacet surfaceTemperatureFacet = region.getRegionFacet(SurfaceTemperatureFacet.class);
+        SurfaceHumidityFacet surfaceHumidityFacet = region.getRegionFacet(SurfaceHumidityFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
 
         Rect2i processRegion = surfaceHeightFacet.getWorldRegion();
         for (BaseVector2i position : processRegion.contents()) {
             float bheight=biomeHeightFacet.getWorld(position);
             if(bheight > 1 && bheight <1.35) {
-                surfaceHeightFacet.setWorld(position, -70);
+                surfaceHeightFacet.setWorld(position, -60f);
+                if(surfaceHumidityFacet.getWorldRegion().contains(position)) {
+                    surfaceHumidityFacet.setWorld(position, 0f);
+                }
+                if(surfaceTemperatureFacet.getWorldRegion().contains(position)){
+                    surfaceTemperatureFacet.setWorld(position, 0f);
+
+                }
             }
         }
     }

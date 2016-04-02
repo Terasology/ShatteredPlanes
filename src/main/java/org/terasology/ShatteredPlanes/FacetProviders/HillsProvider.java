@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.ShatteredPlanes;
+package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
@@ -48,9 +49,15 @@ public class HillsProvider implements FacetProvider {
         Rect2i processRegion = facet.getWorldRegion();
         for (BaseVector2i position : processRegion.contents()) {
             float biomeHeight = biomeHeightFacet.getWorld(position);
+            //Hills
             if(biomeHeight>0){
-                facet.setWorld(position, facet.getWorld(position)+biomeHeight*Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 5
+                facet.setWorld(position, facet.getWorld(position)+Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 5
                         + surfaceNoise2.noise(position.x(), position.y()) * 5 + surfaceNoise3.noise(position.x(), position.y()) * 30));
+            }
+            //Mountains:
+            if(biomeHeight>2 && biomeHeight<5){
+                facet.setWorld(position, facet.getWorld(position)+biomeHeight*(float) Math.exp(surfaceNoise1.noise(position.x(), position.y()) * 1.5
+                        + surfaceNoise2.noise(position.x(), position.y()) * 1.5 + surfaceNoise3.noise(position.x(), position.y()) * 2));
             }
 
 

@@ -15,7 +15,15 @@
  */
 package org.terasology.ShatteredPlanes;
 
+import org.terasology.ShatteredPlanes.FacetProviders.*;
+import org.terasology.ShatteredPlanes.Rasterizer.SkyIslandRasterizer;
+import org.terasology.ShatteredPlanes.Rasterizer.SolidRasterizer;
+import org.terasology.core.world.generator.facetProviders.PerlinHumidityProvider;
+import org.terasology.core.world.generator.facetProviders.PerlinSurfaceTemperatureProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
+import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
+import org.terasology.core.world.generator.rasterizers.TreeRasterizer;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
 import org.terasology.world.generation.BaseFacetedWorldGenerator;
@@ -39,21 +47,28 @@ public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
         WorldBuilder worldBuilder = new WorldBuilder(worldGeneratorPluginLibrary)
                 .addProvider(new SurrealScaleProvider())
                 .addProvider(new BiomeHeightProvider())
+                .addProvider(new PerlinHumidityProvider())
+                .addProvider(new PerlinSurfaceTemperatureProvider())
                 .addProvider(new SurfaceProvider())
-                //.addProvider(new EasterEggProvider())
-                .addProvider(new SeaLevelProvider(-2))
+                .addProvider(new SeaLevelProvider(0))
                 .addProvider(new OceanProvider())
                 .addProvider(new RiftProvider())
                 .addProvider(new BoulderProvider())
                 .addProvider(new HillsProvider())
+                .addProvider(new BiomeProvider())
+                .addProvider(new SmoothingFilter(1f, 2, 1))
+                .addProvider(new SurfaceToDensityProvider())
                 .addProvider(new SkyIslandBaseProvider())
                 .addProvider(new SkyIslandTopHeightProvider())
                 .addProvider(new SkyIslandBottomHeightProvider())
+                .addProvider(new DefaultFloraProvider())
+                .addProvider(new DefaultTreeProvider())
                 //.addProvider(new GaussFilter(2f,0.5f,3,1))
-                .addProvider(new SmoothingFilter(1f, 2, 1))
-                .addRasterizer(new ShatteredPlanesRasterizer())
-                .addRasterizer(new SkyIslandRasterizer());
-        //.addRasterizer(new EasterEggRasterizer());
+                //.addRasterizer(new ShatteredPlanesRasterizer())
+                .addRasterizer(new SkyIslandRasterizer())
+                .addRasterizer(new SolidRasterizer())
+                .addRasterizer(new FloraRasterizer())
+                .addRasterizer(new TreeRasterizer());
         return worldBuilder;
 
     }

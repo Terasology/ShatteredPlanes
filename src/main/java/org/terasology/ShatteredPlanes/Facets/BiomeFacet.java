@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.terasology.ShatteredPlanes;
+package org.terasology.ShatteredPlanes.Facets;
 
+import org.terasology.ShatteredPlanes.ShatteredPlanesBiome;
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.base.BaseObjectFacet2D;
 
-public class SkyIslandBaseFacet extends SurfaceHeightFacet {
-
-    public SkyIslandBaseFacet(Region3i targetRegion, Border3D border) {
-        super(targetRegion, border);
+/**
+ */
+public class BiomeFacet extends BaseObjectFacet2D<ShatteredPlanesBiome> {
+    public BiomeFacet(Region3i targetRegion, Border3D border) {
+        super(targetRegion, border, ShatteredPlanesBiome.class);
     }
 }

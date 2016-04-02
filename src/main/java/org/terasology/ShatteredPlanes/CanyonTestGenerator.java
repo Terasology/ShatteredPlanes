@@ -15,6 +15,8 @@
  */
 package org.terasology.ShatteredPlanes;
 
+import org.terasology.ShatteredPlanes.FacetProviders.*;
+import org.terasology.ShatteredPlanes.Rasterizer.ShatteredPlanesRasterizer;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.engine.SimpleUri;
 import org.terasology.registry.In;
