@@ -18,6 +18,7 @@ package org.terasology.ShatteredPlanes;
 import org.terasology.ShatteredPlanes.FacetProviders.*;
 import org.terasology.ShatteredPlanes.Rasterizer.SkyIslandRasterizer;
 import org.terasology.ShatteredPlanes.Rasterizer.SolidRasterizer;
+import org.terasology.caves.*;
 import org.terasology.core.world.generator.facetProviders.PerlinHumidityProvider;
 import org.terasology.core.world.generator.facetProviders.PerlinSurfaceTemperatureProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
@@ -55,17 +56,20 @@ public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new RiftProvider())
                 .addProvider(new BoulderProvider())
                 .addProvider(new HillsProvider())
+                .addProvider(new MountainsProvider())
                 .addProvider(new BiomeProvider())
                 .addProvider(new SmoothingFilter(1f, 2, 1))
                 .addProvider(new SurfaceToDensityProvider())
+                .addProvider(new CaveFacetProvider())
+                .addProvider(new CaveToDensityProvider())
                 .addProvider(new SkyIslandBaseProvider())
                 .addProvider(new SkyIslandTopHeightProvider())
                 .addProvider(new SkyIslandBottomHeightProvider())
                 .addProvider(new DefaultFloraProvider())
                 .addProvider(new DefaultTreeProvider())
                 //.addProvider(new GaussFilter(2f,0.5f,3,1))
-                //.addRasterizer(new ShatteredPlanesRasterizer())
                 .addRasterizer(new SkyIslandRasterizer())
+                .addRasterizer(new CaveRasterizer())
                 .addRasterizer(new SolidRasterizer())
                 .addRasterizer(new FloraRasterizer())
                 .addRasterizer(new TreeRasterizer());

@@ -66,13 +66,13 @@ public class BiomeProvider implements FacetProvider {
                  biomeFacet.set(pos, ShatteredPlanesBiome.OCEAN);
             } else if (height <= seaLevel + 2 && bheight <0.1) {
                 biomeFacet.set(pos, ShatteredPlanesBiome.BEACH);
-            } else if (temp >= 0.5f && hum < 0.3f) {
+            } else if (temp >= 0.5f && hum < 0.25f) {
                 biomeFacet.set(pos, ShatteredPlanesBiome.DESERT);
-            } else if (hum >= 0.3f && hum <= 0.6f && temp >= 0.5f) {
+            } else if (hum >= 0.25f && hum <= 0.6f && temp >= 0.5f) {
                 biomeFacet.set(pos, ShatteredPlanesBiome.PLAINS);
             } else if (temp <= 0.3f && hum > 0.5f) {
                 biomeFacet.set(pos, ShatteredPlanesBiome.SNOW);
-            } else if (hum >= 0.2f && hum <= 0.5f && temp < 0.5f && bheight>2 && bheight<5) {
+            } else if (height>100) {
                 biomeFacet.set(pos, ShatteredPlanesBiome.MOUNTAINS);
             } else {
                 biomeFacet.set(pos, ShatteredPlanesBiome.FOREST);

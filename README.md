@@ -1,10 +1,9 @@
 Shattered Planes
 =======================
-A place of awe and wonder..and bugs
 
-![sc2](/images/updatescreen3.jpg)
-![sc3](/images/updatescreen 4.jpg)
+![sc1](/images/updatescreen5.jpg)
+![sc2](/images/updatescreen 6.jpg)
 old screenshots:  
 
-![sc4](/images/eastereggcanyon.jpg)
-![sc5](/images/stairway-to-heaven.jpg)
+![sc3](/images/updatescreen3.jpg)
+![sc4](/images/updatescreen 4.jpg)

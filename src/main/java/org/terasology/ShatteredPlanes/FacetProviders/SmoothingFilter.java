@@ -74,19 +74,19 @@ public class SmoothingFilter implements FacetProvider {
             int yOrigin = TeraMath.floorToInt(facet.getWorld(position));
             float biomeHeight = bfacet.getWorld(position);
 
-            if (biomeHeight>0.4) {
-                Vector2i[] selection = selector(position, worldRegionExtended);
+            if (biomeHeight>=0) {
                 float change = 0;
-                for (int i = 0; i < selection.length; i++) {
+                ArrayList<Vector2i> selectedPositions = selector(position, worldRegionExtended);
+                for (Vector2i selection : selectedPositions) {
 
-                    float dis = (float) position.distance(selection[i]);
-                    float ySelection = facet.getWorld(selection[i]);
+                    float dis = (float) position.distance(selection);
+                    float ySelection = facet.getWorld(selection);
 
                     change += ySelection;
 
                 }
 
-                change = yOrigin+amplitude * (change / selection.length - yOrigin)/**TeraMath.clamp((float) Math.log(yOrigin+1),0,1)*/;
+                change = yOrigin+amplitude * (change / selectedPositions.size() - yOrigin)/*TeraMath.clamp((float) Math.log(yOrigin+1),0,1)*/;
                 TeraMath.clamp(change, region.getRegion().minY(), region.getRegion().maxY());
                 facet.setWorld(position, change);
 
@@ -96,7 +96,7 @@ public class SmoothingFilter implements FacetProvider {
 
 
     //select all relevant neighbor positions
-    private Vector2i[] selector(BaseVector2i o, Rect2i worldRegionExtended) {
+    private ArrayList<Vector2i> selector(BaseVector2i o, Rect2i worldRegionExtended) {
 
         ArrayList<Vector2i> positions = new ArrayList<Vector2i>();
 
@@ -112,12 +112,7 @@ public class SmoothingFilter implements FacetProvider {
 
             }
         }
-
-        Vector2i[] selection = new Vector2i[positions.size()];
-        for (int i = 0; i < selection.length; i++) {
-            selection[i] = positions.get(i);
-        }
-        return selection;
+        return positions;
     }
 
     public void setAmplitude(float ampl) {

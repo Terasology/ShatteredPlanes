@@ -49,8 +49,8 @@ public class SolidRasterizer implements WorldRasterizer {
     @Override
     public void initialize() {
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
-        stone = blockManager.getBlock("core:mantlestone");
-        mantlestone = blockManager.getBlock("core:stone");
+        stone = blockManager.getBlock("core:stone");
+        mantlestone = blockManager.getBlock("core:mantlestone");
         water = blockManager.getBlock("core:water");
         ice = blockManager.getBlock("core:Ice");
         sand = blockManager.getBlock("core:Sand");
@@ -141,11 +141,8 @@ public class SolidRasterizer implements WorldRasterizer {
                     return stone;
                 }
             case RIFT:
-                if(depth<3){
-                    return mantlestone;
-                } else {
-                    return stone;
-                }
+                return stone;
+
         }
         return dirt;
     }
