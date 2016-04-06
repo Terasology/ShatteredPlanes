@@ -51,10 +51,10 @@ public class MountainsProvider implements FacetProvider {
         for (BaseVector2i position : processRegion.contents()) {
             float biomeHeight = biomeHeightFacet.getWorld(position);
             //Mountains:
-            if(biomeHeight>0){
+            if(biomeHeight>0 && !(biomeHeight>1 && biomeHeight<1.4)){
                 facet.setWorld(position, facet.getWorld(position)+biomeHeight * TeraMath.clamp((float)
                         Math.exp(surfaceNoise1.noise(position.x(), position.y()) * 2 + surfaceNoise2.noise(position.x(), position.y())
-                                * 3 + surfaceNoise3.noise(position.x(), position.y()) * 6), 0, MountainHeight));
+                                * 3 + surfaceNoise3.noise(position.x(), position.y()) * 6-2), 0, MountainHeight));
             }
 
 

@@ -105,7 +105,7 @@ public class SolidRasterizer implements WorldRasterizer {
                     return grass;
                 } else if (depth == 0 && height >= seaLevel + 96) {
                     return snow;
-                } else if (depth > 32) {
+                } else if (depth > 8) {
                     return stone;
                 } else {
                     return dirt;
@@ -114,7 +114,7 @@ public class SolidRasterizer implements WorldRasterizer {
                 if (depth == 0 && height > seaLevel) {
                     // Snow on top
                     return snow;
-                } else if (depth > 32) {
+                } else if (depth > 8) {
                     // Stone
                     return stone;
                 } else {

@@ -36,7 +36,7 @@ public class SkyIslandBaseProvider implements FacetProvider {
     private Noise surfaceNoise1;
     private Noise surfaceNoise2;
     private Noise surfaceNoise3;
-    private float skyIslandHeight=40;
+    private float skyIslandHeight=60;
     @Override
     public void setSeed(long seed) {
         surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed - 23214), new Vector2f(0.01f, 0.01f), 1);

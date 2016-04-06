@@ -49,7 +49,7 @@ public class RiftProvider implements FacetProvider {
         Rect2i processRegion = surfaceHeightFacet.getWorldRegion();
         for (BaseVector2i position : processRegion.contents()) {
             float bheight=biomeHeightFacet.getWorld(position);
-            if(bheight > 1 && bheight <1.35) {
+            if(bheight > 1 && bheight <1.4) {
                 surfaceHeightFacet.setWorld(position, -60f);
                 if(surfaceHumidityFacet.getWorldRegion().contains(position)) {
                     surfaceHumidityFacet.setWorld(position, 0f);
