@@ -6,7 +6,6 @@
     "description" : "Rough canyons, floating islands and more to come",
     "dependencies" :
     [
-        {"id": "Core", "minVersion": "1.0.0"},
-        {"id": "Caves", "minVersion": "0.2.0"}
+        {"id": "Core", "minVersion": "1.0.0"}
     ]
 }

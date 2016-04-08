@@ -18,13 +18,6 @@ package org.terasology.ShatteredPlanes;
 import org.terasology.world.biomes.Biome;
 
 public enum ShatteredPlanesBiome implements Biome {
-    MOUNTAINS("Mountains",  0.95f, 0.4f, 0.25f),
-    SNOW("Snow", 1.0f, 0.75f, 0.15f),
-    DESERT("Desert", 0.0f, 0.15f, 0.75f),
-    FOREST("Forest", 0.9f, 0.5f, 0.5f),
-    OCEAN("Ocean", 0.2f, 1.0f, 0.2f),
-    BEACH("Beach", 0.1f, 0.5f, 0.2f),
-    PLAINS("Plains", 0.0f, 0.5f, 0.6f),
     RIFT("Rifts", 0.0f, 0.0f, 0.0f);
 
     private final String id;

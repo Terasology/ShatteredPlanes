@@ -15,10 +15,23 @@
  */
 package org.terasology.ShatteredPlanes;
 
-import org.terasology.ShatteredPlanes.FacetProviders.*;
+import org.terasology.ShatteredPlanes.FacetProviders.BiomeHeightProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.BiomeProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.BoulderProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.HillsProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.MountainsProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.OceanProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.RiftProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SkyIslandBaseProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SkyIslandBottomHeightProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SkyIslandTopHeightProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SmoothingFilter;
+import org.terasology.ShatteredPlanes.FacetProviders.SurfaceProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SurrealScaleProvider;
 import org.terasology.ShatteredPlanes.Rasterizer.SkyIslandRasterizer;
 import org.terasology.ShatteredPlanes.Rasterizer.SolidRasterizer;
-import org.terasology.caves.*;
+import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
+import org.terasology.core.world.generator.facetProviders.DefaultTreeProvider;
 import org.terasology.core.world.generator.facetProviders.PerlinHumidityProvider;
 import org.terasology.core.world.generator.facetProviders.PerlinSurfaceTemperatureProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
@@ -60,8 +73,6 @@ public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new BiomeProvider())
                 .addProvider(new SmoothingFilter(1f, 2, 1))
                 .addProvider(new SurfaceToDensityProvider())
-                .addProvider(new CaveFacetProvider())
-                .addProvider(new CaveToDensityProvider())
                 .addProvider(new SkyIslandBaseProvider())
                 .addProvider(new SkyIslandTopHeightProvider())
                 .addProvider(new SkyIslandBottomHeightProvider())
@@ -69,10 +80,11 @@ public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new DefaultTreeProvider())
                 //.addProvider(new GaussFilter(2f,0.5f,3,1))
                 .addRasterizer(new SkyIslandRasterizer())
-                .addRasterizer(new CaveRasterizer())
                 .addRasterizer(new SolidRasterizer())
                 .addRasterizer(new FloraRasterizer())
-                .addRasterizer(new TreeRasterizer());
+                .addRasterizer(new TreeRasterizer())
+                .addPlugins();
+
         return worldBuilder;
 
     }
