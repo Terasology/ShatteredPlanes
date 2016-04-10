@@ -15,11 +15,17 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
-import org.terasology.ShatteredPlanes.Facets.BiomeFacet;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.ShatteredPlanes.ShatteredPlanesBiome;
+import org.terasology.core.world.CoreBiome;
+import org.terasology.core.world.generator.facets.BiomeFacet;
 import org.terasology.math.geom.BaseVector2i;
-import org.terasology.world.generation.*;
+import org.terasology.world.generation.Border3D;
+import org.terasology.world.generation.Facet;
+import org.terasology.world.generation.FacetProvider;
+import org.terasology.world.generation.GeneratingRegion;
+import org.terasology.world.generation.Produces;
+import org.terasology.world.generation.Requires;
 import org.terasology.world.generation.facets.SeaLevelFacet;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.world.generation.facets.SurfaceHumidityFacet;
@@ -63,19 +69,19 @@ public class BiomeProvider implements FacetProvider {
             if (hum == 0.0f && temp == 0.0f) {
                 biomeFacet.set(pos, ShatteredPlanesBiome.RIFT);
             } else if (height <= seaLevel && bheight < 0) {
-                 biomeFacet.set(pos, ShatteredPlanesBiome.OCEAN);
+                 biomeFacet.set(pos, CoreBiome.OCEAN);
             } else if (height <= seaLevel + 2 && bheight <0.1) {
-                biomeFacet.set(pos, ShatteredPlanesBiome.BEACH);
+                biomeFacet.set(pos, CoreBiome.BEACH);
             } else if (temp >= 0.5f && hum < 0.25f) {
-                biomeFacet.set(pos, ShatteredPlanesBiome.DESERT);
+                biomeFacet.set(pos, CoreBiome.DESERT);
             } else if (hum >= 0.25f && hum <= 0.6f && temp >= 0.5f) {
-                biomeFacet.set(pos, ShatteredPlanesBiome.PLAINS);
+                biomeFacet.set(pos, CoreBiome.PLAINS);
             } else if (temp <= 0.3f && hum > 0.5f) {
-                biomeFacet.set(pos, ShatteredPlanesBiome.SNOW);
+                biomeFacet.set(pos, CoreBiome.SNOW);
             } else if (height>100) {
-                biomeFacet.set(pos, ShatteredPlanesBiome.MOUNTAINS);
+                biomeFacet.set(pos, CoreBiome.MOUNTAINS);
             } else {
-                biomeFacet.set(pos, ShatteredPlanesBiome.FOREST);
+                biomeFacet.set(pos, CoreBiome.FOREST);
             }
         }
         region.setRegionFacet(BiomeFacet.class, biomeFacet);

@@ -15,12 +15,14 @@
  */
 package org.terasology.ShatteredPlanes.Rasterizer;
 
-import org.terasology.ShatteredPlanes.Facets.BiomeFacet;
 import org.terasology.ShatteredPlanes.ShatteredPlanesBiome;
+import org.terasology.core.world.CoreBiome;
+import org.terasology.core.world.generator.facets.BiomeFacet;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
+import org.terasology.world.biomes.Biome;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.ChunkConstants;
@@ -71,7 +73,7 @@ public class SolidRasterizer implements WorldRasterizer {
         Vector2i pos2d = new Vector2i();
         for (Vector3i pos : ChunkConstants.CHUNK_REGION) {
             pos2d.set(pos.x, pos.z);
-            ShatteredPlanesBiome biome = biomeFacet.get(pos2d);
+            Biome biome = biomeFacet.get(pos2d);
             chunk.setBiome(pos.x, pos.y, pos.z, biome);
 
             int posY = pos.y + chunk.getChunkWorldOffsetY();
@@ -85,9 +87,9 @@ public class SolidRasterizer implements WorldRasterizer {
                 chunk.setBlock(pos, block);
             } else {
                 // fill up terrain up to sealevel height with water or ice
-                if (posY == seaLevel && ShatteredPlanesBiome.SNOW == biome) {
+                if (posY == seaLevel && CoreBiome.SNOW == biome) {
                     chunk.setBlock(pos, ice);
-                } else if (posY <= seaLevel && biome == ShatteredPlanesBiome.OCEAN) {         // either OCEAN or SNOW
+                } else if (posY <= seaLevel && biome == CoreBiome.OCEAN) {         // either OCEAN or SNOW
                     chunk.setBlock(pos, water);
                     chunk.setLiquid(pos, waterLiquid);
                 }
@@ -95,11 +97,10 @@ public class SolidRasterizer implements WorldRasterizer {
         }
     }
 
-    private Block getSurfaceBlock(int depth, int height, ShatteredPlanesBiome type, int seaLevel) {
-        switch (type) {
-            case FOREST:
-            case PLAINS:
-            case MOUNTAINS:
+    private Block getSurfaceBlock(int depth, int height, Biome type, int seaLevel) {
+        if (type.getName().equals(CoreBiome.FOREST.getName())
+                || type.getName().equals(CoreBiome.PLAINS.getName())
+                || type.getName().equals(CoreBiome.MOUNTAINS.getName())) {
                 // Beach
                 if (depth == 0 && height > seaLevel && height < seaLevel + 96) {
                     return grass;
@@ -110,7 +111,7 @@ public class SolidRasterizer implements WorldRasterizer {
                 } else {
                     return dirt;
                 }
-            case SNOW:
+        } else if (type.getName().equals(CoreBiome.SNOW.getName())) {
                 if (depth == 0 && height > seaLevel) {
                     // Snow on top
                     return snow;
@@ -121,26 +122,26 @@ public class SolidRasterizer implements WorldRasterizer {
                     // Dirt
                     return dirt;
                 }
-            case DESERT:
+        } else if (type.getName().equals(CoreBiome.DESERT.getName())) {
                 if (depth > 8) {
                     // Stone
                     return stone;
                 } else {
                     return sand;
                 }
-            case OCEAN:
+        } else if (type.getName().equals(CoreBiome.OCEAN.getName())) {
                 if (depth == 0) {
                     return sand;
                 } else {
                     return stone;
                 }
-            case BEACH:
+        } else if (type.getName().equals(CoreBiome.BEACH.getName())) {
                 if (depth < 3) {
                     return sand;
                 } else {
                     return stone;
                 }
-            case RIFT:
+        } else if (type.getName().equals(ShatteredPlanesBiome.RIFT.getName())) {
                 return stone;
 
         }
