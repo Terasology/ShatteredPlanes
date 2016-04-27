@@ -98,52 +98,59 @@ public class SolidRasterizer implements WorldRasterizer {
     }
 
     private Block getSurfaceBlock(int depth, int height, Biome type, int seaLevel) {
-        if (type.getName().equals(CoreBiome.FOREST.getName())
-                || type.getName().equals(CoreBiome.PLAINS.getName())
-                || type.getName().equals(CoreBiome.MOUNTAINS.getName())) {
-                // Beach
-                if (depth == 0 && height > seaLevel && height < seaLevel + 96) {
-                    return grass;
-                } else if (depth == 0 && height >= seaLevel + 96) {
-                    return snow;
-                } else if (depth > 8) {
-                    return stone;
-                } else {
-                    return dirt;
-                }
-        } else if (type.getName().equals(CoreBiome.SNOW.getName())) {
-                if (depth == 0 && height > seaLevel) {
-                    // Snow on top
-                    return snow;
-                } else if (depth > 8) {
-                    // Stone
-                    return stone;
-                } else {
-                    // Dirt
-                    return dirt;
-                }
-        } else if (type.getName().equals(CoreBiome.DESERT.getName())) {
-                if (depth > 8) {
-                    // Stone
-                    return stone;
-                } else {
-                    return sand;
-                }
-        } else if (type.getName().equals(CoreBiome.OCEAN.getName())) {
-                if (depth == 0) {
-                    return sand;
-                } else {
-                    return stone;
-                }
-        } else if (type.getName().equals(CoreBiome.BEACH.getName())) {
-                if (depth < 3) {
-                    return sand;
-                } else {
-                    return stone;
-                }
-        } else if (type.getName().equals(ShatteredPlanesBiome.RIFT.getName())) {
-                return stone;
+        if (type instanceof CoreBiome) {
+            switch ((CoreBiome) type) {
+                case FOREST:
+                case PLAINS:
+                case MOUNTAINS:
+                    // Beach
+                    if (depth == 0 && height > seaLevel && height < seaLevel + 96) {
+                        return grass;
+                    } else if (depth == 0 && height >= seaLevel + 96) {
+                        return snow;
+                    } else if (depth > 8) {
+                        return stone;
+                    } else {
+                        return dirt;
+                    }
+                case SNOW:
+                    if (depth == 0 && height > seaLevel) {
+                        // Snow on top
+                        return snow;
+                    } else if (depth > 8) {
+                        // Stone
+                        return stone;
+                    } else {
+                        // Dirt
+                        return dirt;
+                    }
+                case DESERT:
+                    if (depth > 8) {
+                        // Stone
+                        return stone;
+                    } else {
+                        return sand;
+                    }
+                case OCEAN:
+                    if (depth == 0) {
+                        return sand;
+                    } else {
+                        return stone;
+                    }
+                case BEACH:
+                    if (depth < 3) {
+                        return sand;
+                    } else {
+                        return stone;
+                    }
 
+            }
+        } else if (type instanceof ShatteredPlanesBiome) {
+            switch ((ShatteredPlanesBiome) type) {
+                case RIFT:
+                    return stone;
+
+            }
         }
         return dirt;
     }
