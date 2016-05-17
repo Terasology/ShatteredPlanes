@@ -25,11 +25,9 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 import java.util.ArrayList;
 //TODO: Differentiate between a messy gaussian filter (copy into temp facet and back) and smooth filter (apply directly to surface)
-//TODO: Fix that annoying 2 surfacelayer bug
 
 @Requires(@Facet(BiomeHeightFacet.class))
 @Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 4)))
-//@Requires(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 4)))
 public class SmoothingFilter implements FacetProvider {
 
     private float amplitude;
@@ -98,11 +96,11 @@ public class SmoothingFilter implements FacetProvider {
     //select all relevant neighbor positions
     private ArrayList<Vector2i> selector(BaseVector2i o, Rect2i worldRegionExtended) {
 
-        ArrayList<Vector2i> positions = new ArrayList<Vector2i>();
+        ArrayList<Vector2i> positions = new ArrayList<>();
 
         //circular selector
         for (int r = 1; r <= radius; r++) {
-            for (int i = 0; i < 360; i = i + 5) {
+            for (int i = 0; i <= 360; i = i + 90) {
                 Vector2i temp = new Vector2i(o.x() + Math.round((float) Math.cos(i)) * r, o.y() + Math.round((float) Math.sin(i)) * r);
                 if (!positions.contains(temp) /*&& worldRegionExtended.contains(temp.x, temp.y)*/) {
                     positions.add(temp);

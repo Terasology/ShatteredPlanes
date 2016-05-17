@@ -34,7 +34,7 @@ public class MountainsProvider implements FacetProvider {
     private Noise surfaceNoise1;
     private Noise surfaceNoise2;
     private Noise surfaceNoise3;
-    private int MountainHeight=200;
+    private int MountainHeight=100;
 
     @Override
     public void setSeed(long seed) {

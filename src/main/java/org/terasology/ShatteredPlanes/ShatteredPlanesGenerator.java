@@ -15,23 +15,9 @@
  */
 package org.terasology.ShatteredPlanes;
 
-import org.terasology.ShatteredPlanes.FacetProviders.BiomeHeightProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.BiomeProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.BoulderProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.HillsProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.MountainsProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.OceanProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.RiftProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.SkyIslandBaseProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.SkyIslandBottomHeightProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.SkyIslandTopHeightProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.SmoothingFilter;
-import org.terasology.ShatteredPlanes.FacetProviders.SurfaceProvider;
-import org.terasology.ShatteredPlanes.FacetProviders.SurrealScaleProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.*;
 import org.terasology.ShatteredPlanes.Rasterizer.SkyIslandRasterizer;
 import org.terasology.ShatteredPlanes.Rasterizer.SolidRasterizer;
-import org.terasology.core.world.generator.facetProviders.DefaultFloraProvider;
-import org.terasology.core.world.generator.facetProviders.DefaultTreeProvider;
 import org.terasology.core.world.generator.facetProviders.PerlinHumidityProvider;
 import org.terasology.core.world.generator.facetProviders.PerlinSurfaceTemperatureProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
@@ -70,8 +56,8 @@ public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new BoulderProvider())
                 .addProvider(new HillsProvider())
                 .addProvider(new MountainsProvider())
+                .addProvider(new SmoothingFilter(1f, 1, 1))
                 .addProvider(new BiomeProvider())
-                .addProvider(new SmoothingFilter(1f, 2, 1))
                 .addProvider(new SurfaceToDensityProvider())
                 .addProvider(new SkyIslandBaseProvider())
                 .addProvider(new SkyIslandTopHeightProvider())

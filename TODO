@@ -1,0 +1,5 @@
+Create test for borderarea of surfaceheightfacetregion with several passes and different setups.
+Add TreeTest
+
+Suspicion: Cut off Chunks could be rasterized before the facet is completely though its cycle of updates, thus using older passes of the surface
+height facet.
