@@ -20,19 +20,18 @@ import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.BrownianNoise;
-import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.*;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
+
 @Requires(@Facet(BiomeHeightFacet.class))
 @Updates(@Facet(SurfaceHeightFacet.class))
 public class HillsProvider implements FacetProvider {
 
-    private Noise surfaceNoise1;
-    private Noise surfaceNoise2;
-    private Noise surfaceNoise3;
-    private BrownianNoise PreNoise;
+    private SubSampledNoise surfaceNoise1;
+    private SubSampledNoise surfaceNoise2;
+    private SubSampledNoise surfaceNoise3;
 
     @Override
     public void setSeed(long seed) {
@@ -45,14 +44,23 @@ public class HillsProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
-        // loop through every position on our 2d array
         Rect2i processRegion = facet.getWorldRegion();
+
+        float[] sNoise1Values = surfaceNoise1.noise(processRegion);
+        float[] sNoise2Values = surfaceNoise2.noise(processRegion);
+        float[] sNoise3Values = surfaceNoise3.noise(processRegion);
+
         for (BaseVector2i position : processRegion.contents()) {
             float biomeHeight = biomeHeightFacet.getWorld(position);
             //Hills
             if(biomeHeight>0){
-                facet.setWorld(position, facet.getWorld(position)+Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 5
-                        + surfaceNoise2.noise(position.x(), position.y()) * 5 + surfaceNoise3.noise(position.x(), position.y()) * 30));
+
+                float noiseValue1 = sNoise1Values[facet.getWorldIndex(position)];
+                float noiseValue2 = sNoise2Values[facet.getWorldIndex(position)];
+                float noiseValue3 = sNoise3Values[facet.getWorldIndex(position)];
+
+                facet.setWorld(position, facet.getWorld(position)+Math.abs(noiseValue1 * 5
+                        + noiseValue2 * 5 + noiseValue3 * 30));
             }
         }
     }

@@ -20,7 +20,10 @@ import org.terasology.math.TeraMath;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
-import org.terasology.utilities.procedural.*;
+import org.terasology.utilities.procedural.BrownianNoise;
+import org.terasology.utilities.procedural.PerlinNoise;
+import org.terasology.utilities.procedural.SimplexNoise;
+import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.*;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 @Requires(@Facet(BiomeHeightFacet.class))
@@ -28,9 +31,9 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 public class BoulderProvider implements FacetProvider {
 
     private BrownianNoise PreNoise;
-    private Noise mountainNoise1;
-    private Noise mountainNoise2;
-    private Noise noise;
+    private SubSampledNoise mountainNoise1;
+    private SubSampledNoise mountainNoise2;
+    private SubSampledNoise noise;
     private float k = 0.05f;
     @Override
     public void setSeed(long seed) {
@@ -45,9 +48,13 @@ public class BoulderProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         SurfaceHeightFacet surfaceHeightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
-        Rect2i worldRegion = surfaceHeightFacet.getWorldRegion();
+        Rect2i processRegion = surfaceHeightFacet.getWorldRegion();
 
-        for(BaseVector2i pos : worldRegion.contents()){
+        float[] sNoise1Values = mountainNoise1.noise(processRegion);
+        float[] sNoise2Values = mountainNoise2.noise(processRegion);
+        float[] sNoise3Values = noise.noise(processRegion);
+
+        for(BaseVector2i pos : processRegion.contents()){
                 int surfaceHeight = TeraMath.floorToInt(surfaceHeightFacet.getWorld(pos));
                 float biomeHeight = biomeHeightFacet.getWorld(pos);
                 float CanyonBaseHeight=10*(biomeHeight*biomeHeight-1f);
@@ -60,9 +67,13 @@ public class BoulderProvider implements FacetProvider {
                     for (int wy = surfaceHeight; (wy <= region.getRegion().maxY() && wy <= surfaceHeight + maxCanyonHeight &&
                             biomeHeight > 0.6 && biomeHeight < 4); wy++) {
 
+                        float noiseValue1 = sNoise1Values[surfaceHeightFacet.getWorldIndex(pos)];
+                        float noiseValue2 = sNoise2Values[surfaceHeightFacet.getWorldIndex(pos)];
+                        float noiseValue3 = sNoise3Values[surfaceHeightFacet.getWorldIndex(pos)];
+
 
                         // TODO: check for overlap
-                        float noiseVal = Math.abs(noise.noise(pos.x(), pos.y(), wy)/3 + mountainNoise1.noise(pos.x(), pos.y(), wy)/3 + mountainNoise2.noise(pos.x(), pos.y(), wy)/3);
+                        float noiseVal = Math.abs(noiseValue1/3 + noiseValue2/3 + noiseValue1/3);
                         float probability = gauss(CanyonHeight/2-wy,sigma)/1.5f;
                         if (noiseVal > (1 - probability)) {
                             surfaceHeightFacet.setWorld(pos, (float) wy+CanyonBaseHeight);

@@ -20,7 +20,6 @@ import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.BrownianNoise;
-import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.Border3D;
@@ -34,9 +33,9 @@ import org.terasology.world.generation.Produces;
 @Produces(BiomeHeightFacet.class)
 public class BiomeHeightProvider implements FacetProvider {
 
-    private Noise surfaceNoise1;
-    private Noise surfaceNoise2;
-    private Noise surfaceNoise3;
+    private SubSampledNoise surfaceNoise1;
+    private SubSampledNoise surfaceNoise2;
+    private SubSampledNoise surfaceNoise3;
 
     @Override
     public void setSeed(long seed) {
@@ -53,9 +52,18 @@ public class BiomeHeightProvider implements FacetProvider {
         BiomeHeightFacet facet = new BiomeHeightFacet(region.getRegion(), border);
 
         Rect2i processRegion = facet.getWorldRegion();
+
+        float[] sNoise1Values = surfaceNoise1.noise(processRegion);
+        float[] sNoise2Values = surfaceNoise2.noise(processRegion);
+        float[] sNoise3Values = surfaceNoise3.noise(processRegion);
+
         for (BaseVector2i position : processRegion.contents()) {
-            facet.setWorld(position, 10*(surfaceNoise1.noise(position.x(), position.y())/3 +
-                    surfaceNoise2.noise(position.x(), position.y())/3+ surfaceNoise3.noise(position.x(), position.y())/3));
+
+            float noiseValue1 = sNoise1Values[facet.getWorldIndex(position)];
+            float noiseValue2 = sNoise2Values[facet.getWorldIndex(position)];
+            float noiseValue3 = sNoise3Values[facet.getWorldIndex(position)];
+
+            facet.setWorld(position, 10*(noiseValue1/3 + noiseValue2/3 + noiseValue3/3));
         }
 
         region.setRegionFacet(BiomeHeightFacet.class, facet);

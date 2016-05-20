@@ -20,7 +20,6 @@ import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.BrownianNoise;
-import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.Border3D;
@@ -31,9 +30,9 @@ import org.terasology.world.generation.Produces;
 @Produces(SkyIslandBottomHeightFacet.class)
 public class SkyIslandBottomHeightProvider implements FacetProvider {
 
-    private Noise surfaceNoise1;
-    private Noise surfaceNoise2;
-    private Noise surfaceNoise3;
+    private SubSampledNoise surfaceNoise1;
+    private SubSampledNoise surfaceNoise2;
+    private SubSampledNoise surfaceNoise3;
     private BrownianNoise PreNoise;
 
     @Override
@@ -48,11 +47,19 @@ public class SkyIslandBottomHeightProvider implements FacetProvider {
 
         Border3D border = region.getBorderForFacet(SkyIslandBottomHeightFacet.class);
         SkyIslandBottomHeightFacet facet = new SkyIslandBottomHeightFacet(region.getRegion(), border);
-        // loop through every position on our 2d array
         Rect2i processRegion = facet.getWorldRegion();
 
+        float[] sNoise1Values = surfaceNoise1.noise(processRegion);
+        float[] sNoise2Values = surfaceNoise2.noise(processRegion);
+        float[] sNoise3Values = surfaceNoise3.noise(processRegion);
+
         for (BaseVector2i position : processRegion.contents()) {
-            float height = Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 8 + surfaceNoise2.noise(position.x(), position.y()) * 7 + surfaceNoise3.noise(position.x(), position.y()) * 20 + 1);
+
+            float noiseValue1 = sNoise1Values[facet.getWorldIndex(position)];
+            float noiseValue2 = sNoise2Values[facet.getWorldIndex(position)];
+            float noiseValue3 = sNoise3Values[facet.getWorldIndex(position)];
+
+            float height = Math.abs(noiseValue1 * 8 + noiseValue2 * 7 + noiseValue3 * 20 + 1);
             facet.setWorld(position, height);
 
         }

@@ -46,7 +46,8 @@ public class CanyonTestGenerator extends BaseFacetedWorldGenerator {
                 .addProvider(new BoulderProvider())
                 //.addProvider(new GaussFilter(2f,0.5f,3,1))
                 .addProvider(new SmoothingFilter(1f, 2, 1))
-                .addRasterizer(new ShatteredPlanesRasterizer());
+                .addRasterizer(new ShatteredPlanesRasterizer())
+                .addPlugins();
         return worldBuilder;
 
     }

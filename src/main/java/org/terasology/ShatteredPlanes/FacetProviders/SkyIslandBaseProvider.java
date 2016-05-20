@@ -23,7 +23,6 @@ import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.BrownianNoise;
-import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
 import org.terasology.world.generation.*;
@@ -33,9 +32,9 @@ import org.terasology.world.generation.*;
             @Facet(value = SurrealScaleFacet.class)})
 public class SkyIslandBaseProvider implements FacetProvider {
 
-    private Noise surfaceNoise1;
-    private Noise surfaceNoise2;
-    private Noise surfaceNoise3;
+    private SubSampledNoise surfaceNoise1;
+    private SubSampledNoise surfaceNoise2;
+    private SubSampledNoise surfaceNoise3;
     private float skyIslandHeight=60;
     @Override
     public void setSeed(long seed) {
@@ -54,12 +53,20 @@ public class SkyIslandBaseProvider implements FacetProvider {
 
         Rect2i processRegion = facet.getWorldRegion();
 
+        float[] sNoise1Values = surfaceNoise1.noise(processRegion);
+        float[] sNoise2Values = surfaceNoise2.noise(processRegion);
+        float[] sNoise3Values = surfaceNoise3.noise(processRegion);
 
         for (BaseVector2i position : processRegion.contents()) {
             float surreal = surrealScaleFacet.getWorld(position);
             float bheight = biomeHeightFacet.getWorld(position);
-            float height = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y())*10 + surfaceNoise2.noise(position.x(), position.y()*10), -skyIslandHeight, skyIslandHeight);
-            float val = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y()) / 3 + surfaceNoise2.noise(position.x(), position.y()) / 3 + surfaceNoise3.noise(position.x(), position.y() / 3), 0, 1);
+
+            float noiseValue1 = sNoise1Values[facet.getWorldIndex(position)];
+            float noiseValue2 = sNoise2Values[facet.getWorldIndex(position)];
+            float noiseValue3 = sNoise3Values[facet.getWorldIndex(position)];
+
+            float height = TeraMath.clamp(noiseValue1*10 + noiseValue2*10, -skyIslandHeight, skyIslandHeight);
+            float val = TeraMath.clamp(noiseValue1 / 3 + noiseValue2 / 3 + noiseValue3 / 3, 0, 1);
             if (((val > 0.45-surreal/10 && val < 0.65+surreal/10) ||
                     (val > 0.9-surreal/10)) && bheight>0.8 && bheight<1.6) {
                 facet.setWorld(position, height*bheight*bheight );
