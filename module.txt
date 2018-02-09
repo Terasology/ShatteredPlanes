@@ -1,11 +1,10 @@
 {
     "id" : "ShatteredPlanes",
-    "version" : "0.0.1-SNAPSHOT",
+    "version" : "0.0.2-SNAPSHOT",
     "author" : "Cpt.Crispy Crunchy",
     "displayName" : "Shattered Planes",
     "description" : "Rough canyons, floating islands and more to come",
-    "dependencies" :
-    [
-        {"id": "Core", "minVersion": "1.0.0"}
+    "dependencies" : [
+        {"id": "Core", "minVersion": "2.0.0"}
     ]
 }
