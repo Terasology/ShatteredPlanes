@@ -32,8 +32,6 @@ import org.terasology.world.generation.WorldRasterizer;
 import org.terasology.world.generation.facets.DensityFacet;
 import org.terasology.world.generation.facets.SeaLevelFacet;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
-import org.terasology.world.liquid.LiquidData;
-import org.terasology.world.liquid.LiquidType;
 
 /**
  */
@@ -63,7 +61,6 @@ public class SolidRasterizer implements WorldRasterizer {
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-        LiquidData waterLiquid = new LiquidData(LiquidType.WATER, LiquidData.MAX_LIQUID_DEPTH);
         DensityFacet solidityFacet = chunkRegion.getFacet(DensityFacet.class);
         SurfaceHeightFacet surfaceFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
         BiomeFacet biomeFacet = chunkRegion.getFacet(BiomeFacet.class);
@@ -91,7 +88,6 @@ public class SolidRasterizer implements WorldRasterizer {
                     chunk.setBlock(pos, ice);
                 } else if (posY <= seaLevel && biome == CoreBiome.OCEAN) {         // either OCEAN or SNOW
                     chunk.setBlock(pos, water);
-                    chunk.setLiquid(pos, waterLiquid);
                 }
             }
         }
