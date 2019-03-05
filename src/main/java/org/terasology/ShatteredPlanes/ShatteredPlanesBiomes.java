@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 MovingBlocks
+ * Copyright 2019 MovingBlocks
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,19 +16,21 @@
 package org.terasology.ShatteredPlanes;
 
 
-import org.terasology.world.biomes.BiomeRegistrator;
-import org.terasology.world.biomes.BiomeRegistry;
+import org.terasology.biomesAPI.BiomeRegistry;
+import org.terasology.entitySystem.systems.BaseComponentSystem;
+import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.registry.In;
 
 /**
- * Registers all core biomes with the engine.
+ * Registers biomes.
  */
-public class ShatteredPlanesBiomes implements BiomeRegistrator {
+@RegisterSystem
+public class ShatteredPlanesBiomes extends BaseComponentSystem {
+    @In
+    private BiomeRegistry biomeRegistry;
 
     @Override
-    public void registerBiomes(BiomeRegistry registry) {
-        for (ShatteredPlanesBiome shatteredPlanesBiome : ShatteredPlanesBiome.values()) {
-            registry.registerBiome(shatteredPlanesBiome);
-        }
+    public void preBegin() {
+        biomeRegistry.registerBiome(ShatteredPlanesBiome.RIFT);
     }
-
 }

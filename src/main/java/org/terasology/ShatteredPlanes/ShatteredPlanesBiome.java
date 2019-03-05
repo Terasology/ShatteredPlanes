@@ -15,23 +15,18 @@
  */
 package org.terasology.ShatteredPlanes;
 
-import org.terasology.world.biomes.Biome;
+
+import org.terasology.biomesAPI.Biome;
 
 public enum ShatteredPlanesBiome implements Biome {
-    RIFT("Rifts", 0.0f, 0.0f, 0.0f);
+    RIFT("Rifts");
 
     private final String id;
     private final String name;
-    private final float fog;
-    private final float humidity;
-    private final float temperature;
 
-    private ShatteredPlanesBiome(String name, float fog, float humidity, float temperature) {
+    ShatteredPlanesBiome(String name) {
         this.id = "ShatteredPlanes:" + name().toLowerCase();
         this.name = name;
-        this.fog = fog;
-        this.humidity = humidity;
-        this.temperature = temperature;
     }
 
     @Override
@@ -43,20 +38,4 @@ public enum ShatteredPlanesBiome implements Biome {
     public String getName() {
         return this.name;
     }
-
-    @Override
-    public float getFog() {
-        return fog;
-    }
-
-    @Override
-    public float getHumidity() {
-        return humidity;
-    }
-
-    @Override
-    public float getTemperature() {
-        return temperature;
-    }
-
 }

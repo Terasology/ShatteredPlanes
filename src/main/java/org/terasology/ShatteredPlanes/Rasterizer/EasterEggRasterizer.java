@@ -30,18 +30,19 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 import java.util.ArrayList;
 
+/**
+ * Creates snow-made easter eggs all over the world.
+ *
+ * Eggs will never intersect chunk boundaries.
+ */
 public class EasterEggRasterizer implements WorldRasterizer {
 
-    private Block dirt;
-    private Block grass, water, snow;
+    private Block snow;
     private int eggHeight = 6;
     private int eggRadius = 4;
 
     @Override
     public void initialize() {
-        dirt = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
-        grass = CoreRegistry.get(BlockManager.class).getBlock("Core:Grass");
-        water = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
         snow = CoreRegistry.get(BlockManager.class).getBlock("Core:Snow");
     }
 
@@ -52,7 +53,7 @@ public class EasterEggRasterizer implements WorldRasterizer {
         for (Vector3i position : chunkRegion.getRegion().expand(-eggRadius - 1)) {
 
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
-            if (position.y == surfaceHeight && eggFacet.getWorld(position.x, position.z) == true) {
+            if (position.y == surfaceHeight && eggFacet.getWorld(position.x, position.z)) {
                 for (int h = -eggHeight; h <= eggHeight; h++) {
                     int radius = (int) Math.round(Math.sqrt((eggHeight * eggHeight - h * h)) * eggRadius / (eggHeight * Math.sqrt(Math.exp(0.2 * h))));
 
@@ -77,10 +78,7 @@ public class EasterEggRasterizer implements WorldRasterizer {
                 Vector2i temp = new Vector2i(o.x() + Math.round((float) Math.cos(i) * r), o.y() + Math.round((float) Math.sin(i) * r));
                 if (!positions.contains(temp)) {
                     positions.add(temp);
-
                 }
-
-
             }
         }
 

@@ -16,13 +16,14 @@
 package org.terasology.ShatteredPlanes.Rasterizer;
 
 import org.terasology.ShatteredPlanes.ShatteredPlanesBiome;
+import org.terasology.biomesAPI.Biome;
+import org.terasology.biomesAPI.BiomeRegistry;
 import org.terasology.core.world.CoreBiome;
 import org.terasology.core.world.generator.facets.BiomeFacet;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
-import org.terasology.world.biomes.Biome;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.ChunkConstants;
@@ -44,19 +45,19 @@ public class SolidRasterizer implements WorldRasterizer {
     private Block grass;
     private Block snow;
     private Block dirt;
-    private Block mantlestone;
+    private BiomeRegistry biomeRegistry;
 
     @Override
     public void initialize() {
         BlockManager blockManager = CoreRegistry.get(BlockManager.class);
         stone = blockManager.getBlock("core:stone");
-        mantlestone = blockManager.getBlock("core:mantlestone");
         water = blockManager.getBlock("core:water");
         ice = blockManager.getBlock("core:Ice");
         sand = blockManager.getBlock("core:Sand");
         grass = blockManager.getBlock("core:Grass");
         snow = blockManager.getBlock("core:Snow");
         dirt = blockManager.getBlock("core:Dirt");
+        biomeRegistry = CoreRegistry.get(BiomeRegistry.class);
     }
 
     @Override
@@ -71,7 +72,7 @@ public class SolidRasterizer implements WorldRasterizer {
         for (Vector3i pos : ChunkConstants.CHUNK_REGION) {
             pos2d.set(pos.x, pos.z);
             Biome biome = biomeFacet.get(pos2d);
-            chunk.setBiome(pos.x, pos.y, pos.z, biome);
+            biomeRegistry.setBiome(biome, chunk, pos.x, pos.y, pos.z);
 
             int posY = pos.y + chunk.getChunkWorldOffsetY();
             float density = solidityFacet.get(pos);

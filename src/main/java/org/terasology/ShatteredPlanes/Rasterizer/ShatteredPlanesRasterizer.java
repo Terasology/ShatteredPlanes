@@ -29,8 +29,7 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 public class ShatteredPlanesRasterizer implements WorldRasterizer {
 
-    private Block dirt;
-    private Block grass, water, sand, inviswall,stone;
+    private Block dirt, grass, water, sand,stone;
 
     @Override
     public void initialize() {
@@ -39,7 +38,6 @@ public class ShatteredPlanesRasterizer implements WorldRasterizer {
         water = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
         stone = CoreRegistry.get(BlockManager.class).getBlock("Core:Stone");
         sand = CoreRegistry.get(BlockManager.class).getBlock("Core:Sand");
-        inviswall = CoreRegistry.get(BlockManager.class).getBlock("Core:Lava");
     }
 
     @Override

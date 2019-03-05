@@ -30,14 +30,12 @@ import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 public class SkyIslandRasterizer implements WorldRasterizer {
 
-    private Block dirt;
-    private Block grass, water, stone;
+    private Block dirt, grass, stone;
 
     @Override
     public void initialize() {
         dirt = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
         grass = CoreRegistry.get(BlockManager.class).getBlock("Core:Grass");
-        water = CoreRegistry.get(BlockManager.class).getBlock("Core:Water");
         stone = CoreRegistry.get(BlockManager.class).getBlock("Core:Stone");
     }
 
