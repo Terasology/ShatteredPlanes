@@ -16,8 +16,8 @@
 
 package org.terasology.ShatteredPlanes.Layers;
 
+import org.terasology.biomesAPI.Biome;
 import org.terasology.core.world.generator.facets.BiomeFacet;
-import org.terasology.world.biomes.Biome;
 import org.terasology.world.viewer.layers.NominalFacetLayer;
 import org.terasology.world.viewer.layers.Renders;
 import org.terasology.world.viewer.layers.ZOrder;

@@ -24,7 +24,6 @@ import org.terasology.world.generation.*;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 @Produces(EasterEggFacet.class)
-@Requires(@Facet(value = SurfaceHeightFacet.class))
 public class EasterEggProvider implements FacetProvider {
 
     private Noise noise;
@@ -38,18 +37,17 @@ public class EasterEggProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
 
         Border3D border = region.getBorderForFacet(EasterEggFacet.class);
-        EasterEggFacet eggs = new EasterEggFacet(region.getRegion(), border);
-        SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
-        Rect2i worldRegion = eggs.getWorldRegion();
+        EasterEggFacet eggFacet = new EasterEggFacet(region.getRegion(), border);
+        Rect2i worldRegion = eggFacet.getWorldRegion();
 
         for (BaseVector2i pos : worldRegion.contents()) {
             if (noise.noise(pos.x(), pos.y()) > 0.9) {
-                eggs.setWorld(pos.x(), pos.y(), true);
+                eggFacet.setWorld(pos.x(), pos.y(), true);
 
             }
         }
 
 
-        region.setRegionFacet(EasterEggFacet.class, eggs);
+        region.setRegionFacet(EasterEggFacet.class, eggFacet);
     }
 }
