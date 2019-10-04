@@ -34,9 +34,9 @@ public class SkyIslandRasterizer implements WorldRasterizer {
 
     @Override
     public void initialize() {
-        dirt = CoreRegistry.get(BlockManager.class).getBlock("Core:Dirt");
-        grass = CoreRegistry.get(BlockManager.class).getBlock("Core:Grass");
-        stone = CoreRegistry.get(BlockManager.class).getBlock("Core:Stone");
+        dirt = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Dirt");
+        grass = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Grass");
+        stone = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Stone");
     }
 
     @Override

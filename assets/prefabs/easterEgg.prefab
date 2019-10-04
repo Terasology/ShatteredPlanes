@@ -4,12 +4,12 @@
   },
   "SpawnBlockRegions": {
     "regionsToFill": [
-      {"blockType":  "Core:Snow", "region":  {"min": [-1, 0, 0], "size": [3, 5, 1]}},
-      {"blockType":  "Core:Snow", "region":  {"min": [0, 0, -1], "size": [1, 5, 3]}},
-      {"blockType":  "Core:Snow", "region":  {"min": [-1, 1, -1], "size": [3, 3, 3]}},
-      {"blockType":  "Core:Snow", "region":  {"min": [-2, 1, 0], "size": [5, 2, 1]}},
-      {"blockType":  "Core:Snow", "region":  {"min": [0, 1, -2], "size": [1, 2, 5]}},
-      {"blockType":  "Core:Snow", "region":  {"min": [0, 5, 0], "size": [1, 1, 1]}}
+      {"blockType":  "CoreBlocks:Snow", "region":  {"min": [-1, 0, 0], "size": [3, 5, 1]}},
+      {"blockType":  "CoreBlocks:Snow", "region":  {"min": [0, 0, -1], "size": [1, 5, 3]}},
+      {"blockType":  "CoreBlocks:Snow", "region":  {"min": [-1, 1, -1], "size": [3, 3, 3]}},
+      {"blockType":  "CoreBlocks:Snow", "region":  {"min": [-2, 1, 0], "size": [5, 2, 1]}},
+      {"blockType":  "CoreBlocks:Snow", "region":  {"min": [0, 1, -2], "size": [1, 2, 5]}},
+      {"blockType":  "CoreBlocks:Snow", "region":  {"min": [0, 5, 0], "size": [1, 1, 1]}}
     ]
   }
 }
