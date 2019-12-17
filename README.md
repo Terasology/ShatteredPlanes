@@ -6,4 +6,4 @@ Shattered Planes
 old screenshots:  
 
 ![sc3](/images/updatescreen3.jpg)
-![sc4](/images/updatescreen 4.jpg)
+![sc4](/images/updatescreen4.jpg)
