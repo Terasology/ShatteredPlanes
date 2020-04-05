@@ -1,6 +1,6 @@
 {
   "StructureTemplate": {
-    "type": "ShatteredPlanes:easterEgg"
+    "type": "ShatteredPlanes:easterEggST"
   },
   "SpawnBlockRegions": {
     "regionsToFill": [
