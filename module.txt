@@ -5,7 +5,8 @@
     "displayName" : "Shattered Planes",
     "description" : "Rough canyons, floating islands and more to come",
     "dependencies" : [
-        {"id": "CoreBlocks", "minVersion": "1.0.0"}
+        {"id": "CoreBlocks", "minVersion": "1.0.0"},
+        {"id": "BiomesAPI", "minVersion": "3.2.1"}
     ],
     "isWorld": true
 }
