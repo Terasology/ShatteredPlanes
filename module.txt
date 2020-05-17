@@ -5,7 +5,7 @@
     "displayName": "Shattered Planes",
     "description": "Rough canyons, floating islands and more to come",
     "dependencies": [
-        { "id": "BiomesAPI", "minVersion": "3.2.1" },
+        { "id": "BiomesAPI", "minVersion": "4.0.0" },
         { "id": "CoreAssets", "minVersion": "2.0.1" },
         { "id": "CoreWorlds", "minVersion": "1.0.0" }
     ],
