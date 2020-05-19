@@ -17,25 +17,26 @@ package org.terasology.ShatteredPlanes;
 
 
 import org.terasology.biomesAPI.Biome;
+import org.terasology.naming.Name;
 
 public enum ShatteredPlanesBiome implements Biome {
     RIFT("Rifts");
 
-    private final String id;
+    private final Name id;
     private final String name;
 
     ShatteredPlanesBiome(String name) {
-        this.id = "ShatteredPlanes:" + name().toLowerCase();
+        this.id = new Name("ShatteredPlanes:" + name().toLowerCase());
         this.name = name;
     }
 
     @Override
-    public String getId() {
+    public Name getId() {
         return id;
     }
 
     @Override
-    public String getName() {
+    public String getDisplayName() {
         return this.name;
     }
 }
