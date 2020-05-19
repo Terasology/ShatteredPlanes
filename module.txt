@@ -1,11 +1,13 @@
 {
-    "id" : "ShatteredPlanes",
-    "version" : "0.0.3-SNAPSHOT",
-    "author" : "Cpt.Crispy Crunchy",
-    "displayName" : "Shattered Planes",
-    "description" : "Rough canyons, floating islands and more to come",
-    "dependencies" : [
-        {"id": "Core", "minVersion": "3.0.0"},
-        {"id": "CoreBlocks", "minVersion": "1.0.0"}
-    ]
+    "id": "ShatteredPlanes",
+    "version": "1.0.0",
+    "author": "Cpt.Crispy Crunchy",
+    "displayName": "Shattered Planes",
+    "description": "Rough canyons, floating islands and more to come",
+    "dependencies": [
+        { "id": "BiomesAPI", "minVersion": "4.0.0" },
+        { "id": "CoreAssets", "minVersion": "2.0.1" },
+        { "id": "CoreWorlds", "minVersion": "1.1.0" }
+    ],
+    "isWorld": true
 }

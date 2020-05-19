@@ -33,11 +33,11 @@ public class ShatteredPlanesRasterizer implements WorldRasterizer {
 
     @Override
     public void initialize() {
-        dirt = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Dirt");
-        grass = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Grass");
-        water = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Water");
-        stone = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Stone");
-        sand = CoreRegistry.get(BlockManager.class).getBlock("CoreBlocks:Sand");
+        dirt = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:Dirt");
+        grass = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:Grass");
+        water = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:Water");
+        stone = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:Stone");
+        sand = CoreRegistry.get(BlockManager.class).getBlock("CoreAssets:Sand");
     }
 
     @Override
