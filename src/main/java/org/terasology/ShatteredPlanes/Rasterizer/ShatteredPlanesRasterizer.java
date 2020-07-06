@@ -50,19 +50,19 @@ public class ShatteredPlanesRasterizer implements WorldRasterizer {
             float biomeHeight = biomeHeightFacet.getWorld(position.x, position.z);
 
                 if (position.y >= surfaceHeight - 3 && position.y <= surfaceHeight && biomeHeight < 0 && surfaceHeight < 5) {
-                    chunk.setBlock(ChunkMath.calcBlockPos(position), sand);
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), sand);
                 } else if (position.y < surfaceHeight - 5) {
-                    chunk.setBlock(ChunkMath.calcBlockPos(position), stone);
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), stone);
                 } else if (position.y < surfaceHeight - 1 && surfaceHeight > -55) {
-                    chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
                 } else if (position.y < surfaceHeight && surfaceHeight > seaLevelFacet.getSeaLevel()) {
-                    chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), grass);
                 } else if (position.y < seaLevelFacet.getSeaLevel() && position.y >= surfaceHeight && surfaceHeight > -250 && biomeHeight < 0) {
-                    chunk.setBlock(ChunkMath.calcBlockPos(position), water);
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), water);
                 } else if (position.y <= -40) {
-                    chunk.setBlock(ChunkMath.calcBlockPos(position), water);
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), water);
                 } else if (position.y <= surfaceHeight && position.y >= surfaceHeight - 4 && surfaceHeight< -35) {
-                    chunk.setBlock(ChunkMath.calcBlockPos(position), sand);
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), sand);
                 }
 
 

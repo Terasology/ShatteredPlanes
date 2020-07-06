@@ -54,11 +54,11 @@ public class SkyIslandRasterizer implements WorldRasterizer {
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
 
             if (baseHeight > surfaceHeight && position.y < baseHeight + topHeight - 1 && position.y >= baseHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), dirt);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
             } else if (baseHeight > surfaceHeight && position.y <= baseHeight + topHeight && position.y >= baseHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), grass);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), grass);
             } else if (baseHeight > surfaceHeight && position.y >= baseHeight - bottomHeight && position.y < baseHeight) {
-                chunk.setBlock(ChunkMath.calcBlockPos(position), stone);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), stone);
             }
 
         }

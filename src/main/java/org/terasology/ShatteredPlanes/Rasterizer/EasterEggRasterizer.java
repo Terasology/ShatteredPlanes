@@ -59,7 +59,7 @@ public class EasterEggRasterizer implements WorldRasterizer {
 
                     Vector2i[] selection = selector(new Vector2i(position.x, position.z), radius);
                     for (int i = 0; i < selection.length; i++) {
-                        chunk.setBlock(ChunkMath.calcBlockPos(selection[i].x, (int) surfaceHeight + eggHeight + h, selection[i].y), snow);
+                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(selection[i].x, (int) surfaceHeight + eggHeight + h, selection[i].y), snow);
                     }
                 }
 
