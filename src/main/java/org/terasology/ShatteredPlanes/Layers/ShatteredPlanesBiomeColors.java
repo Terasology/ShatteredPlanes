@@ -19,7 +19,7 @@ package org.terasology.ShatteredPlanes.Layers;
 import com.google.common.collect.Maps;
 import org.terasology.ShatteredPlanes.ShatteredPlanesBiome;
 import org.terasology.biomesAPI.Biome;
-import org.terasology.rendering.nui.Color;
+import org.terasology.nui.Color;
 
 import java.util.Map;
 import java.util.function.Function;
