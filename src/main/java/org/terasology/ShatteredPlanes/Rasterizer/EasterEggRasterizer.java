@@ -1,45 +1,32 @@
-/*
- * Copyright 2016 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.ShatteredPlanes.Rasterizer;
 
 import org.terasology.ShatteredPlanes.Facets.EasterEggFacet;
-import org.terasology.math.ChunkMath;
+import org.terasology.engine.math.ChunkMath;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.world.block.Block;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.CoreChunk;
+import org.terasology.engine.world.generation.Region;
+import org.terasology.engine.world.generation.WorldRasterizer;
+import org.terasology.engine.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3i;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.chunks.CoreChunk;
-import org.terasology.world.generation.Region;
-import org.terasology.world.generation.WorldRasterizer;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 import java.util.ArrayList;
 
 /**
  * Creates snow-made easter eggs all over the world.
- *
+ * <p>
  * Eggs will never intersect chunk boundaries.
  */
 public class EasterEggRasterizer implements WorldRasterizer {
 
+    private final int eggHeight = 6;
+    private final int eggRadius = 4;
     private Block snow;
-    private int eggHeight = 6;
-    private int eggRadius = 4;
 
     @Override
     public void initialize() {
@@ -55,11 +42,13 @@ public class EasterEggRasterizer implements WorldRasterizer {
             float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
             if (position.y == surfaceHeight && eggFacet.getWorld(position.x, position.z)) {
                 for (int h = -eggHeight; h <= eggHeight; h++) {
-                    int radius = (int) Math.round(Math.sqrt((eggHeight * eggHeight - h * h)) * eggRadius / (eggHeight * Math.sqrt(Math.exp(0.2 * h))));
+                    int radius =
+                            (int) Math.round(Math.sqrt((eggHeight * eggHeight - h * h)) * eggRadius / (eggHeight * Math.sqrt(Math.exp(0.2 * h))));
 
                     Vector2i[] selection = selector(new Vector2i(position.x, position.z), radius);
                     for (int i = 0; i < selection.length; i++) {
-                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(selection[i].x, (int) surfaceHeight + eggHeight + h, selection[i].y), snow);
+                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(selection[i].x,
+                                (int) surfaceHeight + eggHeight + h, selection[i].y), snow);
                     }
                 }
 
@@ -75,7 +64,8 @@ public class EasterEggRasterizer implements WorldRasterizer {
         //circular selector
         for (int r = 0; r <= radius; r++) {
             for (int i = 0; i < 360; i = i + 2) {
-                Vector2i temp = new Vector2i(o.x() + Math.round((float) Math.cos(i) * r), o.y() + Math.round((float) Math.sin(i) * r));
+                Vector2i temp = new Vector2i(o.x() + Math.round((float) Math.cos(i) * r),
+                        o.y() + Math.round((float) Math.sin(i) * r));
                 if (!positions.contains(temp)) {
                     positions.add(temp);
                 }

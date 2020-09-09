@@ -1,46 +1,33 @@
-/*
- * Copyright 2016 MovingBlocks
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright 2020 The Terasology Foundation
+// SPDX-License-Identifier: Apache-2.0
 package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.ShatteredPlanes.ShatteredPlanesBiome;
-import org.terasology.core.world.CoreBiome;
-import org.terasology.core.world.generator.facets.BiomeFacet;
+import org.terasology.coreworlds.CoreBiome;
+import org.terasology.coreworlds.generator.facets.BiomeFacet;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Produces;
+import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.facets.SeaLevelFacet;
+import org.terasology.engine.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.engine.world.generation.facets.SurfaceTemperatureFacet;
 import org.terasology.math.geom.BaseVector2i;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.Requires;
-import org.terasology.world.generation.facets.SeaLevelFacet;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
-import org.terasology.world.generation.facets.SurfaceHumidityFacet;
-import org.terasology.world.generation.facets.SurfaceTemperatureFacet;
 
 /**
  * Determines the biome based on temperature and humidity
  */
 @Produces(BiomeFacet.class)
 @Requires({
-    @Facet(SeaLevelFacet.class),
-    @Facet(SurfaceHeightFacet.class),
-    @Facet(SurfaceTemperatureFacet.class),
-    @Facet(BiomeHeightFacet.class),
-    @Facet(SurfaceHumidityFacet.class)})
+        @Facet(SeaLevelFacet.class),
+        @Facet(SurfaceHeightFacet.class),
+        @Facet(SurfaceTemperatureFacet.class),
+        @Facet(BiomeHeightFacet.class),
+        @Facet(SurfaceHumidityFacet.class)})
 public class BiomeProvider implements FacetProvider {
 
     @Override
@@ -69,8 +56,8 @@ public class BiomeProvider implements FacetProvider {
             if (hum == 0.0f && temp == 0.0f) {
                 biomeFacet.set(pos, ShatteredPlanesBiome.RIFT);
             } else if (height <= seaLevel && bheight < 0) {
-                 biomeFacet.set(pos, CoreBiome.OCEAN);
-            } else if (height <= seaLevel + 2 && bheight <0.1) {
+                biomeFacet.set(pos, CoreBiome.OCEAN);
+            } else if (height <= seaLevel + 2 && bheight < 0.1) {
                 biomeFacet.set(pos, CoreBiome.BEACH);
             } else if (temp >= 0.5f && hum < 0.25f) {
                 biomeFacet.set(pos, CoreBiome.DESERT);
@@ -78,7 +65,7 @@ public class BiomeProvider implements FacetProvider {
                 biomeFacet.set(pos, CoreBiome.PLAINS);
             } else if (temp <= 0.3f && hum > 0.5f) {
                 biomeFacet.set(pos, CoreBiome.SNOW);
-            } else if (height>100) {
+            } else if (height > 100) {
                 biomeFacet.set(pos, CoreBiome.MOUNTAINS);
             } else {
                 biomeFacet.set(pos, CoreBiome.FOREST);
