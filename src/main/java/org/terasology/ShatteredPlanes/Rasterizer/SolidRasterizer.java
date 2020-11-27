@@ -85,7 +85,7 @@ public class SolidRasterizer implements WorldRasterizer {
                 // fill up terrain up to sealevel height with water or ice
                 if (posY == seaLevel && CoreBiome.SNOW == biome) {
                     chunk.setBlock(pos, ice);
-                } else if (posY <= seaLevel) {         // either OCEAN or SNOW
+                } else if (posY <= seaLevel && biome == CoreBiome.OCEAN) {         // either OCEAN or SNOW
                     chunk.setBlock(pos, water);
                 }
             }
