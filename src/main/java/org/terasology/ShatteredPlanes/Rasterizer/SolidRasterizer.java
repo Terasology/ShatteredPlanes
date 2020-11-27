@@ -56,7 +56,7 @@ public class SolidRasterizer implements WorldRasterizer {
         sand = blockManager.getBlock("CoreAssets:Sand");
         grass = blockManager.getBlock("CoreAssets:Grass");
         snow = blockManager.getBlock("CoreAssets:Snow");
-        dirt = blockManager.getBlock("CoreBocks:Dirt");
+        dirt = blockManager.getBlock("CoreAssets:Dirt");
         biomeRegistry = CoreRegistry.get(BiomeRegistry.class);
     }
 
