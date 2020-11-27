@@ -26,7 +26,7 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.ElevationFacet;
 
 public class SkyIslandRasterizer implements WorldRasterizer {
 
@@ -44,14 +44,14 @@ public class SkyIslandRasterizer implements WorldRasterizer {
         SkyIslandBaseFacet skyIslandBaseFacet = chunkRegion.getFacet(SkyIslandBaseFacet.class);
         SkyIslandTopHeightFacet skyIslandTopHeightFacet = chunkRegion.getFacet(SkyIslandTopHeightFacet.class);
         SkyIslandBottomHeightFacet skyIslandBottomHeightFacet = chunkRegion.getFacet(SkyIslandBottomHeightFacet.class);
-        SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
 
         for (Vector3i position : chunkRegion.getRegion()) {
 
             float baseHeight = skyIslandBaseFacet.getWorld(position.x, position.z);
             float topHeight = skyIslandTopHeightFacet.getWorld(position.x, position.z);
             float bottomHeight = skyIslandBottomHeightFacet.getWorld(position.x, position.z);
-            float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
+            float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
 
             if (baseHeight > surfaceHeight && position.y < baseHeight + topHeight - 1 && position.y >= baseHeight) {
                 chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);

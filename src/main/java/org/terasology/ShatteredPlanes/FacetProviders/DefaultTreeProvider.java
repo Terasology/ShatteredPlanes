@@ -38,7 +38,7 @@ import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
 import org.terasology.world.generation.Requires;
 import org.terasology.world.generation.facets.SeaLevelFacet;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.SurfacesFacet;
 
 import java.util.List;
 
@@ -47,14 +47,14 @@ import java.util.List;
  */
 @Produces(TreeFacet.class)
 @Requires({
-        @Facet(value = SeaLevelFacet.class, border = @FacetBorder(sides = 13)),
-        @Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 13 + 1)),
-        @Facet(value = BiomeFacet.class, border = @FacetBorder(sides = 13))
+        @Facet(value = SeaLevelFacet.class, border = @FacetBorder(sides = Trees.MAXRADIUS)),
+        @Facet(value = SurfacesFacet.class, border = @FacetBorder(sides = Trees.MAXRADIUS + 1, bottom = Trees.MAXHEIGHT + 1)),
+        @Facet(value = BiomeFacet.class, border = @FacetBorder(sides = Trees.MAXRADIUS))
 })
 public class DefaultTreeProvider extends SurfaceObjectProvider<Biome, TreeGenerator> implements ConfigurableFacetProvider {
 
     private Noise densityNoiseGen;
-    private Configuration configuration = new Configuration();
+    private org.terasology.core.world.generator.facetProviders.DefaultTreeProvider.Configuration configuration = new org.terasology.core.world.generator.facetProviders.DefaultTreeProvider.Configuration();
 
     public DefaultTreeProvider() {
         register(CoreBiome.MOUNTAINS, Trees.oakTree(), 0.04f);
@@ -78,7 +78,7 @@ public class DefaultTreeProvider extends SurfaceObjectProvider<Biome, TreeGenera
     /**
      * @param configuration the default configuration to use
      */
-    public DefaultTreeProvider(Configuration configuration) {
+    public DefaultTreeProvider(org.terasology.core.world.generator.facetProviders.DefaultTreeProvider.Configuration configuration) {
         this();
         this.configuration = configuration;
     }
@@ -92,21 +92,15 @@ public class DefaultTreeProvider extends SurfaceObjectProvider<Biome, TreeGenera
 
     @Override
     public void process(GeneratingRegion region) {
-        SurfaceHeightFacet surface = region.getRegionFacet(SurfaceHeightFacet.class);
+        SurfacesFacet surfaces = region.getRegionFacet(SurfacesFacet.class);
         BiomeFacet biome = region.getRegionFacet(BiomeFacet.class);
 
         List<Predicate<Vector3i>> filters = getFilters(region);
 
-        // these value are derived from the maximum tree extents as
-        // computed by the TreeTests class. Birch is the highest with 32
-        // and Pine has 13 radius.
-        // These values must be identical in the class annotations.
-        int maxRad = 13;
-        int maxHeight = 32;
         Border3D borderForTreeFacet = region.getBorderForFacet(TreeFacet.class);
-        TreeFacet facet = new TreeFacet(region.getRegion(), borderForTreeFacet.extendBy(0, maxHeight, maxRad));
+        TreeFacet facet = new TreeFacet(region.getRegion(), borderForTreeFacet.extendBy(0, Trees.MAXHEIGHT, Trees.MAXRADIUS));
 
-        populateFacet(facet, surface, biome, filters);
+        populateFacet(facet, surfaces, biome, filters);
 
         region.setRegionFacet(TreeFacet.class, facet);
     }
@@ -119,7 +113,7 @@ public class DefaultTreeProvider extends SurfaceObjectProvider<Biome, TreeGenera
 
         filters.add(PositionFilters.probability(densityNoiseGen, configuration.density * 0.05f));
 
-        SurfaceHeightFacet surface = region.getRegionFacet(SurfaceHeightFacet.class);
+        SurfacesFacet surface = region.getRegionFacet(SurfacesFacet.class);
         filters.add(PositionFilters.flatness(surface, 1, 0));
 
         return filters;
@@ -137,7 +131,7 @@ public class DefaultTreeProvider extends SurfaceObjectProvider<Biome, TreeGenera
 
     @Override
     public void setConfiguration(Component configuration) {
-        this.configuration = (Configuration) configuration;
+        this.configuration = (org.terasology.core.world.generator.facetProviders.DefaultTreeProvider.Configuration) configuration;
     }
 
     public static class Configuration implements Component {

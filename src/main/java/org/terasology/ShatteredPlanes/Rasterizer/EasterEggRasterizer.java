@@ -17,6 +17,7 @@ package org.terasology.ShatteredPlanes.Rasterizer;
 
 import org.terasology.ShatteredPlanes.Facets.EasterEggFacet;
 import org.terasology.math.ChunkMath;
+import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Vector2i;
 import org.terasology.math.geom.Vector3i;
@@ -26,7 +27,7 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.SurfacesFacet;
 
 import java.util.ArrayList;
 
@@ -48,18 +49,17 @@ public class EasterEggRasterizer implements WorldRasterizer {
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-        SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        SurfacesFacet surfacesFacet = chunkRegion.getFacet(SurfacesFacet.class);
         EasterEggFacet eggFacet = chunkRegion.getFacet(EasterEggFacet.class);
         for (Vector3i position : chunkRegion.getRegion().expand(-eggRadius - 1)) {
 
-            float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
-            if (position.y == surfaceHeight && eggFacet.getWorld(position.x, position.z)) {
+            if (surfacesFacet.get(JomlUtil.from(position)) && eggFacet.getWorld(position.x, position.z)) {
                 for (int h = -eggHeight; h <= eggHeight; h++) {
                     int radius = (int) Math.round(Math.sqrt((eggHeight * eggHeight - h * h)) * eggRadius / (eggHeight * Math.sqrt(Math.exp(0.2 * h))));
 
                     Vector2i[] selection = selector(new Vector2i(position.x, position.z), radius);
                     for (int i = 0; i < selection.length; i++) {
-                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(selection[i].x, (int) surfaceHeight + eggHeight + h, selection[i].y), snow);
+                        chunk.setBlock(ChunkMath.calcRelativeBlockPos(selection[i].x, (int) position.y + eggHeight + h, selection[i].y), snow);
                     }
                 }
 

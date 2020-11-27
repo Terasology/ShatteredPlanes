@@ -20,14 +20,19 @@ import org.terasology.math.TeraMath;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.math.geom.Vector2i;
-import org.terasology.world.generation.*;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.Facet;
+import org.terasology.world.generation.FacetBorder;
+import org.terasology.world.generation.FacetProvider;
+import org.terasology.world.generation.GeneratingRegion;
+import org.terasology.world.generation.Requires;
+import org.terasology.world.generation.Updates;
+import org.terasology.world.generation.facets.ElevationFacet;
 
 import java.util.ArrayList;
 //TODO: Differentiate between a messy gaussian filter (copy into temp facet and back) and smooth filter (apply directly to surface)
 
 @Requires(@Facet(BiomeHeightFacet.class))
-@Updates(@Facet(value = SurfaceHeightFacet.class, border = @FacetBorder(sides = 4)))
+@Updates(@Facet(value = ElevationFacet.class, border = @FacetBorder(sides = 4)))
 public class SmoothingFilter implements FacetProvider {
 
     private float amplitude;
@@ -62,7 +67,7 @@ public class SmoothingFilter implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
 
-        SurfaceHeightFacet facet = region.getRegionFacet(SurfaceHeightFacet.class);
+        ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet bfacet = region.getRegionFacet(BiomeHeightFacet.class);
         Rect2i worldRegionExtended = facet.getWorldRegion();
         Rect2i worldRegion = worldRegionExtended.expand(-4,-4);

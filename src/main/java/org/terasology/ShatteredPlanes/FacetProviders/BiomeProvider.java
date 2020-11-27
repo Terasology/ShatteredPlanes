@@ -26,8 +26,8 @@ import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
 import org.terasology.world.generation.Requires;
+import org.terasology.world.generation.facets.ElevationFacet;
 import org.terasology.world.generation.facets.SeaLevelFacet;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
 import org.terasology.world.generation.facets.SurfaceHumidityFacet;
 import org.terasology.world.generation.facets.SurfaceTemperatureFacet;
 
@@ -37,7 +37,7 @@ import org.terasology.world.generation.facets.SurfaceTemperatureFacet;
 @Produces(BiomeFacet.class)
 @Requires({
     @Facet(SeaLevelFacet.class),
-    @Facet(SurfaceHeightFacet.class),
+    @Facet(ElevationFacet.class),
     @Facet(SurfaceTemperatureFacet.class),
     @Facet(BiomeHeightFacet.class),
     @Facet(SurfaceHumidityFacet.class)})
@@ -50,7 +50,7 @@ public class BiomeProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         SeaLevelFacet seaLevelFacet = region.getRegionFacet(SeaLevelFacet.class);
-        SurfaceHeightFacet heightFacet = region.getRegionFacet(SurfaceHeightFacet.class);
+        ElevationFacet elevationFacet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
         SurfaceTemperatureFacet temperatureFacet = region.getRegionFacet(SurfaceTemperatureFacet.class);
         SurfaceHumidityFacet humidityFacet = region.getRegionFacet(SurfaceHumidityFacet.class);
@@ -63,7 +63,7 @@ public class BiomeProvider implements FacetProvider {
         for (BaseVector2i pos : biomeFacet.getRelativeRegion().contents()) {
             float temp = temperatureFacet.get(pos);
             float hum = temp * humidityFacet.get(pos);
-            float height = heightFacet.get(pos);
+            float height = elevationFacet.get(pos);
             float bheight = biomeHeightFacet.get(pos);
 
             if (hum == 0.0f && temp == 0.0f) {
