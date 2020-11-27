@@ -24,8 +24,8 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
+import org.terasology.world.generation.facets.ElevationFacet;
 import org.terasology.world.generation.facets.SeaLevelFacet;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
 public class ShatteredPlanesRasterizer implements WorldRasterizer {
 
@@ -42,11 +42,11 @@ public class ShatteredPlanesRasterizer implements WorldRasterizer {
 
     @Override
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
-        SurfaceHeightFacet surfaceHeightFacet = chunkRegion.getFacet(SurfaceHeightFacet.class);
+        ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         BiomeHeightFacet biomeHeightFacet = chunkRegion.getFacet(BiomeHeightFacet.class);
         for (Vector3i position : chunkRegion.getRegion()) {
-            float surfaceHeight = surfaceHeightFacet.getWorld(position.x, position.z);
+            float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
             float biomeHeight = biomeHeightFacet.getWorld(position.x, position.z);
 
                 if (position.y >= surfaceHeight - 3 && position.y <= surfaceHeight && biomeHeight < 0 && surfaceHeight < 5) {

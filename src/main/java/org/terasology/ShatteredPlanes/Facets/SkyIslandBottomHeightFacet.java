@@ -17,9 +17,9 @@ package org.terasology.ShatteredPlanes.Facets;
 
 import org.terasology.math.Region3i;
 import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.base.BaseFieldFacet2D;
 
-public class SkyIslandBottomHeightFacet extends SurfaceHeightFacet {
+public class SkyIslandBottomHeightFacet extends BaseFieldFacet2D {
 
     public SkyIslandBottomHeightFacet(Region3i targetRegion, Border3D border) {
         super(targetRegion, border);

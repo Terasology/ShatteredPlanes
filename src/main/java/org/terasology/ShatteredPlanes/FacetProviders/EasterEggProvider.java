@@ -20,8 +20,10 @@ import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.WhiteNoise;
-import org.terasology.world.generation.*;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.Border3D;
+import org.terasology.world.generation.FacetProvider;
+import org.terasology.world.generation.GeneratingRegion;
+import org.terasology.world.generation.Produces;
 
 @Produces(EasterEggFacet.class)
 public class EasterEggProvider implements FacetProvider {
