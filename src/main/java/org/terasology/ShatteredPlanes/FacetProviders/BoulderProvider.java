@@ -15,11 +15,11 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.joml.Vector2f;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.PerlinNoise;
@@ -65,9 +65,9 @@ public class BoulderProvider implements FacetProvider {
                 float sigma = CanyonHeight/4;
                 // check if height is within this region
                 float maxCanyonHeight = CanyonBaseHeight + CanyonHeight;
-                if ((surfaceHeight >= region.getRegion().minY() && surfaceHeight+maxCanyonHeight <= region.getRegion().maxY())) {
+                if ((surfaceHeight >= region.getRegion().getMinY() && surfaceHeight+maxCanyonHeight <= region.getRegion().getMaxY())) {
 
-                    for (int wy = surfaceHeight; (wy <= region.getRegion().maxY() && wy <= surfaceHeight + maxCanyonHeight &&
+                    for (int wy = surfaceHeight; (wy <= region.getRegion().getMaxY() && wy <= surfaceHeight + maxCanyonHeight &&
                             biomeHeight > 0.6 && biomeHeight < 4); wy++) {
 
 

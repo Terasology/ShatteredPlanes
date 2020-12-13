@@ -15,10 +15,10 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.joml.Vector2f;
 import org.terasology.ShatteredPlanes.Facets.SkyIslandBottomHeightFacet;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2f;
 import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;

@@ -17,6 +17,7 @@ package org.terasology.ShatteredPlanes.FacetProviders;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import org.joml.Vector3i;
 import org.terasology.biomesAPI.Biome;
 import org.terasology.core.world.CoreBiome;
 import org.terasology.core.world.generator.facetProviders.PositionFilters;
@@ -26,7 +27,6 @@ import org.terasology.core.world.generator.facets.TreeFacet;
 import org.terasology.core.world.generator.trees.TreeGenerator;
 import org.terasology.core.world.generator.trees.Trees;
 import org.terasology.entitySystem.Component;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.nui.properties.Range;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.WhiteNoise;
