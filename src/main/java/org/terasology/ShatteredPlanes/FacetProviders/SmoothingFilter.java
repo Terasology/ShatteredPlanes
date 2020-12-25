@@ -90,7 +90,7 @@ public class SmoothingFilter implements FacetProvider {
                 }
 
                 change = yOrigin+amplitude * (change / selectedPositions.size() - yOrigin)/*TeraMath.clamp((float) Math.log(yOrigin+1),0,1)*/;
-                TeraMath.clamp(change, region.getRegion().getMinY(), region.getRegion().getMaxY());
+                TeraMath.clamp(change, region.getRegion().minY(), region.getRegion().maxY());
                 facet.setWorld(position, change);
 
             }

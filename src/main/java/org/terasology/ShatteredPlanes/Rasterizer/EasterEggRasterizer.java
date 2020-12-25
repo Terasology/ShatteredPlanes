@@ -15,18 +15,15 @@
  */
 package org.terasology.ShatteredPlanes.Rasterizer;
 
+import org.joml.Vector3i;
 import org.joml.Vector3ic;
 import org.terasology.ShatteredPlanes.Facets.EasterEggFacet;
 import org.terasology.math.ChunkMath;
-import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Vector2i;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.BlockRegion;
-import org.terasology.world.block.BlockRegions;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
@@ -54,7 +51,7 @@ public class EasterEggRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         SurfacesFacet surfacesFacet = chunkRegion.getFacet(SurfacesFacet.class);
         EasterEggFacet eggFacet = chunkRegion.getFacet(EasterEggFacet.class);
-        for (Vector3ic position : BlockRegions.iterableInPlace(chunkRegion.getRegion().addExtents(-eggRadius - 1, new BlockRegion()))) {
+        for (Vector3ic position : chunkRegion.getRegion().expand(new Vector3i( -eggRadius - 1))) {
 
             if (surfacesFacet.get(position) && eggFacet.getWorld(position.x(), position.z())) {
                 for (int h = -eggHeight; h <= eggHeight; h++) {

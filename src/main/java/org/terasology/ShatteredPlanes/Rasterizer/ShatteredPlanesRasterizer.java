@@ -22,7 +22,6 @@ import org.terasology.math.ChunkMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.BlockRegions;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
@@ -47,7 +46,7 @@ public class ShatteredPlanesRasterizer implements WorldRasterizer {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         BiomeHeightFacet biomeHeightFacet = chunkRegion.getFacet(BiomeHeightFacet.class);
-        for (Vector3ic position : BlockRegions.iterableInPlace(chunkRegion.getRegion())) {
+        for (Vector3ic position : chunkRegion.getRegion()) {
             float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
             float biomeHeight = biomeHeightFacet.getWorld(position.x(), position.z());
 

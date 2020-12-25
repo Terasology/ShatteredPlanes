@@ -65,9 +65,9 @@ public class BoulderProvider implements FacetProvider {
                 float sigma = CanyonHeight/4;
                 // check if height is within this region
                 float maxCanyonHeight = CanyonBaseHeight + CanyonHeight;
-                if ((surfaceHeight >= region.getRegion().getMinY() && surfaceHeight+maxCanyonHeight <= region.getRegion().getMaxY())) {
+                if ((surfaceHeight >= region.getRegion().minY() && surfaceHeight+maxCanyonHeight <= region.getRegion().maxY())) {
 
-                    for (int wy = surfaceHeight; (wy <= region.getRegion().getMaxY() && wy <= surfaceHeight + maxCanyonHeight &&
+                    for (int wy = surfaceHeight; (wy <= region.getRegion().maxY() && wy <= surfaceHeight + maxCanyonHeight &&
                             biomeHeight > 0.6 && biomeHeight < 4); wy++) {
 
 
