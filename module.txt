@@ -1,7 +1,7 @@
 {
     "id": "ShatteredPlanes",
     "version": "1.0.0-SNAPSHOT",
-    "author": "Cpt.Crispy Crunchy",
+    "author": "The Terasology Foundation",
     "displayName": "Shattered Planes",
     "description": "Rough canyons, floating islands and more to come",
     "dependencies": [
