@@ -47,6 +47,7 @@ public class SkyIslandRasterizer implements WorldRasterizer {
         SkyIslandBottomHeightFacet skyIslandBottomHeightFacet = chunkRegion.getFacet(SkyIslandBottomHeightFacet.class);
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
 
+        Vector3i tempPos = new Vector3i();
         for (Vector3ic position : chunkRegion.getRegion()) {
 
             float baseHeight = skyIslandBaseFacet.getWorld(position.x(), position.z());
@@ -55,11 +56,11 @@ public class SkyIslandRasterizer implements WorldRasterizer {
             float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
 
             if (baseHeight > surfaceHeight && position.y() < baseHeight + topHeight - 1 && position.y() >= baseHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, new Vector3i()), dirt);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), dirt);
             } else if (baseHeight > surfaceHeight && position.y() <= baseHeight + topHeight && position.y() >= baseHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, new Vector3i()), grass);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), grass);
             } else if (baseHeight > surfaceHeight && position.y() >= baseHeight - bottomHeight && position.y() < baseHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, new Vector3i()), stone);
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), stone);
             }
 
         }
