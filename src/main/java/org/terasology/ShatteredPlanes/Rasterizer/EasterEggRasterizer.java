@@ -51,7 +51,7 @@ public class EasterEggRasterizer implements WorldRasterizer {
     public void generateChunk(CoreChunk chunk, Region chunkRegion) {
         SurfacesFacet surfacesFacet = chunkRegion.getFacet(SurfacesFacet.class);
         EasterEggFacet eggFacet = chunkRegion.getFacet(EasterEggFacet.class);
-        for (Vector3ic position : chunkRegion.getRegion().expand(new Vector3i( -eggRadius - 1))) {
+        for (Vector3ic position : new BlockRegion(chunkRegion.getRegion()).expand(new Vector3i( -eggRadius - 1))) {
 
             if (surfacesFacet.get(position) && eggFacet.getWorld(position.x(), position.z())) {
                 for (int h = -eggHeight; h <= eggHeight; h++) {
