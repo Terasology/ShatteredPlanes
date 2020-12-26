@@ -15,13 +15,13 @@
  */
 package org.terasology.ShatteredPlanes.Facets;
 
-import org.terasology.math.Region3i;
+import org.terasology.world.block.BlockRegion;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.facets.base.BaseFieldFacet2D;
 
 public class SurrealScaleFacet extends BaseFieldFacet2D {
 
-    public SurrealScaleFacet(Region3i targetRegion, Border3D border) {
+    public SurrealScaleFacet(BlockRegion targetRegion, Border3D border) {
         super(targetRegion, border);
     }
 }

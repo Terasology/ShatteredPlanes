@@ -15,11 +15,12 @@
  */
 package org.terasology.ShatteredPlanes.Rasterizer;
 
+import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.terasology.ShatteredPlanes.Facets.SkyIslandBaseFacet;
 import org.terasology.ShatteredPlanes.Facets.SkyIslandBottomHeightFacet;
 import org.terasology.ShatteredPlanes.Facets.SkyIslandTopHeightFacet;
 import org.terasology.math.ChunkMath;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
@@ -46,19 +47,20 @@ public class SkyIslandRasterizer implements WorldRasterizer {
         SkyIslandBottomHeightFacet skyIslandBottomHeightFacet = chunkRegion.getFacet(SkyIslandBottomHeightFacet.class);
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
 
-        for (Vector3i position : chunkRegion.getRegion()) {
+        Vector3i tempPos = new Vector3i();
+        for (Vector3ic position : chunkRegion.getRegion()) {
 
-            float baseHeight = skyIslandBaseFacet.getWorld(position.x, position.z);
-            float topHeight = skyIslandTopHeightFacet.getWorld(position.x, position.z);
-            float bottomHeight = skyIslandBottomHeightFacet.getWorld(position.x, position.z);
-            float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
+            float baseHeight = skyIslandBaseFacet.getWorld(position.x(), position.z());
+            float topHeight = skyIslandTopHeightFacet.getWorld(position.x(), position.z());
+            float bottomHeight = skyIslandBottomHeightFacet.getWorld(position.x(), position.z());
+            float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
 
-            if (baseHeight > surfaceHeight && position.y < baseHeight + topHeight - 1 && position.y >= baseHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
-            } else if (baseHeight > surfaceHeight && position.y <= baseHeight + topHeight && position.y >= baseHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), grass);
-            } else if (baseHeight > surfaceHeight && position.y >= baseHeight - bottomHeight && position.y < baseHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), stone);
+            if (baseHeight > surfaceHeight && position.y() < baseHeight + topHeight - 1 && position.y() >= baseHeight) {
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), dirt);
+            } else if (baseHeight > surfaceHeight && position.y() <= baseHeight + topHeight && position.y() >= baseHeight) {
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), grass);
+            } else if (baseHeight > surfaceHeight && position.y() >= baseHeight - bottomHeight && position.y() < baseHeight) {
+                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), stone);
             }
 
         }

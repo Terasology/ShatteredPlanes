@@ -15,9 +15,10 @@
  */
 package org.terasology.ShatteredPlanes.Rasterizer;
 
+import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.ChunkMath;
-import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
@@ -45,24 +46,26 @@ public class ShatteredPlanesRasterizer implements WorldRasterizer {
         ElevationFacet elevationFacet = chunkRegion.getFacet(ElevationFacet.class);
         SeaLevelFacet seaLevelFacet = chunkRegion.getFacet(SeaLevelFacet.class);
         BiomeHeightFacet biomeHeightFacet = chunkRegion.getFacet(BiomeHeightFacet.class);
-        for (Vector3i position : chunkRegion.getRegion()) {
-            float surfaceHeight = elevationFacet.getWorld(position.x, position.z);
-            float biomeHeight = biomeHeightFacet.getWorld(position.x, position.z);
 
-                if (position.y >= surfaceHeight - 3 && position.y <= surfaceHeight && biomeHeight < 0 && surfaceHeight < 5) {
-                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), sand);
-                } else if (position.y < surfaceHeight - 5) {
-                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), stone);
-                } else if (position.y < surfaceHeight - 1 && surfaceHeight > -55) {
-                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), dirt);
-                } else if (position.y < surfaceHeight && surfaceHeight > seaLevelFacet.getSeaLevel()) {
-                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), grass);
-                } else if (position.y < seaLevelFacet.getSeaLevel() && position.y >= surfaceHeight && surfaceHeight > -250 && biomeHeight < 0) {
-                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), water);
-                } else if (position.y <= -40) {
-                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), water);
-                } else if (position.y <= surfaceHeight && position.y >= surfaceHeight - 4 && surfaceHeight< -35) {
-                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position), sand);
+        Vector3i tempPos = new Vector3i();
+        for (Vector3ic position : chunkRegion.getRegion()) {
+            float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
+            float biomeHeight = biomeHeightFacet.getWorld(position.x(), position.z());
+
+                if (position.y() >= surfaceHeight - 3 && position.y() <= surfaceHeight && biomeHeight < 0 && surfaceHeight < 5) {
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), sand);
+                } else if (position.y() < surfaceHeight - 5) {
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), stone);
+                } else if (position.y() < surfaceHeight - 1 && surfaceHeight > -55) {
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), dirt);
+                } else if (position.y() < surfaceHeight && surfaceHeight > seaLevelFacet.getSeaLevel()) {
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), grass);
+                } else if (position.y() < seaLevelFacet.getSeaLevel() && position.y() >= surfaceHeight && surfaceHeight > -250 && biomeHeight < 0) {
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), water);
+                } else if (position.y() <= -40) {
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), water);
+                } else if (position.y() <= surfaceHeight && position.y() >= surfaceHeight - 4 && surfaceHeight< -35) {
+                    chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), sand);
                 }
 
 
