@@ -16,6 +16,7 @@
 package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.joml.Vector2f;
+import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
@@ -23,6 +24,7 @@ import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -40,9 +42,9 @@ public class BiomeHeightProvider implements FacetProvider {
 
     @Override
     public void setSeed(long seed) {
-        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed-12), new Vector2f(0.0001f, 0.0001f), 1);
+        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed - 12), new Vector2f(0.0001f, 0.0001f), 1);
         surfaceNoise2 = new SubSampledNoise(
-                new BrownianNoise(new SimplexNoise(seed + 89), 8), new Vector2f(0.0002f, 0.0002f), 1);
+            new BrownianNoise(new SimplexNoise(seed + 89), 8), new Vector2f(0.0002f, 0.0002f), 1);
         surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed - 107), new Vector2f(0.0001f, 0.0001f), 1);
     }
 
@@ -52,10 +54,10 @@ public class BiomeHeightProvider implements FacetProvider {
         Border3D border = region.getBorderForFacet(BiomeHeightFacet.class);
         BiomeHeightFacet facet = new BiomeHeightFacet(region.getRegion(), border);
 
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
-            facet.setWorld(position, 10*(surfaceNoise1.noise(position.x(), position.y())/3 +
-                    surfaceNoise2.noise(position.x(), position.y())/3+ surfaceNoise3.noise(position.x(), position.y())/3));
+        BlockAreac processRegion = facet.getWorldRegion();
+        for (Vector2ic position : processRegion) {
+            facet.setWorld(position, 10 * (surfaceNoise1.noise(position.x(), position.y()) / 3 +
+                surfaceNoise2.noise(position.x(), position.y()) / 3 + surfaceNoise3.noise(position.x(), position.y()) / 3));
         }
 
         region.setRegionFacet(BiomeHeightFacet.class, facet);

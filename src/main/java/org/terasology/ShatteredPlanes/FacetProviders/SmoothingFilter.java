@@ -15,11 +15,12 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.joml.Vector2i;
+import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.TeraMath;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
+import org.terasology.world.block.BlockArea;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetBorder;
 import org.terasology.world.generation.FacetProvider;
@@ -41,11 +42,11 @@ public class SmoothingFilter implements FacetProvider {
 
 
     //smooth mode=1, messy mode=2
-    public SmoothingFilter(){
+    public SmoothingFilter() {
         //amplitude has to be between 0 and 1
-        amplitude=1f;
-        radius=1;
-        mode=1;
+        amplitude = 1f;
+        radius = 1;
+        mode = 1;
     }
 
 
@@ -69,40 +70,30 @@ public class SmoothingFilter implements FacetProvider {
 
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet bfacet = region.getRegionFacet(BiomeHeightFacet.class);
-        Rect2i worldRegionExtended = facet.getWorldRegion();
-        Rect2i worldRegion = worldRegionExtended.expand(-4,-4);
+        BlockAreac worldRegionExtended = facet.getWorldRegion();
+        BlockAreac worldRegion = worldRegionExtended.expand(-4, -4, new BlockArea(BlockArea.INVALID));
 
-
-        for (BaseVector2i position : worldRegion.contents()) {
+        for (Vector2ic position : worldRegion) {
             int yOrigin = TeraMath.floorToInt(facet.getWorld(position));
             float biomeHeight = bfacet.getWorld(position);
 
-            if (biomeHeight>=0) {
+            if (biomeHeight >= 0) {
                 float change = 0;
                 ArrayList<Vector2i> selectedPositions = selector(position, worldRegionExtended);
                 for (Vector2i selection : selectedPositions) {
-
-                    float dis = (float) position.distance(selection);
                     float ySelection = facet.getWorld(selection);
-
                     change += ySelection;
-
                 }
 
-                change = yOrigin+amplitude * (change / selectedPositions.size() - yOrigin)/*TeraMath.clamp((float) Math.log(yOrigin+1),0,1)*/;
-                TeraMath.clamp(change, region.getRegion().minY(), region.getRegion().maxY());
+                change = yOrigin + amplitude * (change / selectedPositions.size() - yOrigin)/*TeraMath.clamp((float) Math.log(yOrigin+1),0,1)*/;
                 facet.setWorld(position, change);
-
             }
         }
     }
 
-
     //select all relevant neighbor positions
-    private ArrayList<Vector2i> selector(BaseVector2i o, Rect2i worldRegionExtended) {
-
+    private ArrayList<Vector2i> selector(Vector2ic o, BlockAreac worldRegionExtended) {
         ArrayList<Vector2i> positions = new ArrayList<>();
-
         //circular selector
         for (int r = 1; r <= radius; r++) {
             for (int i = 0; i <= 360; i = i + 90) {
@@ -111,8 +102,6 @@ public class SmoothingFilter implements FacetProvider {
                     positions.add(temp);
 
                 }
-
-
             }
         }
         return positions;

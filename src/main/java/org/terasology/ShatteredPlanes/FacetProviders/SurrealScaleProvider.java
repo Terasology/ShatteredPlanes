@@ -15,9 +15,11 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.SurrealScaleFacet;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -38,14 +40,13 @@ public class SurrealScaleProvider implements FacetProvider {
 
         Border3D border = region.getBorderForFacet(SurrealScaleFacet.class);
         SurrealScaleFacet facet = new SurrealScaleFacet(region.getRegion(), border);
-        Rect2i processRegion = facet.getWorldRegion();
+        BlockAreac processRegion = facet.getWorldRegion();
 
-        for (BaseVector2i position : processRegion.contents()) {
-            float val =  1/(1+(float) Math.exp(-k*position.length())*(10-1));
+        for (Vector2ic position : processRegion) {
+            float val = 1 / (1 + (float) Math.exp(-k * position.length()) * (10 - 1));
             facet.setWorld(position, val);
-
         }
-
+        
         region.setRegionFacet(SurrealScaleFacet.class, facet);
     }
 }

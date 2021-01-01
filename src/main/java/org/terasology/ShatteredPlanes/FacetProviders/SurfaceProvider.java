@@ -16,12 +16,14 @@
 package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.joml.Vector2f;
+import org.joml.Vector2ic;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -34,12 +36,11 @@ public class SurfaceProvider implements FacetProvider {
     private Noise surfaceNoise1;
     private Noise surfaceNoise2;
     private Noise surfaceNoise3;
-    private BrownianNoise PreNoise;
 
     @Override
     public void setSeed(long seed) {
         surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed), new Vector2f(0.002f, 0.002f), 1);
-        surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 30), 8), new Vector2f(0.005f, 0.005f), 1);
+        surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 30), 8), new Vector2f(0.005f,0.005f), 1);
         surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed - 30), new Vector2f(0.001f, 0.001f), 1);
     }
 
@@ -49,10 +50,11 @@ public class SurfaceProvider implements FacetProvider {
         Border3D border = region.getBorderForFacet(ElevationFacet.class);
         ElevationFacet facet = new ElevationFacet(region.getRegion(), border);
         // loop through every position on our 2d array
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
-            facet.setWorld(position, Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 1 + surfaceNoise2.noise(position.x(), position.y()) * 8 + surfaceNoise3.noise(position.x(), position.y()) * 20));
-            //facet.setWorld(position, 20);
+        BlockAreac processRegion = facet.getWorldRegion();
+        for (Vector2ic position : processRegion) {
+            facet.setWorld(position,
+                Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 1 + surfaceNoise2.noise(position.x(),
+                    position.y()) * 8 + surfaceNoise3.noise(position.x(), position.y()) * 20));
         }
         // give our newly created and populated facet to the region
         region.setRegionFacet(ElevationFacet.class, facet);
