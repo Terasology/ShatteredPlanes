@@ -46,7 +46,7 @@ public class SurrealScaleProvider implements FacetProvider {
             float val = 1 / (1 + (float) Math.exp(-k * position.length()) * (10 - 1));
             facet.setWorld(position, val);
         }
-        
+
         region.setRegionFacet(SurrealScaleFacet.class, facet);
     }
 }
