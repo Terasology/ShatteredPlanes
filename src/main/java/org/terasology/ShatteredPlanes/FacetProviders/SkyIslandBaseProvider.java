@@ -59,9 +59,7 @@ public class SkyIslandBaseProvider implements FacetProvider {
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
         SkyIslandBaseFacet facet = new SkyIslandBaseFacet(region.getRegion(), border);
 
-        BlockAreac processRegion = facet.getWorldRegion();
-
-        for (Vector2ic position : processRegion) {
+        for (Vector2ic position : facet.getWorldArea()) {
             float surreal = surrealScaleFacet.getWorld(position);
             float bheight = biomeHeightFacet.getWorld(position);
             float height = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y()) * 10 + surfaceNoise2.noise(position.x(), position.y() * 10), -skyIslandHeight, skyIslandHeight);

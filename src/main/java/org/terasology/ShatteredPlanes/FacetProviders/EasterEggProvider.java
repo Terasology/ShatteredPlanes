@@ -40,8 +40,7 @@ public class EasterEggProvider implements FacetProvider {
 
         Border3D border = region.getBorderForFacet(EasterEggFacet.class);
         EasterEggFacet eggFacet = new EasterEggFacet(region.getRegion(), border);
-        BlockAreac worldRegion = eggFacet.getWorldRegion();
-        for (Vector2ic pos : worldRegion) {
+        for (Vector2ic pos : eggFacet.getWorldArea()) {
             if (noise.noise(pos.x(), pos.y()) > 0.9) {
                 eggFacet.setWorld(pos.x(), pos.y(), true);
 

@@ -40,9 +40,8 @@ public class SurrealScaleProvider implements FacetProvider {
 
         Border3D border = region.getBorderForFacet(SurrealScaleFacet.class);
         SurrealScaleFacet facet = new SurrealScaleFacet(region.getRegion(), border);
-        BlockAreac processRegion = facet.getWorldRegion();
 
-        for (Vector2ic position : processRegion) {
+        for (Vector2ic position : facet.getWorldArea()) {
             float val = 1 / (1 + (float) Math.exp(-k * position.length()) * (10 - 1));
             facet.setWorld(position, val);
         }

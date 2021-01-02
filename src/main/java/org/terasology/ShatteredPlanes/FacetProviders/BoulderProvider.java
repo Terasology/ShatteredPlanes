@@ -58,9 +58,8 @@ public class BoulderProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         ElevationFacet elevationFacet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
-        BlockAreac worldRegion = elevationFacet.getWorldRegion();
 
-        for (Vector2ic pos : worldRegion) {
+        for (Vector2ic pos : elevationFacet.getWorldArea()) {
             int surfaceHeight = TeraMath.floorToInt(elevationFacet.getWorld(pos));
             float biomeHeight = biomeHeightFacet.getWorld(pos);
             float canyonBaseHeight = 10 * (biomeHeight * biomeHeight - 1f);

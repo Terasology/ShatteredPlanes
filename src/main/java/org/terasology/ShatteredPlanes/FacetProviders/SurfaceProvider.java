@@ -50,8 +50,7 @@ public class SurfaceProvider implements FacetProvider {
         Border3D border = region.getBorderForFacet(ElevationFacet.class);
         ElevationFacet facet = new ElevationFacet(region.getRegion(), border);
         // loop through every position on our 2d array
-        BlockAreac processRegion = facet.getWorldRegion();
-        for (Vector2ic position : processRegion) {
+        for (Vector2ic position : facet.getWorldArea()) {
             facet.setWorld(position,
                 Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 1 + surfaceNoise2.noise(position.x(),
                     position.y()) * 8 + surfaceNoise3.noise(position.x(), position.y()) * 20));

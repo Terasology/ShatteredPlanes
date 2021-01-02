@@ -54,8 +54,7 @@ public class BiomeHeightProvider implements FacetProvider {
         Border3D border = region.getBorderForFacet(BiomeHeightFacet.class);
         BiomeHeightFacet facet = new BiomeHeightFacet(region.getRegion(), border);
 
-        BlockAreac processRegion = facet.getWorldRegion();
-        for (Vector2ic position : processRegion) {
+        for (Vector2ic position : facet.getWorldArea()) {
             facet.setWorld(position, 10 * (surfaceNoise1.noise(position.x(), position.y()) / 3 +
                 surfaceNoise2.noise(position.x(), position.y()) / 3 + surfaceNoise3.noise(position.x(), position.y()) / 3));
         }

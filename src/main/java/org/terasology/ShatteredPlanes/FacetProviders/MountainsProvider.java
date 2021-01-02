@@ -53,8 +53,7 @@ public class MountainsProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
-        BlockAreac processRegion = facet.getWorldRegion();
-        for (Vector2ic position : processRegion) {
+        for (Vector2ic position : facet.getWorldArea()) {
             float biomeHeight = biomeHeightFacet.getWorld(position);
             //Mountains:
             if (biomeHeight > 0 && !(biomeHeight > 1 && biomeHeight < 1.4)) {

@@ -70,8 +70,7 @@ public class SmoothingFilter implements FacetProvider {
 
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet bfacet = region.getRegionFacet(BiomeHeightFacet.class);
-        BlockAreac worldRegionExtended = facet.getWorldRegion();
-        BlockAreac worldRegion = worldRegionExtended.expand(-4, -4, new BlockArea(BlockArea.INVALID));
+        BlockAreac worldRegion = facet.getWorldArea().expand(-4, -4, new BlockArea(BlockArea.INVALID));
 
         for (Vector2ic position : worldRegion) {
             int yOrigin = TeraMath.floorToInt(facet.getWorld(position));
@@ -79,7 +78,7 @@ public class SmoothingFilter implements FacetProvider {
 
             if (biomeHeight >= 0) {
                 float change = 0;
-                ArrayList<Vector2i> selectedPositions = selector(position, worldRegionExtended);
+                ArrayList<Vector2i> selectedPositions = selector(position, facet.getWorldArea());
                 for (Vector2i selection : selectedPositions) {
                     float ySelection = facet.getWorld(selection);
                     change += ySelection;

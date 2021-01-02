@@ -52,8 +52,7 @@ public class HillsProvider implements FacetProvider {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
         // loop through every position on our 2d array
-        BlockAreac processRegion = facet.getWorldRegion();
-        for (Vector2ic position : processRegion) {
+        for (Vector2ic position : facet.getWorldArea()) {
             float biomeHeight = biomeHeightFacet.getWorld(position);
             //Hills
             if (biomeHeight > 0) {

@@ -53,8 +53,7 @@ public class OceanProvider implements FacetProvider {
         ElevationFacet elevationFacet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
 
-        BlockAreac processRegion = elevationFacet.getWorldRegion();
-        for (Vector2ic position : processRegion) {
+        for (Vector2ic position : elevationFacet.getWorldArea()) {
             float bheight = biomeHeightFacet.getWorld(position);
             if (bheight < 0) {
                 float change = (float) -Math.exp(-(bheight + 0.3)) * Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 2 +

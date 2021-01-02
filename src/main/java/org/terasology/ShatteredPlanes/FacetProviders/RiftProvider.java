@@ -45,15 +45,14 @@ public class RiftProvider implements FacetProvider {
         SurfaceHumidityFacet surfaceHumidityFacet = region.getRegionFacet(SurfaceHumidityFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
 
-        BlockAreac processRegion = elevationFacet.getWorldRegion();
-        for (Vector2ic position : processRegion) {
+        for (Vector2ic position : elevationFacet.getWorldArea()) {
             float bheight = biomeHeightFacet.getWorld(position);
             if (bheight > 1 && bheight < 1.4) {
                 elevationFacet.setWorld(position, -60f);
-                if (surfaceHumidityFacet.getWorldRegion().contains(position)) {
+                if (surfaceHumidityFacet.getWorldArea().contains(position)) {
                     surfaceHumidityFacet.setWorld(position, 0f);
                 }
-                if (surfaceTemperatureFacet.getWorldRegion().contains(position)) {
+                if (surfaceTemperatureFacet.getWorldArea().contains(position)) {
                     surfaceTemperatureFacet.setWorld(position, 0f);
 
                 }
