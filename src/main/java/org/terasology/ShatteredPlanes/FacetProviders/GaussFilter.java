@@ -60,7 +60,7 @@ public class GaussFilter implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
-        BlockAreac worldRegion = facet.getWorldArea().expand(-8, -8, new BlockArea(BlockArea.INVALID));
+        BlockAreac worldRegion = new BlockArea(facet.getWorldArea()).expand(-8, -8);
         // loop through every position on our 2d array
         for (Vector2ic position : worldRegion) {
             float yOrigin = facet.getWorld(position);
