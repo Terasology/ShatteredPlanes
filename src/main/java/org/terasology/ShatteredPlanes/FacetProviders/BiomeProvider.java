@@ -15,11 +15,11 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.ShatteredPlanes.ShatteredPlanesBiome;
 import org.terasology.core.world.CoreBiome;
 import org.terasology.core.world.generator.facets.BiomeFacet;
-import org.terasology.math.geom.BaseVector2i;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
@@ -60,7 +60,7 @@ public class BiomeProvider implements FacetProvider {
 
         int seaLevel = seaLevelFacet.getSeaLevel();
 
-        for (BaseVector2i pos : biomeFacet.getRelativeRegion().contents()) {
+        for (Vector2ic pos : biomeFacet.getRelativeArea()) {
             float temp = temperatureFacet.get(pos);
             float hum = temp * humidityFacet.get(pos);
             float height = elevationFacet.get(pos);
@@ -69,8 +69,8 @@ public class BiomeProvider implements FacetProvider {
             if (hum == 0.0f && temp == 0.0f) {
                 biomeFacet.set(pos, ShatteredPlanesBiome.RIFT);
             } else if (height <= seaLevel && bheight < 0) {
-                 biomeFacet.set(pos, CoreBiome.OCEAN);
-            } else if (height <= seaLevel + 2 && bheight <0.1) {
+                biomeFacet.set(pos, CoreBiome.OCEAN);
+            } else if (height <= seaLevel + 2 && bheight < 0.1) {
                 biomeFacet.set(pos, CoreBiome.BEACH);
             } else if (temp >= 0.5f && hum < 0.25f) {
                 biomeFacet.set(pos, CoreBiome.DESERT);
@@ -78,7 +78,7 @@ public class BiomeProvider implements FacetProvider {
                 biomeFacet.set(pos, CoreBiome.PLAINS);
             } else if (temp <= 0.3f && hum > 0.5f) {
                 biomeFacet.set(pos, CoreBiome.SNOW);
-            } else if (height>100) {
+            } else if (height > 100) {
                 biomeFacet.set(pos, CoreBiome.MOUNTAINS);
             } else {
                 biomeFacet.set(pos, CoreBiome.FOREST);

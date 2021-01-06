@@ -15,10 +15,12 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.Noise;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -32,15 +34,8 @@ import org.terasology.world.generation.facets.SurfaceTemperatureFacet;
 @Requires(@Facet(BiomeHeightFacet.class))
 public class RiftProvider implements FacetProvider {
 
-    private Noise surfaceNoise1;
-    private Noise surfaceNoise2;
-    private Noise surfaceNoise3;
-
     @Override
-    public void setSeed(long seed) {/*
-        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed+1000), new Vector2f(0.0012f, 0.0012f), 1);
-        surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 53), 8), new Vector2f(0.005f, 0.005f), 1);
-        surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed - 45), new Vector2f(0.001f, 0.001f), 1);*/
+    public void setSeed(long seed) {
     }
 
     @Override
@@ -50,15 +45,14 @@ public class RiftProvider implements FacetProvider {
         SurfaceHumidityFacet surfaceHumidityFacet = region.getRegionFacet(SurfaceHumidityFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
 
-        Rect2i processRegion = elevationFacet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
-            float bheight=biomeHeightFacet.getWorld(position);
-            if(bheight > 1 && bheight <1.4) {
+        for (Vector2ic position : elevationFacet.getWorldArea()) {
+            float bheight = biomeHeightFacet.getWorld(position);
+            if (bheight > 1 && bheight < 1.4) {
                 elevationFacet.setWorld(position, -60f);
-                if(surfaceHumidityFacet.getWorldRegion().contains(position)) {
+                if (surfaceHumidityFacet.getWorldArea().contains(position)) {
                     surfaceHumidityFacet.setWorld(position, 0f);
                 }
-                if(surfaceTemperatureFacet.getWorldRegion().contains(position)){
+                if (surfaceTemperatureFacet.getWorldArea().contains(position)) {
                     surfaceTemperatureFacet.setWorld(position, 0f);
 
                 }

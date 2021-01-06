@@ -16,6 +16,7 @@
 package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.joml.Vector2f;
+import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.geom.BaseVector2i;
 import org.terasology.math.geom.Rect2i;
@@ -23,6 +24,7 @@ import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -40,7 +42,7 @@ public class OceanProvider implements FacetProvider {
 
     @Override
     public void setSeed(long seed) {
-        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed+1000), new Vector2f(0.0012f, 0.0012f), 1);
+        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed + 1000), new Vector2f(0.0012f, 0.0012f), 1);
         surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 53), 8), new Vector2f(0.005f, 0.005f), 1);
         surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed - 45), new Vector2f(0.001f, 0.001f), 1);
     }
@@ -51,14 +53,13 @@ public class OceanProvider implements FacetProvider {
         ElevationFacet elevationFacet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
 
-        Rect2i processRegion = elevationFacet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
-            float bheight=biomeHeightFacet.getWorld(position);
-            if(bheight < 0) {
-                float change = (float) -Math.exp(-(bheight+0.3))*Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 2 +
-                        surfaceNoise2.noise(position.x(), position.y()) * 16 + surfaceNoise3.noise(position.x(), position.y()) * 30);
+        for (Vector2ic position : elevationFacet.getWorldArea()) {
+            float bheight = biomeHeightFacet.getWorld(position);
+            if (bheight < 0) {
+                float change = (float) -Math.exp(-(bheight + 0.3)) * Math.abs(surfaceNoise1.noise(position.x(), position.y()) * 2 +
+                    surfaceNoise2.noise(position.x(), position.y()) * 16 + surfaceNoise3.noise(position.x(), position.y()) * 30);
                 float sheight = elevationFacet.getWorld(position);
-                elevationFacet.setWorld(position, sheight+change);
+                elevationFacet.setWorld(position, sheight + change);
             }
         }
     }

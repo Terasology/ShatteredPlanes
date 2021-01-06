@@ -16,6 +16,7 @@
 package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.joml.Vector2f;
+import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.math.TeraMath;
 import org.terasology.math.geom.BaseVector2i;
@@ -24,6 +25,7 @@ import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -38,11 +40,11 @@ public class MountainsProvider implements FacetProvider {
     private Noise surfaceNoise1;
     private Noise surfaceNoise2;
     private Noise surfaceNoise3;
-    private int MountainHeight=100;
+    private int mountainHeight = 100;
 
     @Override
     public void setSeed(long seed) {
-        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed+1234), new Vector2f(0.01f, 0.01f), 1);
+        surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed + 1234), new Vector2f(0.01f, 0.01f), 1);
         surfaceNoise2 = new SubSampledNoise(new BrownianNoise(new SimplexNoise(seed + 4312), 8), new Vector2f(0.005f, 0.005f), 1);
         surfaceNoise3 = new SubSampledNoise(new SimplexNoise(seed - 2134), new Vector2f(0.001f, 0.001f), 1);
     }
@@ -51,17 +53,14 @@ public class MountainsProvider implements FacetProvider {
     public void process(GeneratingRegion region) {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
-        Rect2i processRegion = facet.getWorldRegion();
-        for (BaseVector2i position : processRegion.contents()) {
+        for (Vector2ic position : facet.getWorldArea()) {
             float biomeHeight = biomeHeightFacet.getWorld(position);
             //Mountains:
-            if(biomeHeight>0 && !(biomeHeight>1 && biomeHeight<1.4)){
-                facet.setWorld(position, facet.getWorld(position)+biomeHeight * TeraMath.clamp((float)
-                        Math.exp(surfaceNoise1.noise(position.x(), position.y()) * 2 + surfaceNoise2.noise(position.x(), position.y())
-                                * 3 + surfaceNoise3.noise(position.x(), position.y()) * 6-2), 0, MountainHeight));
+            if (biomeHeight > 0 && !(biomeHeight > 1 && biomeHeight < 1.4)) {
+                facet.setWorld(position, facet.getWorld(position) + biomeHeight * TeraMath.clamp((float)
+                    Math.exp(surfaceNoise1.noise(position.x(), position.y()) * 2 + surfaceNoise2.noise(position.x(), position.y())
+                        * 3 + surfaceNoise3.noise(position.x(), position.y()) * 6 - 2), 0, mountainHeight));
             }
-
-
         }
     }
 }

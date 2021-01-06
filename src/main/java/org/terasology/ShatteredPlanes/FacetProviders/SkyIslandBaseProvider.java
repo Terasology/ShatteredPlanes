@@ -16,16 +16,17 @@
 package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.joml.Vector2f;
+import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
 import org.terasology.ShatteredPlanes.Facets.SkyIslandBaseFacet;
 import org.terasology.ShatteredPlanes.Facets.SurrealScaleFacet;
 import org.terasology.math.TeraMath;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
+import org.terasology.world.block.BlockArea;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
@@ -41,7 +42,8 @@ public class SkyIslandBaseProvider implements FacetProvider {
     private Noise surfaceNoise1;
     private Noise surfaceNoise2;
     private Noise surfaceNoise3;
-    private float skyIslandHeight=60;
+    private float skyIslandHeight = 60;
+
     @Override
     public void setSeed(long seed) {
         surfaceNoise1 = new SubSampledNoise(new SimplexNoise(seed - 23214), new Vector2f(0.01f, 0.01f), 1);
@@ -57,17 +59,14 @@ public class SkyIslandBaseProvider implements FacetProvider {
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
         SkyIslandBaseFacet facet = new SkyIslandBaseFacet(region.getRegion(), border);
 
-        Rect2i processRegion = facet.getWorldRegion();
-
-
-        for (BaseVector2i position : processRegion.contents()) {
+        for (Vector2ic position : facet.getWorldArea()) {
             float surreal = surrealScaleFacet.getWorld(position);
             float bheight = biomeHeightFacet.getWorld(position);
-            float height = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y())*10 + surfaceNoise2.noise(position.x(), position.y()*10), -skyIslandHeight, skyIslandHeight);
+            float height = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y()) * 10 + surfaceNoise2.noise(position.x(), position.y() * 10), -skyIslandHeight, skyIslandHeight);
             float val = TeraMath.clamp(surfaceNoise1.noise(position.x(), position.y()) / 3 + surfaceNoise2.noise(position.x(), position.y()) / 3 + surfaceNoise3.noise(position.x(), position.y() / 3), 0, 1);
-            if (((val > 0.45-surreal/10 && val < 0.65+surreal/10) ||
-                    (val > 0.9-surreal/10)) && bheight>0.8 && bheight<1.6) {
-                facet.setWorld(position, height*bheight*bheight );
+            if (((val > 0.45 - surreal / 10 && val < 0.65 + surreal / 10) ||
+                (val > 0.9 - surreal / 10)) && bheight > 0.8 && bheight < 1.6) {
+                facet.setWorld(position, height * bheight * bheight);
             } else {
                 facet.setWorld(position, -999);
             }

@@ -15,9 +15,11 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.math.geom.Vector2i;
+import org.joml.Math;
+import org.joml.Vector2i;
+import org.joml.Vector2ic;
+import org.terasology.world.block.BlockArea;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetBorder;
 import org.terasology.world.generation.FacetProvider;
@@ -47,9 +49,7 @@ public class GaussFilter implements FacetProvider {
     public GaussFilter(float sigma, float amplitude, int radius, int mode) {
         this.sigma = sigma;
         this.amplitude = amplitude;
-        if (radius <= 8) {
-            this.radius = radius;
-        } else this.radius = 8;
+        this.radius = Math.min(radius, 8);
         this.mode = mode;
     }
 
@@ -60,45 +60,38 @@ public class GaussFilter implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
         ElevationFacet facet = region.getRegionFacet(ElevationFacet.class);
-        Rect2i worldRegionExtended = facet.getWorldRegion();
-        Rect2i worldRegion = worldRegionExtended.expand(-8, -8);
-
+        BlockAreac worldRegion = new BlockArea(facet.getWorldArea()).expand(-8, -8);
         // loop through every position on our 2d array
-        for (BaseVector2i position : worldRegion.contents()) {
-
+        for (Vector2ic position : worldRegion) {
             float yOrigin = facet.getWorld(position);
-            Vector2i[] selection = selector(position, worldRegionExtended);
-            for (int i = 0; i < selection.length; i++) {
-                float dis = (float) position.distance(selection[i]);
-                float ySelection = facet.getWorld(selection[i]);
+            Vector2i[] selection = selector(position, facet.getWorldArea());
+            for (Vector2i s1 : selection) {
+                float dis = (float) position.distance(s1);
+                float ySelection = facet.getWorld(s1);
                 float change = 0;
                 if (Math.round(yOrigin - ySelection) > 0 && yOrigin > 0) {
-                    change = (1 - gauss(dis)) / (float) Math.pow(Math.round(yOrigin - ySelection), 1) * amplitude * (float) Math.log(yOrigin + 1);
+
+                    change =
+                        (1 - gauss(dis)) / (float) java.lang.Math.pow(Math.round(yOrigin - ySelection), 1) * amplitude * (float) java.lang.Math.log(yOrigin + 1);
                 }
                 facet.setWorld(position, yOrigin + change);
             }
-
-
         }
-
-
     }
 
     //select all relevant neighbor positions
-    private Vector2i[] selector(BaseVector2i o, Rect2i worldRegion) {
+    private Vector2i[] selector(Vector2ic o, BlockAreac worldRegion) {
 
         ArrayList<Vector2i> positions = new ArrayList<Vector2i>();
 
         //circular selector
         for (int r = 1; r <= radius; r++) {
             for (int i = 0; i < 360; i = i + 5) {
-                Vector2i temp = new Vector2i(o.x() + Math.round((float) Math.cos(i) * r), o.y() + Math.round((float) Math.sin(i) * r));
+                Vector2i temp = new Vector2i(o.x() + Math.round((float) Math.cos(i) * r),
+                    o.y() + Math.round((float) Math.sin(i) * r));
                 if (!positions.contains(temp) && worldRegion.contains(temp.x, temp.y) && !(temp.x == o.x() && temp.y == o.y())) {
                     positions.add(temp);
-
                 }
-
-
             }
         }
 

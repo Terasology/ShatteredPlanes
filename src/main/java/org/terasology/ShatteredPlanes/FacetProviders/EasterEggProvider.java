@@ -15,11 +15,11 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.EasterEggFacet;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.WhiteNoise;
+import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
@@ -40,15 +40,12 @@ public class EasterEggProvider implements FacetProvider {
 
         Border3D border = region.getBorderForFacet(EasterEggFacet.class);
         EasterEggFacet eggFacet = new EasterEggFacet(region.getRegion(), border);
-        Rect2i worldRegion = eggFacet.getWorldRegion();
-
-        for (BaseVector2i pos : worldRegion.contents()) {
+        for (Vector2ic pos : eggFacet.getWorldArea()) {
             if (noise.noise(pos.x(), pos.y()) > 0.9) {
                 eggFacet.setWorld(pos.x(), pos.y(), true);
 
             }
         }
-
 
         region.setRegionFacet(EasterEggFacet.class, eggFacet);
     }
