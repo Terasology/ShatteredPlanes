@@ -20,10 +20,10 @@ import org.joml.Vector3ic;
 import org.terasology.ShatteredPlanes.Facets.SkyIslandBaseFacet;
 import org.terasology.ShatteredPlanes.Facets.SkyIslandBottomHeightFacet;
 import org.terasology.ShatteredPlanes.Facets.SkyIslandTopHeightFacet;
-import org.terasology.math.ChunkMath;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.chunks.Chunks;
 import org.terasology.world.chunks.CoreChunk;
 import org.terasology.world.generation.Region;
 import org.terasology.world.generation.WorldRasterizer;
@@ -31,7 +31,9 @@ import org.terasology.world.generation.facets.ElevationFacet;
 
 public class SkyIslandRasterizer implements WorldRasterizer {
 
-    private Block dirt, grass, stone;
+    private Block dirt;
+    private Block grass;
+    private Block stone;
 
     @Override
     public void initialize() {
@@ -56,11 +58,11 @@ public class SkyIslandRasterizer implements WorldRasterizer {
             float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
 
             if (baseHeight > surfaceHeight && position.y() < baseHeight + topHeight - 1 && position.y() >= baseHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), dirt);
+                chunk.setBlock(Chunks.toRelative(position, tempPos), dirt);
             } else if (baseHeight > surfaceHeight && position.y() <= baseHeight + topHeight && position.y() >= baseHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), grass);
+                chunk.setBlock(Chunks.toRelative(position, tempPos), grass);
             } else if (baseHeight > surfaceHeight && position.y() >= baseHeight - bottomHeight && position.y() < baseHeight) {
-                chunk.setBlock(ChunkMath.calcRelativeBlockPos(position, tempPos), stone);
+                chunk.setBlock(Chunks.toRelative(position, tempPos), stone);
             }
 
         }

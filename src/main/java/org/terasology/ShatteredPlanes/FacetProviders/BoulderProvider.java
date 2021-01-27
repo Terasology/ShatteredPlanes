@@ -15,18 +15,16 @@
  */
 package org.terasology.ShatteredPlanes.FacetProviders;
 
+import org.joml.Math;
+import org.joml.RoundingMode;
 import org.joml.Vector2f;
 import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
-import org.terasology.math.TeraMath;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
 import org.terasology.utilities.procedural.BrownianNoise;
 import org.terasology.utilities.procedural.Noise;
 import org.terasology.utilities.procedural.PerlinNoise;
 import org.terasology.utilities.procedural.SimplexNoise;
 import org.terasology.utilities.procedural.SubSampledNoise;
-import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetBorder;
 import org.terasology.world.generation.FacetProvider;
@@ -39,7 +37,7 @@ import org.terasology.world.generation.facets.ElevationFacet;
 @Updates(@Facet(value = ElevationFacet.class, border=@FacetBorder(sides = 4)))
 public class BoulderProvider implements FacetProvider {
 
-    private BrownianNoise PreNoise;
+    private BrownianNoise preNoise;
     private Noise mountainNoise1;
     private Noise mountainNoise2;
     private Noise noise;
@@ -47,10 +45,10 @@ public class BoulderProvider implements FacetProvider {
 
     @Override
     public void setSeed(long seed) {
-        PreNoise = new BrownianNoise(new PerlinNoise(seed + 25), 12);
+        preNoise = new BrownianNoise(new PerlinNoise(seed + 25), 12);
         //PreNoise.setPersistence(0.001);
         mountainNoise1 = new SubSampledNoise(new SimplexNoise(seed - 50), new Vector2f(0.01f, 0.01f), 1);
-        mountainNoise2 = new SubSampledNoise(PreNoise, new Vector2f(0.01f, 0.01f), 1);
+        mountainNoise2 = new SubSampledNoise(preNoise, new Vector2f(0.01f, 0.01f), 1);
         noise = new SubSampledNoise(new SimplexNoise(seed + 50), new Vector2f(0.001f, 0.001f), 1);
     }
 
@@ -60,7 +58,7 @@ public class BoulderProvider implements FacetProvider {
         BiomeHeightFacet biomeHeightFacet = region.getRegionFacet(BiomeHeightFacet.class);
 
         for (Vector2ic pos : elevationFacet.getWorldArea()) {
-            int surfaceHeight = TeraMath.floorToInt(elevationFacet.getWorld(pos));
+            int surfaceHeight = Math.roundUsing(elevationFacet.getWorld(pos), RoundingMode.FLOOR);
             float biomeHeight = biomeHeightFacet.getWorld(pos);
             float canyonBaseHeight = 10 * (biomeHeight * biomeHeight - 1f);
             float canyonHeight = 35;
