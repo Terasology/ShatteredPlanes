@@ -17,10 +17,6 @@ package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
-import org.terasology.math.geom.BaseVector2i;
-import org.terasology.math.geom.Rect2i;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.world.block.BlockAreac;
 import org.terasology.world.generation.Facet;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
