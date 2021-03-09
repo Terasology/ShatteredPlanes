@@ -15,9 +15,9 @@
  */
 package org.terasology.ShatteredPlanes.Facets;
 
-import org.terasology.world.block.BlockRegion;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.facets.base.BaseFieldFacet2D;
+import org.terasology.engine.world.block.BlockRegion;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.facets.base.BaseFieldFacet2D;
 
 public class SkyIslandBaseFacet extends BaseFieldFacet2D {
 

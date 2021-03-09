@@ -17,14 +17,14 @@ package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.BiomeHeightFacet;
-import org.terasology.world.generation.Facet;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Requires;
-import org.terasology.world.generation.Updates;
-import org.terasology.world.generation.facets.ElevationFacet;
-import org.terasology.world.generation.facets.SurfaceHumidityFacet;
-import org.terasology.world.generation.facets.SurfaceTemperatureFacet;
+import org.terasology.engine.world.generation.Facet;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Requires;
+import org.terasology.engine.world.generation.Updates;
+import org.terasology.engine.world.generation.facets.ElevationFacet;
+import org.terasology.engine.world.generation.facets.SurfaceHumidityFacet;
+import org.terasology.engine.world.generation.facets.SurfaceTemperatureFacet;
 
 @Updates({@Facet(ElevationFacet.class),@Facet(SurfaceTemperatureFacet.class),@Facet(SurfaceHumidityFacet.class)})
 @Requires(@Facet(BiomeHeightFacet.class))

@@ -17,12 +17,12 @@ package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.EasterEggFacet;
-import org.terasology.utilities.procedural.Noise;
-import org.terasology.utilities.procedural.WhiteNoise;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
+import org.terasology.engine.utilities.procedural.Noise;
+import org.terasology.engine.utilities.procedural.WhiteNoise;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Produces;
 
 @Produces(EasterEggFacet.class)
 public class EasterEggProvider implements FacetProvider {

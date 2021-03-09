@@ -18,9 +18,9 @@ package org.terasology.ShatteredPlanes.Layers;
 
 import org.terasology.biomesAPI.Biome;
 import org.terasology.core.world.generator.facets.BiomeFacet;
-import org.terasology.world.viewer.layers.NominalFacetLayer;
-import org.terasology.world.viewer.layers.Renders;
-import org.terasology.world.viewer.layers.ZOrder;
+import org.terasology.engine.world.viewer.layers.NominalFacetLayer;
+import org.terasology.engine.world.viewer.layers.Renders;
+import org.terasology.engine.world.viewer.layers.ZOrder;
 
 /**
  * Maps {@link org.terasology.ShatteredPlanes.ShatteredPlanesBiome} biomes to corresponding colors.

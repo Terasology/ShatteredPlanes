@@ -17,10 +17,10 @@ package org.terasology.ShatteredPlanes.FacetProviders;
 
 import org.joml.Vector2ic;
 import org.terasology.ShatteredPlanes.Facets.SurrealScaleFacet;
-import org.terasology.world.generation.Border3D;
-import org.terasology.world.generation.FacetProvider;
-import org.terasology.world.generation.GeneratingRegion;
-import org.terasology.world.generation.Produces;
+import org.terasology.engine.world.generation.Border3D;
+import org.terasology.engine.world.generation.FacetProvider;
+import org.terasology.engine.world.generation.GeneratingRegion;
+import org.terasology.engine.world.generation.Produces;
 
 @Produces(SurrealScaleFacet.class)
 public class SurrealScaleProvider implements FacetProvider {

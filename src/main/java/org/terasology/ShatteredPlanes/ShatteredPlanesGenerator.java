@@ -15,7 +15,21 @@
  */
 package org.terasology.ShatteredPlanes;
 
-import org.terasology.ShatteredPlanes.FacetProviders.*;
+import org.terasology.ShatteredPlanes.FacetProviders.BiomeHeightProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.BiomeProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.BoulderProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.DefaultFloraProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.DefaultTreeProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.HillsProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.MountainsProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.OceanProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.RiftProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SkyIslandBaseProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SkyIslandBottomHeightProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SkyIslandTopHeightProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SmoothingFilter;
+import org.terasology.ShatteredPlanes.FacetProviders.SurfaceProvider;
+import org.terasology.ShatteredPlanes.FacetProviders.SurrealScaleProvider;
 import org.terasology.ShatteredPlanes.Rasterizer.SkyIslandRasterizer;
 import org.terasology.ShatteredPlanes.Rasterizer.SolidRasterizer;
 import org.terasology.core.world.generator.facetProviders.PerlinHumidityProvider;
@@ -24,12 +38,12 @@ import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
 import org.terasology.core.world.generator.rasterizers.TreeRasterizer;
-import org.terasology.engine.SimpleUri;
-import org.terasology.registry.In;
-import org.terasology.world.generation.BaseFacetedWorldGenerator;
-import org.terasology.world.generation.WorldBuilder;
-import org.terasology.world.generator.RegisterWorldGenerator;
-import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
+import org.terasology.engine.core.SimpleUri;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.generation.BaseFacetedWorldGenerator;
+import org.terasology.engine.world.generation.WorldBuilder;
+import org.terasology.engine.world.generator.RegisterWorldGenerator;
+import org.terasology.engine.world.generator.plugin.WorldGeneratorPluginLibrary;
 
 @RegisterWorldGenerator(id = "ShatteredPlanes", displayName = "Shattered Planes")
 public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
