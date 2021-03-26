@@ -23,8 +23,8 @@ import org.terasology.ShatteredPlanes.Facets.SkyIslandTopHeightFacet;
 import org.terasology.engine.registry.CoreRegistry;
 import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.chunks.Chunk;
 import org.terasology.engine.world.chunks.Chunks;
-import org.terasology.engine.world.chunks.CoreChunk;
 import org.terasology.engine.world.generation.Region;
 import org.terasology.engine.world.generation.WorldRasterizer;
 import org.terasology.engine.world.generation.facets.ElevationFacet;
@@ -43,7 +43,7 @@ public class SkyIslandRasterizer implements WorldRasterizer {
     }
 
     @Override
-    public void generateChunk(CoreChunk chunk, Region chunkRegion) {
+    public void generateChunk(Chunk chunk, Region chunkRegion) {
         SkyIslandBaseFacet skyIslandBaseFacet = chunkRegion.getFacet(SkyIslandBaseFacet.class);
         SkyIslandTopHeightFacet skyIslandTopHeightFacet = chunkRegion.getFacet(SkyIslandTopHeightFacet.class);
         SkyIslandBottomHeightFacet skyIslandBottomHeightFacet = chunkRegion.getFacet(SkyIslandBottomHeightFacet.class);
