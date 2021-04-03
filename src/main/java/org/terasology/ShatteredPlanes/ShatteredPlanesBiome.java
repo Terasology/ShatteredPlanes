@@ -17,7 +17,7 @@ package org.terasology.ShatteredPlanes;
 
 
 import org.terasology.biomesAPI.Biome;
-import org.terasology.naming.Name;
+import org.terasology.gestalt.naming.Name;
 
 public enum ShatteredPlanesBiome implements Biome {
     RIFT("Rifts");
