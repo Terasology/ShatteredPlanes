@@ -135,6 +135,11 @@ public class DefaultFloraProvider extends SurfaceObjectProvider<Biome, FloraType
     public static class Configuration implements Component<Configuration> {
         @Range(min = 0, max = 1.0f, increment = 0.05f, precision = 2, description = "Define the overall flora density")
         public float density = 0.4f;
+
+        @Override
+        public void copy(Configuration other) {
+            this.density = other.density;
+        }
     }
 
 }
