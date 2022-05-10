@@ -32,9 +32,9 @@ import org.terasology.ShatteredPlanes.FacetProviders.SurfaceProvider;
 import org.terasology.ShatteredPlanes.FacetProviders.SurrealScaleProvider;
 import org.terasology.ShatteredPlanes.Rasterizer.SkyIslandRasterizer;
 import org.terasology.ShatteredPlanes.Rasterizer.SolidRasterizer;
-import org.terasology.core.world.generator.facetProviders.PerlinHumidityProvider;
-import org.terasology.core.world.generator.facetProviders.PerlinSurfaceTemperatureProvider;
 import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
+import org.terasology.core.world.generator.facetProviders.SimplexHumidityProvider;
+import org.terasology.core.world.generator.facetProviders.SimplexSurfaceTemperatureProvider;
 import org.terasology.core.world.generator.facetProviders.SurfaceToDensityProvider;
 import org.terasology.core.world.generator.rasterizers.FloraRasterizer;
 import org.terasology.core.world.generator.rasterizers.TreeRasterizer;
@@ -61,8 +61,8 @@ public class ShatteredPlanesGenerator extends BaseFacetedWorldGenerator {
         WorldBuilder worldBuilder = new WorldBuilder(worldGeneratorPluginLibrary)
                 .addProvider(new SurrealScaleProvider())
                 .addProvider(new BiomeHeightProvider())
-                .addProvider(new PerlinHumidityProvider())
-                .addProvider(new PerlinSurfaceTemperatureProvider())
+                .addProvider(new SimplexHumidityProvider())
+                .addProvider(new SimplexSurfaceTemperatureProvider())
                 .addProvider(new SurfaceProvider())
                 .addProvider(new SeaLevelProvider(0))
                 .addProvider(new OceanProvider())
